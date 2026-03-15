@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -28,7 +27,6 @@
   --color-background: var(--bg-deep);
   --color-foreground: var(--text-primary);
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Space Grotesk', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,12 +42,17 @@ body {
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   line-height: 1.7;
-  cursor: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a, button, [role="button"] { cursor: none; }
+/* Cursor: default auto, JS adds .custom-cursor-active to body */
+body.custom-cursor-active,
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active [role="button"] {
+  cursor: none;
+}
 
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-deep); }
@@ -60,31 +63,32 @@ a, button, [role="button"] { cursor: none; }
   color: var(--accent);
 }
 
-/* ── Font utility ── */
 .font-display { font-family: 'Space Grotesk', sans-serif; }
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
 /* ── Custom cursor ── */
 .cursor-dot {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 8px;
-  height: 8px;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
   background: var(--accent);
   border-radius: 50%;
   pointer-events: none;
   z-index: 99999;
   will-change: transform;
-  transition: width 0.2s, height 0.2s, background 0.2s, opacity 0.2s;
-  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, opacity 0.2s;
 }
 
 .cursor-ring {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 40px;
-  height: 40px;
+  top: 0; left: 0;
+  width: 40px; height: 40px;
   border: 1.5px solid rgba(0, 255, 106, 0.4);
   border-radius: 50%;
   pointer-events: none;
@@ -93,29 +97,18 @@ a, button, [role="button"] { cursor: none; }
   transition: width 0.3s, height 0.3s, border-color 0.3s, opacity 0.3s;
 }
 
-.cursor-dot.hovering {
-  width: 14px;
-  height: 14px;
-  background: rgba(0, 255, 106, 0.5);
-}
-
-.cursor-ring.hovering {
-  width: 60px;
-  height: 60px;
-  border-color: rgba(0, 255, 106, 0.2);
-}
+.cursor-dot.hovering { width: 14px; height: 14px; background: rgba(0, 255, 106, 0.5); }
+.cursor-ring.hovering { width: 60px; height: 60px; border-color: rgba(0, 255, 106, 0.2); }
 
 /* ── Click ripple ── */
 .click-ripple {
   position: fixed;
   pointer-events: none;
   z-index: 99997;
-  width: 1px;
-  height: 1px;
+  width: 1px; height: 1px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 70%);
   animation: rippleExpand 0.6s cubic-bezier(0, 0.5, 0.5, 1) forwards;
-  will-change: transform, opacity;
 }
 
 @keyframes rippleExpand {
@@ -123,7 +116,7 @@ a, button, [role="button"] { cursor: none; }
   100% { transform: scale(120); opacity: 0; }
 }
 
-/* ── Grain overlay ── */
+/* ── Grain ── */
 .grain::before {
   content: '';
   position: fixed;
@@ -181,24 +174,15 @@ a, button, [role="button"] { cursor: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes scaleUp {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
-}
-
 /* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
 }
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal.visible { opacity: 1; transform: translateY(0); }
 
 .stagger-1 { transition-delay: 0.06s; }
 .stagger-2 { transition-delay: 0.12s; }
@@ -212,7 +196,6 @@ a, button, [role="button"] { cursor: none; }
   border: 1px solid var(--border);
   border-radius: 16px;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, box-shadow;
 }
 
 .card:hover {
@@ -224,14 +207,7 @@ a, button, [role="button"] { cursor: none; }
 
 .card-glow:hover {
   border-color: var(--border-accent);
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45),
-              0 0 50px var(--accent-glow-subtle);
-}
-
-/* ── Magnetic hover for interactive elements ── */
-.magnetic {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 50px var(--accent-glow-subtle);
 }
 
 /* ── Buttons ── */
@@ -247,12 +223,10 @@ a, button, [role="button"] { cursor: none; }
   letter-spacing: 0.02em;
   border-radius: 100px;
   border: none;
-  cursor: none;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  will-change: transform, box-shadow;
 }
 
 .btn-primary::after {
@@ -264,19 +238,13 @@ a, button, [role="button"] { cursor: none; }
   transition: transform 0.5s ease;
 }
 
-.btn-primary:hover::after {
-  transform: translateX(100%);
-}
-
+.btn-primary:hover::after { transform: translateX(100%); }
 .btn-primary:hover {
   background: #00e65f;
   box-shadow: 0 0 40px var(--accent-glow), 0 0 100px var(--accent-glow-subtle);
   transform: translateY(-2px);
 }
-
-.btn-primary:active {
-  transform: translateY(0) scale(0.97);
-}
+.btn-primary:active { transform: translateY(0) scale(0.97); }
 
 .btn-secondary {
   display: inline-flex;
@@ -290,10 +258,8 @@ a, button, [role="button"] { cursor: none; }
   letter-spacing: 0.02em;
   border-radius: 100px;
   border: 1px solid var(--border-hover);
-  cursor: none;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
-  will-change: transform, box-shadow;
 }
 
 .btn-secondary:hover {
@@ -302,12 +268,9 @@ a, button, [role="button"] { cursor: none; }
   box-shadow: 0 0 30px var(--accent-glow-subtle);
   transform: translateY(-2px);
 }
+.btn-secondary:active { transform: translateY(0) scale(0.97); }
 
-.btn-secondary:active {
-  transform: translateY(0) scale(0.97);
-}
-
-/* ── Tag pill ── */
+/* ── Tag ── */
 .tag {
   padding: 4px 12px;
   font-size: 11px;
@@ -328,8 +291,7 @@ a, button, [role="button"] { cursor: none; }
 
 /* ── Accent dot ── */
 .accent-dot {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 10px var(--accent-glow-strong);
@@ -344,57 +306,46 @@ a, button, [role="button"] { cursor: none; }
   background-clip: text;
 }
 
-/* ── Glow line (decorative) ── */
-.glow-line {
-  position: relative;
-  overflow: hidden;
-}
-
+/* ── Glow line ── */
+.glow-line { position: relative; overflow: hidden; }
 .glow-line::after {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
   animation: lineSweep 4s ease-in-out infinite;
-  will-change: transform;
 }
 
-/* ── Hover tilt for cards (JS-driven via style) ── */
-.tilt-card {
-  transform-style: preserve-3d;
-  perspective: 1000px;
+/* ── Tilt card ── */
+.tilt-card { transform-style: preserve-3d; perspective: 1000px; }
+
+/* ── Prefers reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .click-ripple { display: none; }
 }
 
 /* ── Mobile: disable custom cursor ── */
 @media (pointer: coarse) {
-  body, a, button, [role="button"] { cursor: auto; }
+  body, a, button, [role="button"] { cursor: auto !important; }
   .cursor-dot, .cursor-ring { display: none; }
 }
 
-/* ── Mobile optimizations ── */
+/* ── Mobile ── */
 @media (max-width: 768px) {
   html { scrollbar-width: none; }
   ::-webkit-scrollbar { display: none; }
-
-  .btn-primary, .btn-secondary {
-    padding: 12px 24px;
-    font-size: 13px;
-  }
-
+  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 13px; }
   .card { border-radius: 12px; }
-
-  .tilt-card {
-    transform: none !important;
-  }
+  .tilt-card { transform: none !important; }
 }
 
-/* ── Small phones ── */
 @media (max-width: 380px) {
-  .btn-primary, .btn-secondary {
-    padding: 10px 20px;
-    font-size: 12px;
-  }
+  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 12px; }
 }
