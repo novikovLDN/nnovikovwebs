@@ -34,7 +34,6 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-muted) var(--bg-elevated);
 }
@@ -375,8 +374,27 @@ a, button, [role="button"] { cursor: none; }
   .cursor-dot, .cursor-ring { display: none; }
 }
 
-/* ── Smooth scrollbar hide for mobile ── */
+/* ── Mobile optimizations ── */
 @media (max-width: 768px) {
   html { scrollbar-width: none; }
   ::-webkit-scrollbar { display: none; }
+
+  .btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    font-size: 13px;
+  }
+
+  .card { border-radius: 12px; }
+
+  .tilt-card {
+    transform: none !important;
+  }
+}
+
+/* ── Small phones ── */
+@media (max-width: 380px) {
+  .btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    font-size: 12px;
+  }
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Nikita Novikov — DevOps Engineer",
+  title: "Максим Новиков — DevOps Engineer",
   description: "DevOps инженер. Инфраструктура, автоматизация, облачные решения.",
 };
 
