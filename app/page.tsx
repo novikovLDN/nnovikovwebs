@@ -390,6 +390,19 @@ const HERO_SOCIALS = [
   { label: "LinkedIn", short: "LI", href: "https://linkedin.com/in/username" },
 ] as const;
 
+const TESTIMONIALS = [
+  { text: "Максим перестроил наш CI/CD пайплайн с нуля — время деплоя упало в 5 раз, а количество инцидентов снизилось на 60%. Лучший DevOps-инженер, с которым мы работали.", author: "Алексей К.", role: "CTO, Cloud Solutions" },
+  { text: "Благодаря миграции в облако, которую провёл Максим, мы сократили расходы на инфраструктуру на 40% и получили автоскейлинг, о котором раньше только мечтали.", author: "Дмитрий В.", role: "VP of Engineering, Tech Corp" },
+  { text: "Профессионализм и глубина знаний. Максим не просто настраивает инструменты — он проектирует системы, которые работают годами без вмешательства.", author: "Мария С.", role: "Lead Developer, StartupXYZ" },
+] as const;
+
+const CERTIFICATIONS = [
+  { name: "AWS Solutions Architect", issuer: "Amazon Web Services", year: "2023" },
+  { name: "Certified Kubernetes Administrator", issuer: "CNCF", year: "2022" },
+  { name: "Terraform Associate", issuer: "HashiCorp", year: "2023" },
+  { name: "Docker Certified Associate", issuer: "Docker", year: "2021" },
+] as const;
+
 /* ═══════════════════════════════════════════════════
    COMPONENTS
    ═══════════════════════════════════════════════════ */
@@ -727,6 +740,41 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </Section>
+
+      {/* ═══ TESTIMONIALS ═══ */}
+      <Section id="testimonials">
+        <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
+        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+          {TESTIMONIALS.map((t, i) => (
+            <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
+              <div className="card card-glow p-5 sm:p-7 h-full flex flex-col">
+                <div className="text-[var(--accent)] text-3xl sm:text-4xl font-display leading-none mb-4">&ldquo;</div>
+                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed flex-1">{t.text}</p>
+                <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-[var(--border)]">
+                  <div className="text-sm font-semibold text-[var(--text-primary)]">{t.author}</div>
+                  <div className="text-[11px] text-[var(--text-muted)] mt-0.5">{t.role}</div>
+                </div>
+              </div>
+            </TiltCard>
+          ))}
+        </div>
+      </Section>
+
+      {/* ═══ CERTIFICATIONS ═══ */}
+      <Section id="certifications">
+        <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+          {CERTIFICATIONS.map((cert, i) => (
+            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow p-4 sm:p-6 text-center`}>
+              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
+                <span className="text-[var(--accent)] text-base sm:text-lg font-bold font-display">{cert.issuer.charAt(0)}</span>
+              </div>
+              <h3 className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-1">{cert.name}</h3>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)]">{cert.issuer} &middot; {cert.year}</p>
+            </div>
+          ))}
         </div>
       </Section>
 
