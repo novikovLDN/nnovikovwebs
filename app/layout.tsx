@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "DevOps Engineer — Портфолио",
-  description: "Портфолио DevOps инженера. Инфраструктура, автоматизация, CI/CD.",
+  title: "Nikita Novikov — DevOps Engineer",
+  description: "DevOps инженер. Инфраструктура, автоматизация, облачные решения.",
 };
 
 export default function RootLayout({
