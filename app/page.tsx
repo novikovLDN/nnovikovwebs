@@ -436,7 +436,7 @@ function Nav() {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`} role="navigation" aria-label="Main navigation">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-4 flex items-center justify-between">
         <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
           <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
         </a>
@@ -448,7 +448,7 @@ function Nav() {
               {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
             </a>
           ))}
-          <a href="#contact" className="ml-3 btn-primary !py-2.5 !px-6 !text-[12px]">Обсудить проект</a>
+          <a href="#contact" className="ml-3 btn-primary !py-2.5 !px-6 !text-[12px] !w-auto !rounded-full">Обсудить проект</a>
         </div>
 
         <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden text-[var(--text-primary)] w-10 h-10 flex flex-col items-center justify-center gap-1.5" aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"} aria-expanded={mobileOpen}>
@@ -457,17 +457,24 @@ function Nav() {
         </button>
       </div>
 
-      <div className={`lg:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] px-5 sm:px-6 py-4 space-y-1">
+      <div className={`lg:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
+        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] px-6 sm:px-8 py-6 space-y-1">
           {NAV.map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={`block py-3.5 text-sm transition-colors border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}>
+            <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={`block py-4 text-base transition-colors border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}>
               {item.label}
             </a>
           ))}
+          <div className="pt-4">
+            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary">Обсудить проект</a>
+          </div>
         </div>
       </div>
     </nav>
   );
+}
+
+function MobileDivider() {
+  return <div className="mobile-divider hidden max-[768px]:block" aria-hidden="true" />;
 }
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
@@ -496,7 +503,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-20 sm:py-28 md:py-32 ${className}`}>
+    <section id={id} ref={ref} style={{ padding: "clamp(64px, 10vw, 128px) clamp(24px, 5vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
       {children}
     </section>
   );
@@ -504,15 +511,15 @@ function Section({ id, children, className = "" }: { id: string; children: React
 
 function SectionHeader({ label, title, secondary }: { label: string; title: string; secondary: string }) {
   return (
-    <>
+    <div className="mb-10 sm:mb-14">
       <div className="reveal flex items-center gap-3 mb-5">
         <div className="accent-dot" />
         <span className="text-[12px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">{label}</span>
       </div>
-      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight mb-10 sm:mb-14">
+      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight">
         {title}<br /><span className="text-[var(--text-secondary)]">{secondary}</span>
       </h2>
-    </>
+    </div>
   );
 }
 
@@ -534,32 +541,32 @@ export default function Home() {
       <Nav />
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center px-6 sm:px-8 lg:px-10 pt-28 pb-32">
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 12vw, 128px) clamp(24px, 5vw, 40px) clamp(80px, 12vw, 128px)" }}>
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
-            <div className="reveal flex items-center gap-3 mb-8 sm:mb-8">
+            <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
-              <span className="text-[11px] sm:text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">DevOps Engineer</span>
+              <span className="text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">DevOps Engineer</span>
             </div>
 
-            <h1 className="reveal font-display text-[clamp(2.5rem,8vw,6rem)] font-bold tracking-tight leading-[0.95]">
+            <h1 className="reveal font-display font-bold tracking-tight leading-[0.95]" style={{ fontSize: "clamp(2.5rem, 10vw, 6rem)" }}>
               <span className="text-[var(--text-primary)]">Максим</span><br />
               <span className="gradient-text">Новиков</span>
             </h1>
 
-            <div className="reveal mt-8 sm:mt-8 text-base sm:text-lg md:text-xl text-[var(--text-secondary)] max-w-xl min-h-[2em] sm:min-h-[1.7em]">
+            <div className="reveal text-[var(--text-secondary)] max-w-xl" style={{ marginTop: "clamp(24px, 4vw, 32px)", fontSize: "clamp(1rem, 2.5vw, 1.25rem)", minHeight: "2.5em" }}>
               <span>{typed}</span>
               <span className="inline-block w-[2px] h-[1.1em] bg-[var(--accent)] ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
             </div>
 
-            <div className="reveal mt-10 sm:mt-10 flex flex-wrap gap-4 sm:gap-4">
+            <div className="reveal flex flex-col sm:flex-row gap-4" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
               <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
               <a href="#projects" className="btn-secondary">Смотреть проекты</a>
             </div>
 
-            <div className="reveal mt-12 sm:mt-12 flex items-center gap-5 sm:gap-6">
+            <div className="reveal flex items-center gap-5 sm:gap-6" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
               {HERO_SOCIALS.map((s) => (
-                <a key={s.short} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
+                <a key={s.short} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[12px] tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
                   {s.short}
                 </a>
               ))}
@@ -603,38 +610,40 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-10 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-6 gap-y-8 sm:gap-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(32px, 5vw, 48px) clamp(24px, 5vw, 40px)", gap: "clamp(24px, 4vw, 32px)" }}>
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
-              <div className="font-display text-3xl sm:text-3xl md:text-4xl font-bold text-[var(--accent)] group-hover:scale-110 transition-transform duration-300">{s.value}</div>
-              <div className="text-[11px] sm:text-[12px] text-[var(--text-muted)] mt-2 sm:mt-2 tracking-wider uppercase">{s.label}</div>
+              <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{s.value}</div>
+              <div className="text-[12px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">{s.label}</div>
             </div>
           ))}
         </div>
       </div>
 
+      <MobileDivider />
+
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
           <div>
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg text-base sm:text-lg">
+            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
             </p>
-            <p className="reveal mt-6 sm:mt-5 text-[var(--text-secondary)] leading-relaxed max-w-lg text-sm sm:text-base">
+            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(0.875rem, 1.8vw, 1rem)" }}>
               Превращаю сложные инфраструктурные задачи в элегантные автоматизированные решения. GitOps, immutable infrastructure, culture of reliability — не просто модные слова, а ежедневная практика, которая помогает командам двигаться быстрее и спать спокойнее.
             </p>
-            <div className="reveal mt-8 sm:mt-8 h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" />
+            <div className="reveal h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" style={{ marginTop: "clamp(24px, 4vw, 32px)" }} />
           </div>
-          <div className="grid gap-5 sm:gap-4">
+          <div className="grid" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
             {VALUES.map((item, i) => (
               <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
-                <div className="card card-glow p-6 sm:p-6">
-                  <div className="flex items-center gap-3 mb-3 sm:mb-3">
+                <div className="card card-glow" style={{ padding: "clamp(20px, 4vw, 24px)" }}>
+                  <div className="flex items-center gap-3 mb-3">
                     <div className="accent-dot" />
-                    <h3 className="font-semibold text-[var(--text-primary)] text-sm sm:text-base">{item.title}</h3>
+                    <h3 className="font-semibold text-[var(--text-primary)] text-base">{item.title}</h3>
                   </div>
-                  <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
                 </div>
               </TiltCard>
             ))}
@@ -642,49 +651,55 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
-              <div className="card card-glow p-6 sm:p-7 h-full">
-                <div className="text-3xl sm:text-3xl mb-5">{s.icon}</div>
-                <h3 className="font-display text-lg sm:text-lg font-semibold text-[var(--text-primary)] mb-3 sm:mb-3">{s.title}</h3>
-                <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
+              <div className="card card-glow h-full" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
+                <div className="text-3xl mb-5">{s.icon}</div>
+                <h3 className="font-display text-lg font-semibold text-[var(--text-primary)] mb-3">{s.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
             </TiltCard>
           ))}
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8 sm:py-16">
-        <div className="card p-8 sm:p-12 lg:p-16 text-center border-[var(--border-accent)]" style={{ background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
-          <h3 className="font-display text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-5">
+      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(24px, 4vw, 64px) clamp(24px, 5vw, 40px)" }}>
+        <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(32px, 6vw, 64px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
+          <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
           </h3>
-          <p className="text-[var(--text-secondary)] text-sm sm:text-base max-w-xl mx-auto mb-8">
+          <p className="text-[var(--text-secondary)] max-w-xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1rem)", marginBottom: "clamp(24px, 4vw, 32px)" }}>
             Расскажите о вашем проекте — предложу оптимальное решение по архитектуре, стеку и автоматизации. Первая консультация бесплатна.
           </p>
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-4">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
             <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
             <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer" className="btn-secondary">Написать в Telegram</a>
           </div>
         </div>
       </div>
 
+      <MobileDivider />
+
       {/* ═══ SKILLS ═══ */}
       <Section id="skills">
         <SectionHeader label="Навыки" title="Технологии и" secondary="инструменты" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: "clamp(24px, 4vw, 32px)" }}>
           {SKILLS.map((cat, i) => (
             <div key={cat.title} className={`reveal stagger-${i + 1}`}>
-              <h3 className="text-[12px] sm:text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4 sm:mb-5">{cat.title}</h3>
-              <div className="space-y-2.5">
+              <h3 className="text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)]" style={{ marginBottom: "clamp(12px, 2vw, 20px)" }}>{cat.title}</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 10px)" }}>
                 {cat.items.map((skill) => (
-                  <div key={skill} className="group flex items-center gap-3 py-3 px-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border-accent)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 cursor-default">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] scale-0 group-hover:scale-100 transition-transform duration-300" />
+                  <div key={skill} className="group flex items-center gap-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border-accent)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 cursor-default" style={{ padding: "clamp(10px, 2vw, 12px) clamp(12px, 2vw, 16px)" }}>
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0 scale-0 group-hover:scale-100 transition-transform duration-300" />
                     <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">{skill}</span>
                   </div>
                 ))}
@@ -694,19 +709,21 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid sm:grid-cols-2 gap-6 sm:gap-6">
+        <div className="grid sm:grid-cols-2" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
-              <div className={`card card-glow p-7 sm:p-8 group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`}>
-                <div className="flex items-start justify-between mb-5 sm:mb-6">
-                  <span className="font-display text-4xl sm:text-5xl font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500">{p.num}</span>
+              <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(24px, 4vw, 32px)" }}>
+                <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
+                  <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
                   <ArrowUpRightIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                 </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-[var(--text-primary)] mb-3 sm:mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
-                <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed mb-5 sm:mb-6">{p.desc}</p>
+                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
                 <div className="flex flex-wrap gap-2">
                   {p.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
                 </div>
@@ -716,24 +733,26 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ EXPERIENCE ═══ */}
       <Section id="experience">
         <SectionHeader label="Опыт" title="Карьерный" secondary="путь" />
         <div className="relative">
           <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-[var(--accent-muted)] via-[var(--border)] to-transparent hidden md:block" aria-hidden="true" />
-          <div className="space-y-6 sm:space-y-8">
+          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, 3vw, 32px)" }}>
             {EXPERIENCE.map((exp, i) => (
               <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
                 <TiltCard>
-                  <div className="card p-6 sm:p-8">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 sm:gap-4">
+                  <div className="card" style={{ padding: "clamp(20px, 4vw, 32px)" }}>
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="font-display text-xl sm:text-xl font-semibold text-[var(--text-primary)]">{exp.role}</h3>
-                        <p className="text-sm text-[var(--accent)] mt-1.5 mb-3 sm:mb-3">{exp.company}</p>
+                        <h3 className="font-display text-lg font-semibold text-[var(--text-primary)]">{exp.role}</h3>
+                        <p className="text-sm text-[var(--accent)] mt-1.5 mb-3">{exp.company}</p>
                         <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{exp.desc}</p>
                       </div>
-                      <span className="text-[11px] sm:text-[12px] tracking-wider text-[var(--text-muted)] uppercase whitespace-nowrap font-medium md:mt-1 shrink-0">{exp.period}</span>
+                      <span className="text-[12px] tracking-wider text-[var(--text-muted)] uppercase whitespace-nowrap font-medium md:mt-1 shrink-0">{exp.period}</span>
                     </div>
                   </div>
                 </TiltCard>
@@ -743,16 +762,18 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimonials">
         <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-3 gap-6 sm:gap-6">
+        <div className="grid md:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
           {TESTIMONIALS.map((t, i) => (
             <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
-              <div className="card card-glow p-7 sm:p-7 h-full flex flex-col">
-                <div className="text-[var(--accent)] text-4xl font-display leading-none mb-5">&ldquo;</div>
+              <div className="card card-glow h-full flex flex-col" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
+                <div className="text-[var(--accent)] text-3xl font-display leading-none mb-4">&ldquo;</div>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">{t.text}</p>
-                <div className="mt-6 pt-5 border-t border-[var(--border)]">
+                <div className="pt-4 border-t border-[var(--border)]" style={{ marginTop: "clamp(16px, 3vw, 24px)" }}>
                   <div className="text-sm font-semibold text-[var(--text-primary)]">{t.author}</div>
                   <div className="text-[11px] text-[var(--text-muted)] mt-1">{t.role}</div>
                 </div>
@@ -762,12 +783,14 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ CERTIFICATIONS ═══ */}
       <Section id="certifications">
         <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 sm:gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
           {CERTIFICATIONS.map((cert, i) => (
-            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow p-6 sm:p-6 text-center`}>
+            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow text-center`} style={{ padding: "clamp(20px, 4vw, 24px)" }}>
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
                 <span className="text-[var(--accent)] text-lg font-bold font-display">{cert.issuer.charAt(0)}</span>
               </div>
@@ -778,28 +801,30 @@ export default function Home() {
         </div>
       </Section>
 
+      <MobileDivider />
+
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md text-base sm:text-lg">
+            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
               Открыт к интересным предложениям и проектам. Расскажите о задаче — обсудим, как я могу помочь.
             </p>
-            <div className="reveal mt-8 flex items-center gap-3 text-[var(--text-muted)] text-sm">
+            <div className="reveal flex items-center gap-3 text-[var(--text-muted)] text-sm" style={{ marginTop: "clamp(20px, 3vw, 32px)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
               Обычно отвечаю в течение 24 часов
             </div>
           </div>
-          <div className="reveal space-y-4 sm:space-y-4">
+          <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 16px)" }}>
             {CONTACTS.map((link) => (
               <TiltCard key={link.label}>
-                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow p-5 sm:p-5 flex items-center justify-between group">
+                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)" }}>
                   <div>
                     <div className="text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1.5">{link.label}</div>
                     <div className="text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">{link.value}</div>
                   </div>
-                  <ArrowIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300" />
+                  <ArrowIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
                 </a>
               </TiltCard>
             ))}
@@ -810,8 +835,8 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-12 sm:py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-10 mb-10 sm:mb-10">
+        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(40px, 6vw, 48px) clamp(24px, 5vw, 40px)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: "clamp(32px, 5vw, 40px)", marginBottom: "clamp(32px, 5vw, 40px)" }}>
             <div>
               <span className="font-display text-2xl font-bold">
                 <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
@@ -821,24 +846,24 @@ export default function Home() {
               </p>
             </div>
             <div>
-              <h4 className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4">Навигация</h4>
-              <div className="space-y-2.5">
+              <h4 className="text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4">Навигация</h4>
+              <div className="space-y-3">
                 {NAV.map((item) => (
-                  <a key={item.href} href={item.href} className="block text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{item.label}</a>
+                  <a key={item.href} href={item.href} className="block text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{item.label}</a>
                 ))}
               </div>
             </div>
             <div>
-              <h4 className="text-[11px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4">Контакты</h4>
-              <div className="space-y-2.5">
+              <h4 className="text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4">Контакты</h4>
+              <div className="space-y-3">
                 {CONTACTS.slice(0, 3).map((c) => (
-                  <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} className="block text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{c.value}</a>
+                  <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} className="block text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{c.value}</a>
                 ))}
               </div>
             </div>
           </div>
-          <div className="h-[1px] bg-[var(--border)] mb-6 sm:mb-8" />
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-[12px] text-[var(--text-muted)]">
+          <div className="h-[1px] bg-[var(--border)]" style={{ marginBottom: "clamp(20px, 3vw, 32px)" }} />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-[var(--text-muted)]">
             <p><span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Максим Новиков</p>
             <p className="flex items-center gap-2">
               <span className="w-1 h-1 rounded-full bg-[var(--accent)]" />

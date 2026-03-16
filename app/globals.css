@@ -337,27 +337,78 @@ body.custom-cursor-active [role="button"] {
   .cursor-dot, .cursor-ring { display: none; }
 }
 
-/* ── Mobile ── */
+/* ═══════════════════════════════════════════════════
+   MOBILE RESPONSIVE — max-width: 768px
+   ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   html { scrollbar-width: none; }
   ::-webkit-scrollbar { display: none; }
 
-  body { line-height: 1.75; }
+  body {
+    line-height: 1.8 !important;
+    font-size: 15px !important;
+  }
 
-  .btn-primary, .btn-secondary {
-    padding: 14px 28px;
-    font-size: 14px;
-    width: 100%;
-    justify-content: center;
+  /* ── Disable hover effects on touch ── */
+  .card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .tilt-card {
+    transform: none !important;
+    transform-style: flat !important;
+    perspective: none !important;
   }
 
   .card {
     border-radius: 14px;
   }
 
-  .tilt-card { transform: none !important; }
+  /* ── Buttons: full width, larger touch targets ── */
+  .btn-primary, .btn-secondary {
+    padding: 16px 28px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    border-radius: 14px !important;
+  }
+
+  /* ── Tags: bigger for readability ── */
+  .tag {
+    padding: 6px 14px !important;
+    font-size: 11px !important;
+  }
+
+  /* ── Section dividers on mobile ── */
+  .mobile-divider {
+    display: block !important;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+    margin: 0 24px;
+  }
 }
 
+/* ═══════════════════════════════════════════════════
+   SMALL MOBILE — max-width: 480px
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 14px 24px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   TINY MOBILE — max-width: 380px
+   ═══════════════════════════════════════════════════ */
 @media (max-width: 380px) {
-  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 13px; }
+  .btn-primary, .btn-secondary {
+    padding: 12px 20px !important;
+    font-size: 13px !important;
+  }
 }
