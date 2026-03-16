@@ -409,12 +409,24 @@ const CERTIFICATIONS = [
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("");
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const y = window.scrollY;
+      setScrolled(y > 50);
+
+      // Hide on scroll down, show on scroll up
+      if (y > 100) {
+        setHidden(y > lastScrollY.current && y - lastScrollY.current > 5);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+
       const sections = NAV.map((n) => n.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -435,8 +447,13 @@ function Nav() {
   }, [mobileOpen]);
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`} role="navigation" aria-label="Main navigation">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-4 flex items-center justify-between">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`}
+      style={{ transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)" }}
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="max-w-7xl mx-auto py-4 flex items-center justify-between" style={{ padding: "16px clamp(24px, 6vw, 40px)" }}>
         <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
           <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
         </a>
@@ -458,7 +475,7 @@ function Nav() {
       </div>
 
       <div className={`lg:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] px-6 sm:px-8 py-6 space-y-1">
+        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] py-6 space-y-1" style={{ padding: "24px clamp(24px, 6vw, 40px)" }}>
           {NAV.map((item) => (
             <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={`block py-4 text-base transition-colors border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}>
               {item.label}
@@ -503,7 +520,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} style={{ padding: "clamp(64px, 10vw, 128px) clamp(24px, 5vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
+    <section id={id} ref={ref} style={{ padding: "clamp(72px, 12vw, 128px) clamp(28px, 7vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
       {children}
     </section>
   );
@@ -541,7 +558,7 @@ export default function Home() {
       <Nav />
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 12vw, 128px) clamp(24px, 5vw, 40px) clamp(80px, 12vw, 128px)" }}>
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(100px, 14vw, 128px) clamp(28px, 7vw, 40px) clamp(100px, 14vw, 128px)" }}>
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
             <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
@@ -610,7 +627,7 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(32px, 5vw, 48px) clamp(24px, 5vw, 40px)", gap: "clamp(24px, 4vw, 32px)" }}>
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(36px, 6vw, 48px) clamp(28px, 7vw, 40px)", gap: "clamp(24px, 4vw, 32px)" }}>
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
               <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{s.value}</div>
@@ -625,7 +642,7 @@ export default function Home() {
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
           <div>
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
@@ -635,7 +652,7 @@ export default function Home() {
             </p>
             <div className="reveal h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" style={{ marginTop: "clamp(24px, 4vw, 32px)" }} />
           </div>
-          <div className="grid" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
+          <div className="grid" style={{ gap: "clamp(20px, 3vw, 20px)" }}>
             {VALUES.map((item, i) => (
               <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
                 <div className="card card-glow" style={{ padding: "clamp(20px, 4vw, 24px)" }}>
@@ -656,7 +673,7 @@ export default function Home() {
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
@@ -672,7 +689,7 @@ export default function Home() {
       <MobileDivider />
 
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(24px, 4vw, 64px) clamp(24px, 5vw, 40px)" }}>
+      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(24px, 4vw, 64px) clamp(28px, 7vw, 40px)" }}>
         <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(32px, 6vw, 64px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
           <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
@@ -714,7 +731,7 @@ export default function Home() {
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid sm:grid-cols-2" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid sm:grid-cols-2" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
               <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(24px, 4vw, 32px)" }}>
@@ -740,7 +757,7 @@ export default function Home() {
         <SectionHeader label="Опыт" title="Карьерный" secondary="путь" />
         <div className="relative">
           <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-[var(--accent-muted)] via-[var(--border)] to-transparent hidden md:block" aria-hidden="true" />
-          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, 3vw, 32px)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px, 4vw, 32px)" }}>
             {EXPERIENCE.map((exp, i) => (
               <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
@@ -767,7 +784,7 @@ export default function Home() {
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimonials">
         <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid md:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {TESTIMONIALS.map((t, i) => (
             <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
               <div className="card card-glow h-full flex flex-col" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
@@ -788,7 +805,7 @@ export default function Home() {
       {/* ═══ CERTIFICATIONS ═══ */}
       <Section id="certifications">
         <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
+        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(20px, 3vw, 20px)" }}>
           {CERTIFICATIONS.map((cert, i) => (
             <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow text-center`} style={{ padding: "clamp(20px, 4vw, 24px)" }}>
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
@@ -805,7 +822,7 @@ export default function Home() {
 
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
@@ -816,7 +833,7 @@ export default function Home() {
               Обычно отвечаю в течение 24 часов
             </div>
           </div>
-          <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 16px)" }}>
+          <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(16px, 3vw, 16px)" }}>
             {CONTACTS.map((link) => (
               <TiltCard key={link.label}>
                 <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)" }}>
@@ -835,7 +852,7 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(40px, 6vw, 48px) clamp(24px, 5vw, 40px)" }}>
+        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(40px, 6vw, 48px) clamp(28px, 7vw, 40px)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: "clamp(32px, 5vw, 40px)", marginBottom: "clamp(32px, 5vw, 40px)" }}>
             <div>
               <span className="font-display text-2xl font-bold">

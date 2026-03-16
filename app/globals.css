@@ -385,7 +385,7 @@ body.custom-cursor-active [role="button"] {
     display: block !important;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
-    margin: 0 24px;
+    margin: 0 28px;
   }
 }
 
