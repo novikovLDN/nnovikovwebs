@@ -341,21 +341,23 @@ body.custom-cursor-active [role="button"] {
 @media (max-width: 768px) {
   html { scrollbar-width: none; }
   ::-webkit-scrollbar { display: none; }
-  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 13px; }
-  .card { border-radius: 12px; }
-  .tilt-card { transform: none !important; }
 
-  section + section,
-  section + div,
-  div + section {
-    margin-top: 8px;
+  body { line-height: 1.75; }
+
+  .btn-primary, .btn-secondary {
+    padding: 14px 28px;
+    font-size: 14px;
+    width: 100%;
+    justify-content: center;
   }
-}
 
-@media (max-width: 480px) {
-  body { line-height: 1.6; }
+  .card {
+    border-radius: 14px;
+  }
+
+  .tilt-card { transform: none !important; }
 }
 
 @media (max-width: 380px) {
-  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 12px; }
+  .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 13px; }
 }
