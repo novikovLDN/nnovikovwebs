@@ -192,21 +192,81 @@ function CustomCursor() {
    ═══════════════════════════════════════════════════ */
 
 function ClickRipples() {
-  const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
-  const idRef = useRef(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const onClick = (e: MouseEvent) => {
-      const id = ++idRef.current;
-      setRipples((prev) => [...prev, { id, x: e.clientX, y: e.clientY }]);
-      setTimeout(() => setRipples((prev) => prev.filter((r) => r.id !== id)), 650);
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    let w = 0, h = 0;
+    const ripples: { x: number; y: number; start: number; duration: number }[] = [];
+    let running = true;
+    let rafId: number;
+
+    const resize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const onClick = (e: MouseEvent | TouchEvent) => {
+      const x = "touches" in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const y = "touches" in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      ripples.push({ x, y, start: performance.now(), duration: 700 });
+    };
+
+    const draw = (now: number) => {
+      if (!running) return;
+      ctx.clearRect(0, 0, w, h);
+
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const r = ripples[i];
+        const t = (now - r.start) / r.duration;
+        if (t >= 1) { ripples.splice(i, 1); continue; }
+
+        const eased = 1 - Math.pow(1 - t, 3);
+        const radius = eased * 120;
+        const alpha = (1 - eased) * 0.45;
+
+        const gradient = ctx.createRadialGradient(r.x, r.y, 0, r.x, r.y, radius);
+        gradient.addColorStop(0, `rgba(0, 255, 106, ${alpha})`);
+        gradient.addColorStop(0.4, `rgba(0, 255, 106, ${alpha * 0.5})`);
+        gradient.addColorStop(1, `rgba(0, 255, 106, 0)`);
+
+        ctx.beginPath();
+        ctx.arc(r.x, r.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+
+      rafId = requestAnimationFrame(draw);
+    };
+
     document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("touchstart", onClick, { passive: true });
+    rafId = requestAnimationFrame(draw);
+
+    return () => {
+      running = false;
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("mousedown", onClick);
+      document.removeEventListener("touchstart", onClick);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
-  return <>{ripples.map((r) => <div key={r.id} className="click-ripple" style={{ left: r.x, top: r.y }} />)}</>;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[99997]" aria-hidden="true" />;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -413,16 +473,32 @@ function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("");
   const lastScrollY = useRef(0);
+  const showTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 50);
 
-      // Hide on scroll down, show on scroll up
       if (y > 100) {
-        setHidden(y > lastScrollY.current && y - lastScrollY.current > 5);
+        const scrollingDown = y > lastScrollY.current && y - lastScrollY.current > 5;
+        const scrollingUp = y < lastScrollY.current && lastScrollY.current - y > 5;
+
+        if (scrollingDown) {
+          // Hide immediately on scroll down
+          if (showTimer.current) { clearTimeout(showTimer.current); showTimer.current = null; }
+          setHidden(true);
+        } else if (scrollingUp) {
+          // Show after 60ms delay on scroll up
+          if (!showTimer.current) {
+            showTimer.current = setTimeout(() => {
+              setHidden(false);
+              showTimer.current = null;
+            }, 60);
+          }
+        }
       } else {
+        if (showTimer.current) { clearTimeout(showTimer.current); showTimer.current = null; }
         setHidden(false);
       }
       lastScrollY.current = y;
@@ -435,7 +511,10 @@ function Nav() {
       setActive("");
     };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (showTimer.current) clearTimeout(showTimer.current);
+    };
   }, []);
 
   // Close on Escape
@@ -448,10 +527,11 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 w-full z-50 ${scrolled ? "backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]" : ""}`}
       style={{
+        background: scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
         transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
-        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease, backdrop-filter 0.5s ease",
+        transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s ease, backdrop-filter 0.6s ease",
       }}
       role="navigation"
       aria-label="Main navigation"
@@ -477,14 +557,37 @@ function Nav() {
         </button>
       </div>
 
-      <div className={`lg:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] py-6 space-y-1" style={{ padding: "24px clamp(24px, 6vw, 40px)" }}>
-          {NAV.map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={`block py-4 text-base transition-colors border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}>
+      <div
+        className="lg:hidden overflow-hidden"
+        style={{
+          maxHeight: mobileOpen ? "600px" : "0",
+          opacity: mobileOpen ? 1 : 0,
+          transition: mobileOpen
+            ? "max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease"
+            : "max-height 0.4s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.3s ease",
+        }}
+      >
+        <div className="border-t border-[rgba(255,255,255,0.06)] py-6 space-y-1" style={{ padding: "24px clamp(24px, 6vw, 40px)", background: "rgba(8, 8, 8, 0.6)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
+          {NAV.map((item, i) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block py-4 text-base border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}
+              style={{
+                transform: mobileOpen ? "translateY(0)" : "translateY(-8px)",
+                opacity: mobileOpen ? 1 : 0,
+                transition: `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.04}s, opacity 0.35s ease ${i * 0.04}s`,
+              }}
+            >
               {item.label}
             </a>
           ))}
-          <div className="pt-4">
+          <div className="pt-4" style={{
+            transform: mobileOpen ? "translateY(0)" : "translateY(-8px)",
+            opacity: mobileOpen ? 1 : 0,
+            transition: `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.04}s, opacity 0.35s ease ${NAV.length * 0.04}s`,
+          }}>
             <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary">Обсудить проект</a>
           </div>
         </div>
