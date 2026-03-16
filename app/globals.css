@@ -107,13 +107,13 @@ body.custom-cursor-active [role="button"] {
   z-index: 99997;
   width: 1px; height: 1px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 70%);
-  animation: rippleExpand 0.6s cubic-bezier(0, 0.5, 0.5, 1) forwards;
+  background: radial-gradient(circle, rgba(0, 255, 106, 0.5) 0%, transparent 70%);
+  animation: rippleExpand 0.7s cubic-bezier(0, 0.5, 0.5, 1) forwards;
 }
 
 @keyframes rippleExpand {
-  0% { transform: scale(0); opacity: 0.6; }
-  100% { transform: scale(120); opacity: 0; }
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(150); opacity: 0; }
 }
 
 /* ── Grain ── */

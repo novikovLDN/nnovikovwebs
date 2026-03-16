@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { ArrowRight, ArrowUpRight, Cloud, RefreshCw, Settings, BarChart3, FileCode, ShieldCheck, Github, Send, Linkedin, Mail, ChevronDown, Menu, X, Quote, Award } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -213,10 +214,10 @@ function ClickRipples() {
    ═══════════════════════════════════════════════════ */
 
 const ORBS = [
-  { size: "55vw", x: "-15%", y: "-25%", opacity: 0.035, anim: "orbFloat1 25s ease-in-out infinite", color: "var(--accent)" },
-  { size: "45vw", x: "60%", y: "20%", opacity: 0.025, anim: "orbFloat2 30s ease-in-out infinite", color: "#00ccff" },
-  { size: "40vw", x: "10%", y: "65%", opacity: 0.02, anim: "orbFloat3 22s ease-in-out infinite", color: "var(--accent)" },
-  { size: "30vw", x: "75%", y: "70%", opacity: 0.018, anim: "orbFloat1 28s ease-in-out infinite reverse", color: "#00ccff" },
+  { size: "55vw", x: "-15%", y: "-25%", opacity: 0.07, anim: "orbFloat1 25s ease-in-out infinite", color: "var(--accent)" },
+  { size: "45vw", x: "60%", y: "20%", opacity: 0.05, anim: "orbFloat2 30s ease-in-out infinite", color: "#00ccff" },
+  { size: "40vw", x: "10%", y: "65%", opacity: 0.04, anim: "orbFloat3 22s ease-in-out infinite", color: "var(--accent)" },
+  { size: "30vw", x: "75%", y: "70%", opacity: 0.035, anim: "orbFloat1 28s ease-in-out infinite reverse", color: "#00ccff" },
 ] as const;
 
 function AnimatedBackground() {
@@ -237,7 +238,7 @@ function AnimatedBackground() {
         />
       ))}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
           backgroundImage: "linear-gradient(var(--text-faint) 1px, transparent 1px), linear-gradient(90deg, var(--text-faint) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
@@ -303,24 +304,17 @@ function ParticleField() {
 }
 
 /* ═══════════════════════════════════════════════════
-   ICONS
+   SERVICE ICON MAP
    ═══════════════════════════════════════════════════ */
 
-function ArrowIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function ArrowUpRightIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
-      <path d="M7 17L17 7M17 7H7M17 7v10" />
-    </svg>
-  );
-}
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  cloud: <Cloud size={28} />,
+  cicd: <RefreshCw size={28} />,
+  k8s: <Settings size={28} />,
+  monitoring: <BarChart3 size={28} />,
+  iac: <FileCode size={28} />,
+  devsecops: <ShieldCheck size={28} />,
+};
 
 /* ═══════════════════════════════════════════════════
    DATA
@@ -336,12 +330,12 @@ const NAV = [
 ] as const;
 
 const SERVICES = [
-  { title: "Облачная инфраструктура", desc: "Проектирование и развёртывание отказоустойчивой инфраструктуры на AWS, GCP, Azure. Миграция on-premise в облако с нулевым downtime.", icon: "☁️" },
-  { title: "CI/CD Пайплайны", desc: "Построение автоматизированных конвейеров сборки, тестирования и деплоя. Canary-релизы, blue-green, автоматический откат.", icon: "🔄" },
-  { title: "Kubernetes и Контейнеризация", desc: "Настройка и управление кластерами K8s. Helm-чарты, операторы, service mesh, автоскейлинг.", icon: "⚙️" },
-  { title: "Мониторинг и Observability", desc: "Полный стек: метрики, логи, трейсы. Кастомные дашборды, алертинг, SLI/SLO, инцидент-менеджмент.", icon: "📊" },
-  { title: "Infrastructure as Code", desc: "Terraform, Ansible, Packer. Декларативное управление инфраструктурой с drift detection и policy enforcement.", icon: "📝" },
-  { title: "DevSecOps", desc: "Интеграция безопасности в CI/CD: SAST/DAST, сканирование образов, секрет-менеджмент через Vault.", icon: "🔒" },
+  { title: "Облачная инфраструктура", desc: "Проектирование и развёртывание отказоустойчивой инфраструктуры на AWS, GCP, Azure. Миграция on-premise в облако с нулевым downtime.", icon: "cloud" },
+  { title: "CI/CD Пайплайны", desc: "Построение автоматизированных конвейеров сборки, тестирования и деплоя. Canary-релизы, blue-green, автоматический откат.", icon: "cicd" },
+  { title: "Kubernetes и Контейнеризация", desc: "Настройка и управление кластерами K8s. Helm-чарты, операторы, service mesh, автоскейлинг.", icon: "k8s" },
+  { title: "Мониторинг и Observability", desc: "Полный стек: метрики, логи, трейсы. Кастомные дашборды, алертинг, SLI/SLO, инцидент-менеджмент.", icon: "monitoring" },
+  { title: "Infrastructure as Code", desc: "Terraform, Ansible, Packer. Декларативное управление инфраструктурой с drift detection и policy enforcement.", icon: "iac" },
+  { title: "DevSecOps", desc: "Интеграция безопасности в CI/CD: SAST/DAST, сканирование образов, секрет-менеджмент через Vault.", icon: "devsecops" },
 ] as const;
 
 const SKILLS = [
@@ -385,10 +379,16 @@ const CONTACTS = [
 ] as const;
 
 const HERO_SOCIALS = [
-  { label: "GitHub", short: "GH", href: "https://github.com/username" },
-  { label: "Telegram", short: "TG", href: "https://t.me/your_telegram" },
-  { label: "LinkedIn", short: "LI", href: "https://linkedin.com/in/username" },
+  { label: "GitHub", icon: "github", href: "https://github.com/username" },
+  { label: "Telegram", icon: "telegram", href: "https://t.me/your_telegram" },
+  { label: "LinkedIn", icon: "linkedin", href: "https://linkedin.com/in/username" },
 ] as const;
+
+const SOCIAL_ICONS: Record<string, React.ReactNode> = {
+  github: <Github size={18} />,
+  telegram: <Send size={18} />,
+  linkedin: <Linkedin size={18} />,
+};
 
 const TESTIMONIALS = [
   { text: "Максим перестроил наш CI/CD пайплайн с нуля — время деплоя упало в 5 раз, а количество инцидентов снизилось на 60%. Лучший DevOps-инженер, с которым мы работали.", author: "Алексей К.", role: "CTO, Cloud Solutions" },
@@ -448,8 +448,11 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`}
-      style={{ transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)" }}
+      className={`fixed top-0 left-0 w-full z-50 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`}
+      style={{
+        transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
+        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease, backdrop-filter 0.5s ease",
+      }}
       role="navigation"
       aria-label="Main navigation"
     >
@@ -556,6 +559,7 @@ export default function Home() {
       <AnimatedBackground />
       <ParticleField />
       <Nav />
+      <main>
 
       {/* ═══ HERO ═══ */}
       <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(100px, 14vw, 128px) clamp(28px, 7vw, 40px) clamp(100px, 14vw, 128px)" }}>
@@ -577,14 +581,14 @@ export default function Home() {
             </div>
 
             <div className="reveal flex flex-col sm:flex-row gap-4" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
-              <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
+              <a href="#contact" className="btn-primary">Обсудить проект <ArrowRight size={14} /></a>
               <a href="#projects" className="btn-secondary">Смотреть проекты</a>
             </div>
 
             <div className="reveal flex items-center gap-5 sm:gap-6" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
               {HERO_SOCIALS.map((s) => (
-                <a key={s.short} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[12px] tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
-                  {s.short}
+                <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
+                  {SOCIAL_ICONS[s.icon]}
                 </a>
               ))}
               <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--border)] to-transparent" />
@@ -677,7 +681,7 @@ export default function Home() {
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
-                <div className="text-3xl mb-5">{s.icon}</div>
+                <div className="text-[var(--accent)] mb-5">{SERVICE_ICONS[s.icon]}</div>
                 <h3 className="font-display text-lg font-semibold text-[var(--text-primary)] mb-3">{s.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
@@ -698,7 +702,7 @@ export default function Home() {
             Расскажите о вашем проекте — предложу оптимальное решение по архитектуре, стеку и автоматизации. Первая консультация бесплатна.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
+            <a href="#contact" className="btn-primary">Обсудить проект <ArrowRight size={14} /></a>
             <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer" className="btn-secondary">Написать в Telegram</a>
           </div>
         </div>
@@ -737,7 +741,7 @@ export default function Home() {
               <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(24px, 4vw, 32px)" }}>
                 <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
                   <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
-                  <ArrowUpRightIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                  <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                 </div>
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
@@ -841,13 +845,15 @@ export default function Home() {
                     <div className="text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1.5">{link.label}</div>
                     <div className="text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">{link.value}</div>
                   </div>
-                  <ArrowIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
+                  <ArrowRight size={18} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
                 </a>
               </TiltCard>
             ))}
           </div>
         </div>
       </Section>
+
+      </main>
 
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
