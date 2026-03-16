@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { ArrowRight, ArrowUpRight, Cloud, RefreshCw, Settings, BarChart3, FileCode, ShieldCheck, Github, Send, Linkedin, Mail, ChevronDown, Menu, X, Quote, Award } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -213,10 +214,10 @@ function ClickRipples() {
    ═══════════════════════════════════════════════════ */
 
 const ORBS = [
-  { size: "55vw", x: "-15%", y: "-25%", opacity: 0.035, anim: "orbFloat1 25s ease-in-out infinite", color: "var(--accent)" },
-  { size: "45vw", x: "60%", y: "20%", opacity: 0.025, anim: "orbFloat2 30s ease-in-out infinite", color: "#00ccff" },
-  { size: "40vw", x: "10%", y: "65%", opacity: 0.02, anim: "orbFloat3 22s ease-in-out infinite", color: "var(--accent)" },
-  { size: "30vw", x: "75%", y: "70%", opacity: 0.018, anim: "orbFloat1 28s ease-in-out infinite reverse", color: "#00ccff" },
+  { size: "55vw", x: "-15%", y: "-25%", opacity: 0.07, anim: "orbFloat1 25s ease-in-out infinite", color: "var(--accent)" },
+  { size: "45vw", x: "60%", y: "20%", opacity: 0.05, anim: "orbFloat2 30s ease-in-out infinite", color: "#00ccff" },
+  { size: "40vw", x: "10%", y: "65%", opacity: 0.04, anim: "orbFloat3 22s ease-in-out infinite", color: "var(--accent)" },
+  { size: "30vw", x: "75%", y: "70%", opacity: 0.035, anim: "orbFloat1 28s ease-in-out infinite reverse", color: "#00ccff" },
 ] as const;
 
 function AnimatedBackground() {
@@ -237,7 +238,7 @@ function AnimatedBackground() {
         />
       ))}
       <div
-        className="absolute inset-0 opacity-[0.02]"
+        className="absolute inset-0 opacity-[0.035]"
         style={{
           backgroundImage: "linear-gradient(var(--text-faint) 1px, transparent 1px), linear-gradient(90deg, var(--text-faint) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
@@ -303,24 +304,17 @@ function ParticleField() {
 }
 
 /* ═══════════════════════════════════════════════════
-   ICONS
+   SERVICE ICON MAP
    ═══════════════════════════════════════════════════ */
 
-function ArrowIcon({ size = 18, className = "" }: { size?: number; className?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
-      <path d="M5 12h14M12 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function ArrowUpRightIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className={className} aria-hidden="true">
-      <path d="M7 17L17 7M17 7H7M17 7v10" />
-    </svg>
-  );
-}
+const SERVICE_ICONS: Record<string, React.ReactNode> = {
+  cloud: <Cloud size={28} />,
+  cicd: <RefreshCw size={28} />,
+  k8s: <Settings size={28} />,
+  monitoring: <BarChart3 size={28} />,
+  iac: <FileCode size={28} />,
+  devsecops: <ShieldCheck size={28} />,
+};
 
 /* ═══════════════════════════════════════════════════
    DATA
@@ -336,12 +330,12 @@ const NAV = [
 ] as const;
 
 const SERVICES = [
-  { title: "Облачная инфраструктура", desc: "Проектирование и развёртывание отказоустойчивой инфраструктуры на AWS, GCP, Azure. Миграция on-premise в облако с нулевым downtime.", icon: "☁️" },
-  { title: "CI/CD Пайплайны", desc: "Построение автоматизированных конвейеров сборки, тестирования и деплоя. Canary-релизы, blue-green, автоматический откат.", icon: "🔄" },
-  { title: "Kubernetes и Контейнеризация", desc: "Настройка и управление кластерами K8s. Helm-чарты, операторы, service mesh, автоскейлинг.", icon: "⚙️" },
-  { title: "Мониторинг и Observability", desc: "Полный стек: метрики, логи, трейсы. Кастомные дашборды, алертинг, SLI/SLO, инцидент-менеджмент.", icon: "📊" },
-  { title: "Infrastructure as Code", desc: "Terraform, Ansible, Packer. Декларативное управление инфраструктурой с drift detection и policy enforcement.", icon: "📝" },
-  { title: "DevSecOps", desc: "Интеграция безопасности в CI/CD: SAST/DAST, сканирование образов, секрет-менеджмент через Vault.", icon: "🔒" },
+  { title: "Облачная инфраструктура", desc: "Проектирование и развёртывание отказоустойчивой инфраструктуры на AWS, GCP, Azure. Миграция on-premise в облако с нулевым downtime.", icon: "cloud" },
+  { title: "CI/CD Пайплайны", desc: "Построение автоматизированных конвейеров сборки, тестирования и деплоя. Canary-релизы, blue-green, автоматический откат.", icon: "cicd" },
+  { title: "Kubernetes и Контейнеризация", desc: "Настройка и управление кластерами K8s. Helm-чарты, операторы, service mesh, автоскейлинг.", icon: "k8s" },
+  { title: "Мониторинг и Observability", desc: "Полный стек: метрики, логи, трейсы. Кастомные дашборды, алертинг, SLI/SLO, инцидент-менеджмент.", icon: "monitoring" },
+  { title: "Infrastructure as Code", desc: "Terraform, Ansible, Packer. Декларативное управление инфраструктурой с drift detection и policy enforcement.", icon: "iac" },
+  { title: "DevSecOps", desc: "Интеграция безопасности в CI/CD: SAST/DAST, сканирование образов, секрет-менеджмент через Vault.", icon: "devsecops" },
 ] as const;
 
 const SKILLS = [
@@ -385,10 +379,16 @@ const CONTACTS = [
 ] as const;
 
 const HERO_SOCIALS = [
-  { label: "GitHub", short: "GH", href: "https://github.com/username" },
-  { label: "Telegram", short: "TG", href: "https://t.me/your_telegram" },
-  { label: "LinkedIn", short: "LI", href: "https://linkedin.com/in/username" },
+  { label: "GitHub", icon: "github", href: "https://github.com/username" },
+  { label: "Telegram", icon: "telegram", href: "https://t.me/your_telegram" },
+  { label: "LinkedIn", icon: "linkedin", href: "https://linkedin.com/in/username" },
 ] as const;
+
+const SOCIAL_ICONS: Record<string, React.ReactNode> = {
+  github: <Github size={18} />,
+  telegram: <Send size={18} />,
+  linkedin: <Linkedin size={18} />,
+};
 
 const TESTIMONIALS = [
   { text: "Максим перестроил наш CI/CD пайплайн с нуля — время деплоя упало в 5 раз, а количество инцидентов снизилось на 60%. Лучший DevOps-инженер, с которым мы работали.", author: "Алексей К.", role: "CTO, Cloud Solutions" },
@@ -409,12 +409,24 @@ const CERTIFICATIONS = [
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("");
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const y = window.scrollY;
+      setScrolled(y > 50);
+
+      // Hide on scroll down, show on scroll up
+      if (y > 100) {
+        setHidden(y > lastScrollY.current && y - lastScrollY.current > 5);
+      } else {
+        setHidden(false);
+      }
+      lastScrollY.current = y;
+
       const sections = NAV.map((n) => n.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -435,8 +447,16 @@ function Nav() {
   }, [mobileOpen]);
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`} role="navigation" aria-label="Main navigation">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-4 flex items-center justify-between">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 ${scrolled ? "bg-[#080808ee] backdrop-blur-2xl border-b border-[var(--border)]" : "bg-transparent"}`}
+      style={{
+        transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
+        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease, backdrop-filter 0.5s ease",
+      }}
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="max-w-7xl mx-auto py-4 flex items-center justify-between" style={{ padding: "16px clamp(24px, 6vw, 40px)" }}>
         <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
           <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
         </a>
@@ -458,7 +478,7 @@ function Nav() {
       </div>
 
       <div className={`lg:hidden overflow-hidden transition-all duration-500 ${mobileOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}`}>
-        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] px-6 sm:px-8 py-6 space-y-1">
+        <div className="bg-[var(--bg-elevated)] border-t border-[var(--border)] py-6 space-y-1" style={{ padding: "24px clamp(24px, 6vw, 40px)" }}>
           {NAV.map((item) => (
             <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={`block py-4 text-base transition-colors border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}>
               {item.label}
@@ -503,7 +523,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} style={{ padding: "clamp(64px, 10vw, 128px) clamp(24px, 5vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
+    <section id={id} ref={ref} style={{ padding: "clamp(72px, 12vw, 128px) clamp(28px, 7vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
       {children}
     </section>
   );
@@ -539,9 +559,10 @@ export default function Home() {
       <AnimatedBackground />
       <ParticleField />
       <Nav />
+      <main>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 12vw, 128px) clamp(24px, 5vw, 40px) clamp(80px, 12vw, 128px)" }}>
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(100px, 14vw, 128px) clamp(28px, 7vw, 40px) clamp(100px, 14vw, 128px)" }}>
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
             <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
@@ -560,14 +581,14 @@ export default function Home() {
             </div>
 
             <div className="reveal flex flex-col sm:flex-row gap-4" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
-              <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
+              <a href="#contact" className="btn-primary">Обсудить проект <ArrowRight size={14} /></a>
               <a href="#projects" className="btn-secondary">Смотреть проекты</a>
             </div>
 
             <div className="reveal flex items-center gap-5 sm:gap-6" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
               {HERO_SOCIALS.map((s) => (
-                <a key={s.short} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[12px] tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
-                  {s.short}
+                <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
+                  {SOCIAL_ICONS[s.icon]}
                 </a>
               ))}
               <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--border)] to-transparent" />
@@ -610,7 +631,7 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(32px, 5vw, 48px) clamp(24px, 5vw, 40px)", gap: "clamp(24px, 4vw, 32px)" }}>
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(36px, 6vw, 48px) clamp(28px, 7vw, 40px)", gap: "clamp(24px, 4vw, 32px)" }}>
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
               <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{s.value}</div>
@@ -625,7 +646,7 @@ export default function Home() {
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
           <div>
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
@@ -635,7 +656,7 @@ export default function Home() {
             </p>
             <div className="reveal h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" style={{ marginTop: "clamp(24px, 4vw, 32px)" }} />
           </div>
-          <div className="grid" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
+          <div className="grid" style={{ gap: "clamp(20px, 3vw, 20px)" }}>
             {VALUES.map((item, i) => (
               <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
                 <div className="card card-glow" style={{ padding: "clamp(20px, 4vw, 24px)" }}>
@@ -656,11 +677,11 @@ export default function Home() {
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
-                <div className="text-3xl mb-5">{s.icon}</div>
+                <div className="text-[var(--accent)] mb-5">{SERVICE_ICONS[s.icon]}</div>
                 <h3 className="font-display text-lg font-semibold text-[var(--text-primary)] mb-3">{s.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
@@ -672,7 +693,7 @@ export default function Home() {
       <MobileDivider />
 
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(24px, 4vw, 64px) clamp(24px, 5vw, 40px)" }}>
+      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(24px, 4vw, 64px) clamp(28px, 7vw, 40px)" }}>
         <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(32px, 6vw, 64px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
           <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
@@ -681,7 +702,7 @@ export default function Home() {
             Расскажите о вашем проекте — предложу оптимальное решение по архитектуре, стеку и автоматизации. Первая консультация бесплатна.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
+            <a href="#contact" className="btn-primary">Обсудить проект <ArrowRight size={14} /></a>
             <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer" className="btn-secondary">Написать в Telegram</a>
           </div>
         </div>
@@ -714,13 +735,13 @@ export default function Home() {
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid sm:grid-cols-2" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid sm:grid-cols-2" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
               <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(24px, 4vw, 32px)" }}>
                 <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
                   <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
-                  <ArrowUpRightIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                  <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                 </div>
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
@@ -740,7 +761,7 @@ export default function Home() {
         <SectionHeader label="Опыт" title="Карьерный" secondary="путь" />
         <div className="relative">
           <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-[var(--accent-muted)] via-[var(--border)] to-transparent hidden md:block" aria-hidden="true" />
-          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, 3vw, 32px)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px, 4vw, 32px)" }}>
             {EXPERIENCE.map((exp, i) => (
               <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
@@ -767,7 +788,7 @@ export default function Home() {
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimonials">
         <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-3" style={{ gap: "clamp(20px, 3vw, 24px)" }}>
+        <div className="grid md:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 24px)" }}>
           {TESTIMONIALS.map((t, i) => (
             <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
               <div className="card card-glow h-full flex flex-col" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
@@ -788,7 +809,7 @@ export default function Home() {
       {/* ═══ CERTIFICATIONS ═══ */}
       <Section id="certifications">
         <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
+        <div className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(20px, 3vw, 20px)" }}>
           {CERTIFICATIONS.map((cert, i) => (
             <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow text-center`} style={{ padding: "clamp(20px, 4vw, 24px)" }}>
               <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
@@ -805,7 +826,7 @@ export default function Home() {
 
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
@@ -816,7 +837,7 @@ export default function Home() {
               Обычно отвечаю в течение 24 часов
             </div>
           </div>
-          <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 16px)" }}>
+          <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(16px, 3vw, 16px)" }}>
             {CONTACTS.map((link) => (
               <TiltCard key={link.label}>
                 <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)" }}>
@@ -824,7 +845,7 @@ export default function Home() {
                     <div className="text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1.5">{link.label}</div>
                     <div className="text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">{link.value}</div>
                   </div>
-                  <ArrowIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
+                  <ArrowRight size={18} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
                 </a>
               </TiltCard>
             ))}
@@ -832,10 +853,12 @@ export default function Home() {
         </div>
       </Section>
 
+      </main>
+
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(40px, 6vw, 48px) clamp(24px, 5vw, 40px)" }}>
+        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(40px, 6vw, 48px) clamp(28px, 7vw, 40px)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3" style={{ gap: "clamp(32px, 5vw, 40px)", marginBottom: "clamp(32px, 5vw, 40px)" }}>
             <div>
               <span className="font-display text-2xl font-bold">
