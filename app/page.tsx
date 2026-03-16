@@ -496,7 +496,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} className={`relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-16 sm:py-24 md:py-32 ${className}`}>
+    <section id={id} ref={ref} className={`relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-20 sm:py-28 md:py-32 ${className}`}>
       {children}
     </section>
   );
@@ -505,11 +505,11 @@ function Section({ id, children, className = "" }: { id: string; children: React
 function SectionHeader({ label, title, secondary }: { label: string; title: string; secondary: string }) {
   return (
     <>
-      <div className="reveal flex items-center gap-3 mb-4">
+      <div className="reveal flex items-center gap-3 mb-5">
         <div className="accent-dot" />
-        <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">{label}</span>
+        <span className="text-[12px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">{label}</span>
       </div>
-      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight mb-8 sm:mb-14">
+      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight mb-10 sm:mb-14">
         {title}<br /><span className="text-[var(--text-secondary)]">{secondary}</span>
       </h2>
     </>
@@ -534,10 +534,10 @@ export default function Home() {
       <Nav />
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center px-5 sm:px-6 lg:px-10 pt-24 pb-28">
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-center">
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center px-6 sm:px-8 lg:px-10 pt-28 pb-32">
+        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
-            <div className="reveal flex items-center gap-3 mb-6 sm:mb-8">
+            <div className="reveal flex items-center gap-3 mb-8 sm:mb-8">
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
               <span className="text-[11px] sm:text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">DevOps Engineer</span>
             </div>
@@ -547,17 +547,17 @@ export default function Home() {
               <span className="gradient-text">Новиков</span>
             </h1>
 
-            <div className="reveal mt-6 sm:mt-8 text-base sm:text-lg md:text-xl text-[var(--text-secondary)] max-w-xl min-h-[2em] sm:min-h-[1.7em]">
+            <div className="reveal mt-8 sm:mt-8 text-base sm:text-lg md:text-xl text-[var(--text-secondary)] max-w-xl min-h-[2em] sm:min-h-[1.7em]">
               <span>{typed}</span>
               <span className="inline-block w-[2px] h-[1.1em] bg-[var(--accent)] ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
             </div>
 
-            <div className="reveal mt-8 sm:mt-10 flex flex-wrap gap-3 sm:gap-4">
+            <div className="reveal mt-10 sm:mt-10 flex flex-wrap gap-4 sm:gap-4">
               <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
               <a href="#projects" className="btn-secondary">Смотреть проекты</a>
             </div>
 
-            <div className="reveal mt-10 sm:mt-12 flex items-center gap-5 sm:gap-6">
+            <div className="reveal mt-12 sm:mt-12 flex items-center gap-5 sm:gap-6">
               {HERO_SOCIALS.map((s) => (
                 <a key={s.short} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[11px] tracking-[0.15em] uppercase text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
                   {s.short}
@@ -603,11 +603,11 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-8">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-10 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-6 gap-y-8 sm:gap-8">
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
-              <div className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--accent)] group-hover:scale-110 transition-transform duration-300">{s.value}</div>
-              <div className="text-[11px] sm:text-[12px] text-[var(--text-muted)] mt-1.5 sm:mt-2 tracking-wider uppercase">{s.label}</div>
+              <div className="font-display text-3xl sm:text-3xl md:text-4xl font-bold text-[var(--accent)] group-hover:scale-110 transition-transform duration-300">{s.value}</div>
+              <div className="text-[11px] sm:text-[12px] text-[var(--text-muted)] mt-2 sm:mt-2 tracking-wider uppercase">{s.label}</div>
             </div>
           ))}
         </div>
@@ -616,25 +616,25 @@ export default function Home() {
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg text-base sm:text-lg">
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
             </p>
-            <p className="reveal mt-4 sm:mt-5 text-[var(--text-secondary)] leading-relaxed max-w-lg text-sm sm:text-base">
+            <p className="reveal mt-6 sm:mt-5 text-[var(--text-secondary)] leading-relaxed max-w-lg text-sm sm:text-base">
               Превращаю сложные инфраструктурные задачи в элегантные автоматизированные решения. GitOps, immutable infrastructure, culture of reliability — не просто модные слова, а ежедневная практика, которая помогает командам двигаться быстрее и спать спокойнее.
             </p>
-            <div className="reveal mt-6 sm:mt-8 h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" />
+            <div className="reveal mt-8 sm:mt-8 h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" />
           </div>
-          <div className="grid gap-3 sm:gap-4">
+          <div className="grid gap-5 sm:gap-4">
             {VALUES.map((item, i) => (
               <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
-                <div className="card card-glow p-5 sm:p-6">
-                  <div className="flex items-center gap-3 mb-2 sm:mb-3">
+                <div className="card card-glow p-6 sm:p-6">
+                  <div className="flex items-center gap-3 mb-3 sm:mb-3">
                     <div className="accent-dot" />
                     <h3 className="font-semibold text-[var(--text-primary)] text-sm sm:text-base">{item.title}</h3>
                   </div>
-                  <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
+                  <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
                 </div>
               </TiltCard>
             ))}
@@ -645,13 +645,13 @@ export default function Home() {
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-6">
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
-              <div className="card card-glow p-5 sm:p-7 h-full">
-                <div className="text-2xl sm:text-3xl mb-4">{s.icon}</div>
-                <h3 className="font-display text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2 sm:mb-3">{s.title}</h3>
-                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
+              <div className="card card-glow p-6 sm:p-7 h-full">
+                <div className="text-3xl sm:text-3xl mb-5">{s.icon}</div>
+                <h3 className="font-display text-lg sm:text-lg font-semibold text-[var(--text-primary)] mb-3 sm:mb-3">{s.title}</h3>
+                <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
             </TiltCard>
           ))}
@@ -659,15 +659,15 @@ export default function Home() {
       </Section>
 
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-6 sm:py-16">
-        <div className="card p-7 sm:p-12 lg:p-16 text-center border-[var(--border-accent)]" style={{ background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
-          <h3 className="font-display text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-4">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-8 sm:py-16">
+        <div className="card p-8 sm:p-12 lg:p-16 text-center border-[var(--border-accent)]" style={{ background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
+          <h3 className="font-display text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-5">
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
           </h3>
           <p className="text-[var(--text-secondary)] text-sm sm:text-base max-w-xl mx-auto mb-8">
             Расскажите о вашем проекте — предложу оптимальное решение по архитектуре, стеку и автоматизации. Первая консультация бесплатна.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-4">
             <a href="#contact" className="btn-primary">Обсудить проект <ArrowIcon size={14} /></a>
             <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer" className="btn-secondary">Написать в Telegram</a>
           </div>
@@ -677,15 +677,15 @@ export default function Home() {
       {/* ═══ SKILLS ═══ */}
       <Section id="skills">
         <SectionHeader label="Навыки" title="Технологии и" secondary="инструменты" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-6 lg:gap-8">
           {SKILLS.map((cat, i) => (
             <div key={cat.title} className={`reveal stagger-${i + 1}`}>
-              <h3 className="text-[11px] sm:text-[12px] font-semibold tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--text-muted)] mb-3 sm:mb-5">{cat.title}</h3>
-              <div className="space-y-2">
+              <h3 className="text-[12px] sm:text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4 sm:mb-5">{cat.title}</h3>
+              <div className="space-y-2.5">
                 {cat.items.map((skill) => (
-                  <div key={skill} className="group flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border-accent)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 cursor-default">
-                    <div className="w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-[var(--accent)] scale-0 group-hover:scale-100 transition-transform duration-300" />
-                    <span className="text-xs sm:text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">{skill}</span>
+                  <div key={skill} className="group flex items-center gap-3 py-3 px-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border-accent)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 cursor-default">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] scale-0 group-hover:scale-100 transition-transform duration-300" />
+                    <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">{skill}</span>
                   </div>
                 ))}
               </div>
@@ -697,16 +697,16 @@ export default function Home() {
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-6">
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
-              <div className={`card card-glow p-5 sm:p-8 group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`}>
-                <div className="flex items-start justify-between mb-4 sm:mb-6">
-                  <span className="font-display text-3xl sm:text-5xl font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500">{p.num}</span>
+              <div className={`card card-glow p-7 sm:p-8 group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`}>
+                <div className="flex items-start justify-between mb-5 sm:mb-6">
+                  <span className="font-display text-4xl sm:text-5xl font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500">{p.num}</span>
                   <ArrowUpRightIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                 </div>
-                <h3 className="text-base sm:text-xl font-semibold text-[var(--text-primary)] mb-2 sm:mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
-                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed mb-4 sm:mb-6">{p.desc}</p>
+                <h3 className="text-lg sm:text-xl font-semibold text-[var(--text-primary)] mb-3 sm:mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
+                <p className="text-sm sm:text-sm text-[var(--text-secondary)] leading-relaxed mb-5 sm:mb-6">{p.desc}</p>
                 <div className="flex flex-wrap gap-2">
                   {p.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
                 </div>
@@ -726,12 +726,12 @@ export default function Home() {
               <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
                 <TiltCard>
-                  <div className="card p-5 sm:p-8">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 sm:gap-4">
+                  <div className="card p-6 sm:p-8">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 sm:gap-4">
                       <div className="flex-1">
-                        <h3 className="font-display text-lg sm:text-xl font-semibold text-[var(--text-primary)]">{exp.role}</h3>
-                        <p className="text-xs sm:text-sm text-[var(--accent)] mt-1 mb-2 sm:mb-3">{exp.company}</p>
-                        <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed">{exp.desc}</p>
+                        <h3 className="font-display text-xl sm:text-xl font-semibold text-[var(--text-primary)]">{exp.role}</h3>
+                        <p className="text-sm text-[var(--accent)] mt-1.5 mb-3 sm:mb-3">{exp.company}</p>
+                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{exp.desc}</p>
                       </div>
                       <span className="text-[11px] sm:text-[12px] tracking-wider text-[var(--text-muted)] uppercase whitespace-nowrap font-medium md:mt-1 shrink-0">{exp.period}</span>
                     </div>
@@ -746,15 +746,15 @@ export default function Home() {
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimonials">
         <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
-              <div className="card card-glow p-5 sm:p-7 h-full flex flex-col">
-                <div className="text-[var(--accent)] text-3xl sm:text-4xl font-display leading-none mb-4">&ldquo;</div>
-                <p className="text-xs sm:text-sm text-[var(--text-secondary)] leading-relaxed flex-1">{t.text}</p>
-                <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-[var(--border)]">
+              <div className="card card-glow p-7 sm:p-7 h-full flex flex-col">
+                <div className="text-[var(--accent)] text-4xl font-display leading-none mb-5">&ldquo;</div>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">{t.text}</p>
+                <div className="mt-6 pt-5 border-t border-[var(--border)]">
                   <div className="text-sm font-semibold text-[var(--text-primary)]">{t.author}</div>
-                  <div className="text-[11px] text-[var(--text-muted)] mt-0.5">{t.role}</div>
+                  <div className="text-[11px] text-[var(--text-muted)] mt-1">{t.role}</div>
                 </div>
               </div>
             </TiltCard>
@@ -765,14 +765,14 @@ export default function Home() {
       {/* ═══ CERTIFICATIONS ═══ */}
       <Section id="certifications">
         <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 sm:gap-5">
           {CERTIFICATIONS.map((cert, i) => (
-            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow p-4 sm:p-6 text-center`}>
-              <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
-                <span className="text-[var(--accent)] text-base sm:text-lg font-bold font-display">{cert.issuer.charAt(0)}</span>
+            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow p-6 sm:p-6 text-center`}>
+              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
+                <span className="text-[var(--accent)] text-lg font-bold font-display">{cert.issuer.charAt(0)}</span>
               </div>
-              <h3 className="text-xs sm:text-sm font-semibold text-[var(--text-primary)] mb-1">{cert.name}</h3>
-              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)]">{cert.issuer} &middot; {cert.year}</p>
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">{cert.name}</h3>
+              <p className="text-[11px] text-[var(--text-muted)]">{cert.issuer} &middot; {cert.year}</p>
             </div>
           ))}
         </div>
@@ -780,24 +780,24 @@ export default function Home() {
 
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md text-base sm:text-lg">
               Открыт к интересным предложениям и проектам. Расскажите о задаче — обсудим, как я могу помочь.
             </p>
-            <div className="reveal mt-6 flex items-center gap-2 text-[var(--text-muted)] text-sm">
+            <div className="reveal mt-8 flex items-center gap-3 text-[var(--text-muted)] text-sm">
               <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
               Обычно отвечаю в течение 24 часов
             </div>
           </div>
-          <div className="reveal space-y-3 sm:space-y-4">
+          <div className="reveal space-y-4 sm:space-y-4">
             {CONTACTS.map((link) => (
               <TiltCard key={link.label}>
-                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow p-4 sm:p-5 flex items-center justify-between group">
+                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow p-5 sm:p-5 flex items-center justify-between group">
                   <div>
-                    <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1 sm:mb-1.5">{link.label}</div>
-                    <div className="text-sm sm:text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">{link.value}</div>
+                    <div className="text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1.5">{link.label}</div>
+                    <div className="text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">{link.value}</div>
                   </div>
                   <ArrowIcon className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300" />
                 </a>
@@ -810,13 +810,13 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 mb-8 sm:mb-10">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-12 sm:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 sm:gap-10 mb-10 sm:mb-10">
             <div>
               <span className="font-display text-2xl font-bold">
                 <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
               </span>
-              <p className="mt-4 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
+              <p className="mt-4 text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
                 DevOps инженер, создающий надёжную и масштабируемую инфраструктуру для современных продуктов.
               </p>
             </div>
