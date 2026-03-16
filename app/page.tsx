@@ -527,16 +527,16 @@ function Nav() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 ${scrolled ? "backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]" : ""}`}
+      className={`fixed top-0 left-0 w-full z-50 ${scrolled && !mobileOpen ? "backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]" : ""}`}
       style={{
-        background: scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
+        background: mobileOpen ? "transparent" : scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
         transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
         transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s ease, backdrop-filter 0.6s ease",
       }}
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto py-4 flex items-center justify-between" style={{ padding: "16px clamp(24px, 6vw, 40px)" }}>
+      <div className="max-w-7xl mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(24px, 6vw, 40px)" }}>
         <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
           <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
         </a>
@@ -557,38 +557,50 @@ function Nav() {
         </button>
       </div>
 
+      {/* Mobile fullscreen menu */}
       <div
-        className="lg:hidden overflow-hidden"
+        className="lg:hidden fixed inset-0 z-40"
         style={{
-          maxHeight: mobileOpen ? "600px" : "0",
+          pointerEvents: mobileOpen ? "auto" : "none",
           opacity: mobileOpen ? 1 : 0,
-          transition: mobileOpen
-            ? "max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease"
-            : "max-height 0.4s cubic-bezier(0.55, 0, 1, 0.45), opacity 0.3s ease",
+          transition: "opacity 0.35s ease",
         }}
       >
-        <div className="border-t border-[rgba(255,255,255,0.06)] py-6 space-y-1" style={{ padding: "24px clamp(24px, 6vw, 40px)", background: "rgba(8, 8, 8, 0.6)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
-          {NAV.map((item, i) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={() => setMobileOpen(false)}
-              className={`block py-4 text-base border-b border-[var(--border)] last:border-0 ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)]"}`}
-              style={{
-                transform: mobileOpen ? "translateY(0)" : "translateY(-8px)",
-                opacity: mobileOpen ? 1 : 0,
-                transition: `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.04}s, opacity 0.35s ease ${i * 0.04}s`,
-              }}
-            >
-              {item.label}
-            </a>
-          ))}
-          <div className="pt-4" style={{
-            transform: mobileOpen ? "translateY(0)" : "translateY(-8px)",
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "rgba(8, 8, 8, 0.92)",
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+          }}
+          onClick={() => setMobileOpen(false)}
+        />
+        <div className="relative flex flex-col justify-center items-center h-full" style={{ paddingBottom: "60px" }}>
+          <div className="flex flex-col items-center" style={{ gap: "8px" }}>
+            {NAV.map((item, i) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className={`text-center text-2xl font-display font-semibold tracking-tight ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-primary)] hover:text-[var(--accent)]"}`}
+                style={{
+                  padding: "10px 24px",
+                  transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
+                  opacity: mobileOpen ? 1 : 0,
+                  transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.05}s, opacity 0.4s ease ${i * 0.05}s, color 0.3s ease`,
+                }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+          <div style={{
+            marginTop: "32px",
+            transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
             opacity: mobileOpen ? 1 : 0,
-            transition: `transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.04}s, opacity 0.35s ease ${NAV.length * 0.04}s`,
+            transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.05}s, opacity 0.4s ease ${NAV.length * 0.05}s`,
           }}>
-            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary">Обсудить проект</a>
+            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary !w-auto !px-10">Обсудить проект</a>
           </div>
         </div>
       </div>
