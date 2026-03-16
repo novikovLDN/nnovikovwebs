@@ -55,50 +55,23 @@ function useTyping(texts: string[], speed = 70, pause = 2200) {
   return display;
 }
 
-function useSmoothScroll() {
+function useSmoothAnchors() {
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let current = window.scrollY;
-    let target = window.scrollY;
-    let rafId: number;
-    let running = true;
-
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      target = Math.max(0, Math.min(target + e.deltaY, document.body.scrollHeight - window.innerHeight));
-    };
-
     const onClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement).closest('a[href^="#"]');
       if (!anchor) return;
       const href = anchor.getAttribute("href");
-      if (!href || href === "#") { target = 0; e.preventDefault(); return; }
+      if (!href) return;
+      if (href === "#") { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
       const el = document.querySelector(href);
-      if (el) { target = el.getBoundingClientRect().top + window.scrollY - 80; e.preventDefault(); }
-    };
-
-    const animate = () => {
-      if (!running) return;
-      const diff = target - current;
-      if (Math.abs(diff) > 0.5) {
-        current += diff * 0.08;
-        window.scrollTo(0, current);
+      if (el) {
+        e.preventDefault();
+        const top = el.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: "smooth" });
       }
-      rafId = requestAnimationFrame(animate);
     };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
     document.addEventListener("click", onClick);
-    rafId = requestAnimationFrame(animate);
-
-    return () => {
-      running = false;
-      window.removeEventListener("wheel", onWheel);
-      document.removeEventListener("click", onClick);
-      cancelAnimationFrame(rafId);
-    };
+    return () => document.removeEventListener("click", onClick);
   }, []);
 }
 
@@ -204,11 +177,11 @@ function ClickRipples() {
 
     let w = 0, h = 0;
     const ripples: { x: number; y: number; start: number; duration: number }[] = [];
-    let running = true;
+    let animating = false;
     let rafId: number;
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = w * dpr;
@@ -220,14 +193,7 @@ function ClickRipples() {
     resize();
     window.addEventListener("resize", resize);
 
-    const onClick = (e: MouseEvent | TouchEvent) => {
-      const x = "touches" in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
-      const y = "touches" in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
-      ripples.push({ x, y, start: performance.now(), duration: 700 });
-    };
-
     const draw = (now: number) => {
-      if (!running) return;
       ctx.clearRect(0, 0, w, h);
 
       for (let i = ripples.length - 1; i >= 0; i--) {
@@ -250,15 +216,31 @@ function ClickRipples() {
         ctx.fill();
       }
 
-      rafId = requestAnimationFrame(draw);
+      if (ripples.length > 0) {
+        rafId = requestAnimationFrame(draw);
+      } else {
+        animating = false;
+      }
+    };
+
+    const startAnim = () => {
+      if (!animating) {
+        animating = true;
+        rafId = requestAnimationFrame(draw);
+      }
+    };
+
+    const onClick = (e: MouseEvent | TouchEvent) => {
+      const x = "touches" in e ? e.touches[0].clientX : (e as MouseEvent).clientX;
+      const y = "touches" in e ? e.touches[0].clientY : (e as MouseEvent).clientY;
+      ripples.push({ x, y, start: performance.now(), duration: 700 });
+      startAnim();
     };
 
     document.addEventListener("mousedown", onClick);
     document.addEventListener("touchstart", onClick, { passive: true });
-    rafId = requestAnimationFrame(draw);
 
     return () => {
-      running = false;
       cancelAnimationFrame(rafId);
       document.removeEventListener("mousedown", onClick);
       document.removeEventListener("touchstart", onClick);
@@ -316,33 +298,46 @@ function ParticleField() {
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     let w = 0, h = 0;
     const particles: { x: number; y: number; vx: number; vy: number; r: number; a: number }[] = [];
 
-    const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      canvas.style.width = w + "px";
+      canvas.style.height = h + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
     const init = () => {
       resize();
       particles.length = 0;
-      const count = Math.min(Math.floor((w * h) / 30000), 50);
+      const count = Math.min(Math.floor((w * h) / 50000), 30);
       for (let i = 0; i < count; i++) {
         particles.push({
           x: Math.random() * w, y: Math.random() * h,
-          vx: (Math.random() - 0.5) * 0.25, vy: (Math.random() - 0.5) * 0.25,
-          r: Math.random() * 1.5 + 0.5, a: Math.random() * 0.25 + 0.05,
+          vx: (Math.random() - 0.5) * 0.2, vy: (Math.random() - 0.5) * 0.2,
+          r: Math.random() * 1.5 + 0.5, a: Math.random() * 0.2 + 0.05,
         });
       }
     };
 
     init();
-    window.addEventListener("resize", resize);
+    window.addEventListener("resize", init);
 
     let rafId: number;
     let running = true;
-    const draw = () => {
+    let lastTime = 0;
+    const draw = (now: number) => {
       if (!running) return;
+      rafId = requestAnimationFrame(draw);
+      if (now - lastTime < 33) return; // cap at ~30fps
+      lastTime = now;
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
         p.x += p.vx; p.y += p.vy;
@@ -353,14 +348,13 @@ function ParticleField() {
         ctx.fillStyle = `rgba(0, 255, 106, ${p.a})`;
         ctx.fill();
       }
-      rafId = requestAnimationFrame(draw);
     };
 
-    draw();
-    return () => { running = false; cancelAnimationFrame(rafId); window.removeEventListener("resize", resize); };
+    rafId = requestAnimationFrame(draw);
+    return () => { running = false; cancelAnimationFrame(rafId); window.removeEventListener("resize", init); };
   }, []);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[1]" aria-hidden="true" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[1]" style={{ willChange: "auto" }} aria-hidden="true" />;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -536,7 +530,7 @@ function Nav() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
+      <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
         <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
           <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
         </a>
@@ -638,7 +632,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} style={{ padding: "clamp(48px, 10vw, 128px) clamp(20px, 5vw, 40px)" }} className={`relative z-10 max-w-7xl mx-auto ${className}`}>
+    <section id={id} ref={ref} style={{ padding: "clamp(48px, 8vw, 120px) clamp(20px, 5vw, 64px)" }} className={`relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto ${className}`}>
       {children}
     </section>
   );
@@ -665,7 +659,7 @@ function SectionHeader({ label, title, secondary }: { label: string; title: stri
 export default function Home() {
   const typed = useTyping(["строю облачную инфраструктуру", "автоматизирую CI/CD пайплайны", "оркеструю контейнеры", "проектирую отказоустойчивые системы"], 65, 2000);
   const heroRef = useScrollReveal();
-  useSmoothScroll();
+  useSmoothAnchors();
 
   return (
     <div className="grain">
@@ -677,8 +671,8 @@ export default function Home() {
       <main>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 12vw, 128px) clamp(20px, 5vw, 40px) clamp(80px, 12vw, 128px)" }}>
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 10vw, 160px) clamp(20px, 5vw, 64px) clamp(80px, 10vw, 160px)" }}>
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
             <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
@@ -712,7 +706,7 @@ export default function Home() {
 
           {/* Decoration */}
           <div className="hidden lg:block relative" aria-hidden="true">
-            <div className="w-72 xl:w-80 h-72 xl:h-80 relative" style={{ animation: "float 6s ease-in-out infinite" }}>
+            <div className="w-72 xl:w-80 2xl:w-96 h-72 xl:h-80 2xl:h-96 relative" style={{ animation: "float 6s ease-in-out infinite" }}>
               <div className="absolute inset-0 rounded-full border border-[var(--border)]" style={{ animation: "pulse-glow 4s ease-in-out infinite" }} />
               <div className="absolute inset-4 rounded-full border border-[var(--border)] opacity-50" />
               <div className="absolute inset-10 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
@@ -746,7 +740,7 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(28px, 5vw, 48px) clamp(20px, 5vw, 40px)", gap: "clamp(16px, 3vw, 32px)" }}>
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(28px, 4vw, 56px) clamp(20px, 5vw, 64px)", gap: "clamp(16px, 3vw, 48px)" }}>
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
               <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{s.value}</div>
@@ -761,12 +755,12 @@ export default function Home() {
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 80px)" }}>
           <div>
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
+            <p className="reveal text-[var(--text-secondary)] leading-relaxed" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
             </p>
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(0.875rem, 1.8vw, 1rem)" }}>
+            <p className="reveal text-[var(--text-secondary)] leading-relaxed" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(0.875rem, 1.8vw, 1rem)" }}>
               Превращаю сложные инфраструктурные задачи в элегантные автоматизированные решения. GitOps, immutable infrastructure, culture of reliability — не просто модные слова, а ежедневная практика, которая помогает командам двигаться быстрее и спать спокойнее.
             </p>
             <div className="reveal h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" style={{ marginTop: "clamp(24px, 4vw, 32px)" }} />
@@ -808,7 +802,7 @@ export default function Home() {
       <MobileDivider />
 
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto" style={{ padding: "clamp(16px, 3vw, 64px) clamp(20px, 5vw, 40px)" }}>
+      <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 64px) clamp(20px, 5vw, 64px)" }}>
         <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(28px, 5vw, 64px) clamp(20px, 4vw, 48px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
           <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
@@ -850,7 +844,7 @@ export default function Home() {
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid min-[540px]:grid-cols-2" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
+        <div className="grid min-[540px]:grid-cols-2 xl:grid-cols-2" style={{ gap: "clamp(16px, 2vw, 28px)" }}>
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
               <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(20px, 3vw, 32px)" }}>
@@ -942,7 +936,7 @@ export default function Home() {
 
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(40px, 6vw, 64px)" }}>
+        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 80px)" }}>
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
@@ -974,7 +968,7 @@ export default function Home() {
       {/* ═══ FOOTER ═══ */}
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto" style={{ padding: "clamp(32px, 5vw, 48px) clamp(20px, 5vw, 40px)" }}>
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(32px, 4vw, 56px) clamp(20px, 5vw, 64px)" }}>
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 40px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
             <div>
               <span className="font-display text-2xl font-bold">

@@ -32,6 +32,7 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html {
+  scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-muted) var(--bg-elevated);
 }
@@ -100,21 +101,6 @@ body.custom-cursor-active [role="button"] {
 .cursor-dot.hovering { width: 14px; height: 14px; background: rgba(0, 255, 106, 0.5); }
 .cursor-ring.hovering { width: 60px; height: 60px; border-color: rgba(0, 255, 106, 0.2); }
 
-/* ── Click ripple ── */
-.click-ripple {
-  position: fixed;
-  pointer-events: none;
-  z-index: 99997;
-  width: 1px; height: 1px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 255, 106, 0.5) 0%, transparent 70%);
-  animation: rippleExpand 0.7s cubic-bezier(0, 0.5, 0.5, 1) forwards;
-}
-
-@keyframes rippleExpand {
-  0% { transform: scale(0); opacity: 0.8; }
-  100% { transform: scale(150); opacity: 0; }
-}
 
 /* ── Grain ── */
 .grain::before {
@@ -195,7 +181,7 @@ body.custom-cursor-active [role="button"] {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover {
@@ -223,7 +209,7 @@ body.custom-cursor-active [role="button"] {
   letter-spacing: 0.02em;
   border-radius: 100px;
   border: none;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   position: relative;
   overflow: hidden;
@@ -258,7 +244,7 @@ body.custom-cursor-active [role="button"] {
   letter-spacing: 0.02em;
   border-radius: 100px;
   border: 1px solid var(--border-hover);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
 }
 
@@ -280,7 +266,7 @@ body.custom-cursor-active [role="button"] {
   border-radius: 100px;
   border: 1px solid var(--border);
   color: var(--text-secondary);
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
 }
 
 .tag:hover {
@@ -319,6 +305,62 @@ body.custom-cursor-active [role="button"] {
 
 /* ── Tilt card ── */
 .tilt-card { transform-style: preserve-3d; perspective: 1000px; }
+
+/* ── GPU-optimize fixed layers ── */
+.grain::before {
+  backface-visibility: hidden;
+}
+
+.cursor-dot,
+.cursor-ring {
+  backface-visibility: hidden;
+}
+
+/* ═══════════════════════════════════════════════════
+   LARGE SCREENS — min-width: 1440px
+   ═══════════════════════════════════════════════════ */
+@media (min-width: 1440px) {
+  .card {
+    border-radius: 20px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   ULTRA-WIDE — min-width: 1920px
+   ═══════════════════════════════════════════════════ */
+@media (min-width: 1920px) {
+  body {
+    font-size: 17px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 16px 36px;
+    font-size: 15px;
+  }
+
+  .tag {
+    padding: 6px 16px;
+    font-size: 12px;
+  }
+
+  .card {
+    border-radius: 22px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   4K — min-width: 2560px
+   ═══════════════════════════════════════════════════ */
+@media (min-width: 2560px) {
+  body {
+    font-size: 19px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 18px 40px;
+    font-size: 16px;
+  }
+}
 
 /* ── Prefers reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
