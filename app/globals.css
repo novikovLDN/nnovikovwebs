@@ -338,6 +338,21 @@ body.custom-cursor-active [role="button"] {
 }
 
 /* ═══════════════════════════════════════════════════
+   TABLET — max-width: 1024px
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .card:hover {
+    transform: none !important;
+  }
+
+  .tilt-card {
+    transform: none !important;
+    transform-style: flat !important;
+    perspective: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
    MOBILE RESPONSIVE — max-width: 768px
    ═══════════════════════════════════════════════════ */
 @media (max-width: 768px) {
@@ -345,7 +360,7 @@ body.custom-cursor-active [role="button"] {
   ::-webkit-scrollbar { display: none; }
 
   body {
-    line-height: 1.8 !important;
+    line-height: 1.75 !important;
     font-size: 15px !important;
   }
 
@@ -355,20 +370,14 @@ body.custom-cursor-active [role="button"] {
     box-shadow: none !important;
   }
 
-  .tilt-card {
-    transform: none !important;
-    transform-style: flat !important;
-    perspective: none !important;
-  }
-
   .card {
     border-radius: 14px;
   }
 
   /* ── Buttons: full width, larger touch targets ── */
   .btn-primary, .btn-secondary {
-    padding: 16px 28px !important;
-    font-size: 15px !important;
+    padding: 14px 24px !important;
+    font-size: 14px !important;
     width: 100% !important;
     justify-content: center !important;
     border-radius: 14px !important;
@@ -376,7 +385,7 @@ body.custom-cursor-active [role="button"] {
 
   /* ── Tags: bigger for readability ── */
   .tag {
-    padding: 6px 14px !important;
+    padding: 5px 12px !important;
     font-size: 11px !important;
   }
 
@@ -385,7 +394,13 @@ body.custom-cursor-active [role="button"] {
     display: block !important;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
-    margin: 0 28px;
+    margin: 0 clamp(20px, 5vw, 40px);
+  }
+
+  /* ── Section headers ── */
+  .font-display {
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 }
 
@@ -395,11 +410,21 @@ body.custom-cursor-active [role="button"] {
 @media (max-width: 480px) {
   body {
     font-size: 14px !important;
+    line-height: 1.7 !important;
   }
 
   .btn-primary, .btn-secondary {
-    padding: 14px 24px !important;
-    font-size: 14px !important;
+    padding: 13px 20px !important;
+    font-size: 13px !important;
+  }
+
+  .card {
+    border-radius: 12px;
+  }
+
+  .tag {
+    padding: 4px 10px !important;
+    font-size: 10px !important;
   }
 }
 
@@ -408,7 +433,21 @@ body.custom-cursor-active [role="button"] {
    ═══════════════════════════════════════════════════ */
 @media (max-width: 380px) {
   .btn-primary, .btn-secondary {
-    padding: 12px 20px !important;
+    padding: 12px 16px !important;
     font-size: 13px !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   VERY TINY MOBILE — max-width: 320px (iPhone SE etc.)
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 320px) {
+  body {
+    font-size: 13px !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 11px 14px !important;
+    font-size: 12px !important;
   }
 }
