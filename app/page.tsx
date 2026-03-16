@@ -496,7 +496,7 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
 function Section({ id, children, className = "" }: { id: string; children: React.ReactNode; className?: string }) {
   const ref = useScrollReveal();
   return (
-    <section id={id} ref={ref} className={`relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-20 sm:py-24 md:py-32 ${className}`}>
+    <section id={id} ref={ref} className={`relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-16 sm:py-24 md:py-32 ${className}`}>
       {children}
     </section>
   );
@@ -509,7 +509,7 @@ function SectionHeader({ label, title, secondary }: { label: string; title: stri
         <div className="accent-dot" />
         <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">{label}</span>
       </div>
-      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight mb-10 sm:mb-14">
+      <h2 className="reveal font-display text-[clamp(1.75rem,5vw,3rem)] font-bold tracking-tight mb-8 sm:mb-14">
         {title}<br /><span className="text-[var(--text-secondary)]">{secondary}</span>
       </h2>
     </>
@@ -534,7 +534,7 @@ export default function Home() {
       <Nav />
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center px-5 sm:px-6 lg:px-10 pt-20 pb-24">
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center px-5 sm:px-6 lg:px-10 pt-24 pb-28">
         <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-center">
           <div>
             <div className="reveal flex items-center gap-3 mb-6 sm:mb-8">
@@ -603,7 +603,7 @@ export default function Home() {
       {/* ═══ STATS ═══ */}
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
-        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-8 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-12 grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-8">
           {STATS.map((s, i) => (
             <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
               <div className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--accent)] group-hover:scale-110 transition-transform duration-300">{s.value}</div>
@@ -616,7 +616,7 @@ export default function Home() {
       {/* ═══ ABOUT ═══ */}
       <Section id="about">
         <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           <div>
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-lg text-base sm:text-lg">
               DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
@@ -645,7 +645,7 @@ export default function Home() {
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow p-5 sm:p-7 h-full">
@@ -659,8 +659,8 @@ export default function Home() {
       </Section>
 
       {/* ═══ CTA BANNER ═══ */}
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-16">
-        <div className="card p-8 sm:p-12 lg:p-16 text-center border-[var(--border-accent)]" style={{ background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-6 sm:py-16">
+        <div className="card p-7 sm:p-12 lg:p-16 text-center border-[var(--border-accent)]" style={{ background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
           <h3 className="font-display text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-4">
             Нужна надёжная <span className="gradient-text">инфраструктура?</span>
           </h3>
@@ -677,7 +677,7 @@ export default function Home() {
       {/* ═══ SKILLS ═══ */}
       <Section id="skills">
         <SectionHeader label="Навыки" title="Технологии и" secondary="инструменты" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-6 lg:gap-8">
           {SKILLS.map((cat, i) => (
             <div key={cat.title} className={`reveal stagger-${i + 1}`}>
               <h3 className="text-[11px] sm:text-[12px] font-semibold tracking-[0.12em] sm:tracking-[0.15em] uppercase text-[var(--text-muted)] mb-3 sm:mb-5">{cat.title}</h3>
@@ -697,7 +697,7 @@ export default function Home() {
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
         <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
-        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
               <div className={`card card-glow p-5 sm:p-8 group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`}>
@@ -721,7 +721,7 @@ export default function Home() {
         <SectionHeader label="Опыт" title="Карьерный" secondary="путь" />
         <div className="relative">
           <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-[var(--accent-muted)] via-[var(--border)] to-transparent hidden md:block" aria-hidden="true" />
-          <div className="space-y-5 sm:space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {EXPERIENCE.map((exp, i) => (
               <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
@@ -746,7 +746,7 @@ export default function Home() {
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimonials">
         <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid md:grid-cols-3 gap-5 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
             <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
               <div className="card card-glow p-5 sm:p-7 h-full flex flex-col">
@@ -765,7 +765,7 @@ export default function Home() {
       {/* ═══ CERTIFICATIONS ═══ */}
       <Section id="certifications">
         <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
           {CERTIFICATIONS.map((cert, i) => (
             <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow p-4 sm:p-6 text-center`}>
               <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
@@ -780,7 +780,7 @@ export default function Home() {
 
       {/* ═══ CONTACT ═══ */}
       <Section id="contact">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           <div>
             <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md text-base sm:text-lg">
@@ -811,7 +811,7 @@ export default function Home() {
       <footer className="relative z-10 border-t border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-12">
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 mb-8 sm:mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10 mb-8 sm:mb-10">
             <div>
               <span className="font-display text-2xl font-bold">
                 <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>

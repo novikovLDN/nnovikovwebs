@@ -344,6 +344,16 @@ body.custom-cursor-active [role="button"] {
   .btn-primary, .btn-secondary { padding: 12px 24px; font-size: 13px; }
   .card { border-radius: 12px; }
   .tilt-card { transform: none !important; }
+
+  section + section,
+  section + div,
+  div + section {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  body { line-height: 1.6; }
 }
 
 @media (max-width: 380px) {
