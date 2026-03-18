@@ -63,28 +63,28 @@ function CopyButton({ text }: { text: string }) {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button onClick={handleCopy} className="flex items-center gap-1.5 text-[11px] uppercase tracking-wider font-medium px-3 py-1.5 rounded-lg transition-all duration-300"
+    <button onClick={handleCopy} className="flex items-center gap-1.5 text-[10px] sm:text-[11px] uppercase tracking-wider font-medium px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg transition-all duration-300 shrink-0"
       style={{ background: copied ? "rgba(0,255,106,0.15)" : "rgba(255,255,255,0.06)", color: copied ? "var(--accent)" : "var(--text-muted)", border: `1px solid ${copied ? "var(--border-accent)" : "var(--border)"}` }}>
       {copied ? <Check size={12} /> : <Copy size={12} />}
-      {copied ? "Скопировано" : "Копировать"}
+      <span className="hidden sm:inline">{copied ? "Скопировано" : "Копировать"}</span>
     </button>
   );
 }
 
 function WarningBlock({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 rounded-xl" style={{ padding: "clamp(14px, 3vw, 18px)", background: "rgba(255,180,0,0.06)", border: "1px solid rgba(255,180,0,0.2)" }}>
-      <AlertTriangle size={20} className="shrink-0 mt-0.5" style={{ color: "#ffb400" }} />
-      <div className="text-sm leading-relaxed" style={{ color: "rgba(255,180,0,0.9)" }}>{children}</div>
+    <div className="flex gap-2.5 sm:gap-3 rounded-xl" style={{ padding: "clamp(12px, 3vw, 18px)", background: "rgba(255,180,0,0.06)", border: "1px solid rgba(255,180,0,0.2)" }}>
+      <AlertTriangle size={18} className="shrink-0 mt-0.5" style={{ color: "#ffb400" }} />
+      <div className="text-[13px] sm:text-sm leading-relaxed" style={{ color: "rgba(255,180,0,0.9)" }}>{children}</div>
     </div>
   );
 }
 
 function InfoBlock({ icon, children }: { icon?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="flex gap-3 rounded-xl" style={{ padding: "clamp(14px, 3vw, 18px)", background: "rgba(0,255,106,0.04)", border: "1px solid rgba(0,255,106,0.15)" }}>
-      {icon || <Globe size={20} className="shrink-0 mt-0.5 text-[var(--accent)]" />}
-      <div className="text-sm leading-relaxed text-[var(--text-secondary)]">{children}</div>
+    <div className="flex gap-2.5 sm:gap-3 rounded-xl" style={{ padding: "clamp(12px, 3vw, 18px)", background: "rgba(0,255,106,0.04)", border: "1px solid rgba(0,255,106,0.15)" }}>
+      {icon || <Globe size={18} className="shrink-0 mt-0.5 text-[var(--accent)]" />}
+      <div className="text-[13px] sm:text-sm leading-relaxed text-[var(--text-secondary)]">{children}</div>
     </div>
   );
 }
@@ -93,16 +93,16 @@ function CodeBlock({ title, code, copyable = true }: { title?: string; code: str
   return (
     <div className="rounded-xl overflow-hidden" style={{ border: "1px solid var(--border)", background: "#0d0d0d" }}>
       {title && (
-        <div className="flex items-center justify-between px-4 py-2.5" style={{ borderBottom: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}>
-          <div className="flex items-center gap-2">
-            <Terminal size={13} className="text-[var(--accent)]" />
-            <span className="text-[11px] uppercase tracking-wider font-medium text-[var(--text-muted)]">{title}</span>
+        <div className="flex items-center justify-between gap-2" style={{ padding: "clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px)", borderBottom: "1px solid var(--border)", background: "rgba(255,255,255,0.02)" }}>
+          <div className="flex items-center gap-2 min-w-0">
+            <Terminal size={13} className="text-[var(--accent)] shrink-0" />
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-wider font-medium text-[var(--text-muted)] truncate">{title}</span>
           </div>
           {copyable && <CopyButton text={code} />}
         </div>
       )}
-      <pre className="overflow-x-auto" style={{ padding: "clamp(14px, 3vw, 20px)", margin: 0 }}>
-        <code className="text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "'SF Mono','Fira Code','JetBrains Mono',monospace" }}>{code}</code>
+      <pre className="overflow-x-auto" style={{ padding: "clamp(12px, 3vw, 20px)", margin: 0, WebkitOverflowScrolling: "touch" }}>
+        <code className="text-[11px] sm:text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "'SF Mono','Fira Code','JetBrains Mono',monospace", wordBreak: "break-all", whiteSpace: "pre-wrap" }}>{code}</code>
       </pre>
     </div>
   );
@@ -114,12 +114,12 @@ function CodeBlock({ title, code, copyable = true }: { title?: string; code: str
 
 function NumStep({ num, children }: { num: number; children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-3">
-      <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[13px] font-bold font-display"
+    <div className="flex items-start gap-2.5 sm:gap-3">
+      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center shrink-0 text-[12px] sm:text-[13px] font-bold font-display"
         style={{ background: "rgba(0,255,106,0.12)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.2)" }}>
         {num}
       </div>
-      <div className="text-sm text-[var(--text-secondary)] leading-relaxed pt-1">{children}</div>
+      <div className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed pt-0.5 sm:pt-1 min-w-0">{children}</div>
     </div>
   );
 }
@@ -132,22 +132,22 @@ function AccordionSection({ icon, title, open, onToggle, children }: {
   icon: React.ReactNode; title: string; open: boolean; onToggle: () => void; children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl transition-all duration-300" style={{
+    <div className="rounded-xl sm:rounded-2xl transition-all duration-300" style={{
       background: "var(--bg-card)",
       border: open ? "1px solid var(--border-accent)" : "1px solid var(--border)",
     }}>
-      <button onClick={onToggle} className="w-full flex items-center gap-4 text-left" style={{ padding: "clamp(16px, 3vw, 22px) clamp(16px, 3vw, 24px)" }}>
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
+      <button onClick={onToggle} className="w-full flex items-center gap-3 sm:gap-4 text-left" style={{ padding: "clamp(14px, 3vw, 22px) clamp(14px, 3vw, 24px)" }}>
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
           {icon}
         </div>
-        <span className="flex-1 font-display font-semibold text-[var(--text-primary)]" style={{ fontSize: "clamp(0.9rem, 2vw, 1.05rem)" }}>{title}</span>
+        <span className="flex-1 font-display font-semibold text-[var(--text-primary)] min-w-0" style={{ fontSize: "clamp(0.85rem, 2.5vw, 1.05rem)" }}>{title}</span>
         {open
-          ? <ChevronUp size={20} className="text-[var(--accent)] shrink-0" />
-          : <ChevronDown size={20} className="text-[var(--text-muted)] shrink-0" />
+          ? <ChevronUp size={18} className="text-[var(--accent)] shrink-0" />
+          : <ChevronDown size={18} className="text-[var(--text-muted)] shrink-0" />
         }
       </button>
-      <div className="overflow-hidden transition-all duration-400" style={{ maxHeight: open ? "3000px" : "0", opacity: open ? 1 : 0 }}>
-        <div style={{ padding: "0 clamp(16px, 3vw, 24px) clamp(16px, 3vw, 24px)", display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 18px)" }}>
+      <div className="overflow-hidden transition-all duration-400" style={{ maxHeight: open ? "5000px" : "0", opacity: open ? 1 : 0 }}>
+        <div style={{ padding: "clamp(4px, 1vw, 8px) clamp(14px, 3vw, 24px) clamp(16px, 3vw, 24px)", display: "flex", flexDirection: "column", gap: "clamp(10px, 2.5vw, 18px)" }}>
           {children}
         </div>
       </div>
@@ -161,9 +161,9 @@ function AccordionSection({ icon, title, open, onToggle, children }: {
 
 function SubHeading({ icon, children }: { icon?: React.ReactNode; children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2 pt-1">
+    <div className="flex items-center gap-2 pt-0.5 sm:pt-1">
       {icon}
-      <h4 className="text-[12px] font-bold tracking-[0.15em] uppercase" style={{ color: "var(--accent)" }}>{children}</h4>
+      <h4 className="text-[11px] sm:text-[12px] font-bold tracking-[0.15em] uppercase" style={{ color: "var(--accent)" }}>{children}</h4>
     </div>
   );
 }
@@ -174,23 +174,23 @@ function SubHeading({ icon, children }: { icon?: React.ReactNode; children: Reac
 
 function StepCard({ num, title, badge, children }: { num: number; title: string; badge?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl" style={{ padding: "clamp(16px, 3vw, 24px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-      <div className="flex items-start gap-3 mb-4">
-        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-bold font-display"
+    <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 24px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
+      <div className="flex items-start gap-2.5 sm:gap-3" style={{ marginBottom: "clamp(12px, 2.5vw, 16px)" }}>
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shrink-0 text-[12px] sm:text-[13px] font-bold font-display"
           style={{ background: "linear-gradient(135deg, var(--accent), #00ccff)", color: "var(--bg-deep)" }}>
           {num}
         </div>
         <div className="flex items-center gap-2 flex-wrap min-w-0 pt-0.5">
-          <h3 className="font-display font-semibold text-[var(--text-primary)]" style={{ fontSize: "clamp(0.875rem, 2vw, 1rem)" }}>{title}</h3>
+          <h3 className="font-display font-semibold text-[var(--text-primary)]" style={{ fontSize: "clamp(0.825rem, 2.5vw, 1rem)" }}>{title}</h3>
           {badge && (
-            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider"
+            <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider"
               style={{ background: "rgba(0,255,106,0.12)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.2)" }}>
               {badge}
             </span>
           )}
         </div>
       </div>
-      <div className="space-y-3">{children}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 12px)" }}>{children}</div>
     </div>
   );
 }
@@ -208,16 +208,16 @@ export default function AtlasPage() {
     <div style={{ background: "var(--bg-deep)", minHeight: "100vh" }}>
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.6)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-[900px] mx-auto flex items-center justify-between" style={{ padding: "14px clamp(16px, 4vw, 32px)" }}>
-          <a href="/" className="flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">
+        <div className="max-w-[900px] mx-auto flex items-center justify-between" style={{ padding: "clamp(12px, 2vw, 14px) clamp(16px, 4vw, 32px)" }}>
+          <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">
             <ArrowLeft size={16} />
             <span className="hidden sm:inline">На главную</span>
           </a>
           <div className="flex items-center gap-2">
-            <Shield size={18} className="text-[var(--accent)]" />
-            <span className="font-display font-bold text-[var(--text-primary)] text-sm">Atlas Secure</span>
+            <Shield size={16} className="text-[var(--accent)]" />
+            <span className="font-display font-bold text-[var(--text-primary)] text-[13px] sm:text-sm">Atlas Secure</span>
           </div>
-          <div style={{ width: "72px" }} />
+          <div className="hidden sm:block" style={{ width: "72px" }} />
         </div>
       </header>
 
@@ -225,15 +225,15 @@ export default function AtlasPage() {
       <main className="max-w-[900px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(16px, 4vw, 32px) clamp(48px, 8vw, 80px)" }}>
 
         {/* Title */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
+        <div style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: "clamp(10px, 2vw, 16px)" }}>
             <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ boxShadow: "0 0 12px rgba(0,255,106,0.35)" }} />
-            <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">Инструкции</span>
+            <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">Инструкции</span>
           </div>
-          <h1 className="font-display font-bold tracking-tight text-[var(--text-primary)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)", lineHeight: 1.1 }}>
+          <h1 className="font-display font-bold tracking-tight text-[var(--text-primary)]" style={{ fontSize: "clamp(1.5rem, 5vw, 2.5rem)", lineHeight: 1.15 }}>
             Как подключить VPN
           </h1>
-          <p className="text-[var(--text-secondary)] mt-3" style={{ fontSize: "clamp(0.875rem, 2vw, 1rem)" }}>
+          <p className="text-[var(--text-secondary)]" style={{ fontSize: "clamp(0.825rem, 2vw, 1rem)", marginTop: "clamp(8px, 1.5vw, 12px)" }}>
             Пошаговые инструкции для всех устройств
           </p>
         </div>
@@ -358,7 +358,7 @@ export default function AtlasPage() {
             </InfoBlock>
 
             <StepCard num={1} title="Определите модель роутера">
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                 Проверьте, поддерживает ли ваш роутер прошивку <strong className="text-[var(--text-primary)]">OpenWrt</strong>. Большинство роутеров Ростелеком (Sercomm, ZTE, Sagemcom) имеют ограниченную прошивку.
               </p>
               <WarningBlock>
@@ -367,10 +367,10 @@ export default function AtlasPage() {
             </StepCard>
 
             <StepCard num={2} title="Вариант А — OpenWrt" badge="Продвинутый">
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                 Если роутер поддерживает OpenWrt (TP-Link, Keenetic и др.):
               </p>
-              <ul className="text-sm text-[var(--text-secondary)] leading-relaxed space-y-2 list-none">
+              <ul className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed space-y-2 list-none">
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Перепрошейте роутер на OpenWrt</span></li>
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Установите <code className="text-[var(--accent)] bg-[rgba(0,255,106,0.08)] px-1.5 py-0.5 rounded text-[12px]">xray-core</code> через opkg</span></li>
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Настройте TPROXY-режим</span></li>
@@ -379,7 +379,7 @@ export default function AtlasPage() {
             </StepCard>
 
             <StepCard num={3} title="Вариант Б — Linux Transparent Proxy" badge="Проще">
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                 Используем ПК с Ubuntu/Debian или <strong className="text-[var(--text-primary)]">Raspberry Pi</strong> как промежуточный VPN-шлюз.
               </p>
               <InfoBlock icon={<Settings size={20} className="shrink-0 mt-0.5 text-[var(--accent)]" />}>
@@ -390,10 +390,10 @@ export default function AtlasPage() {
             </StepCard>
 
             <StepCard num={4} title="Raspberry Pi как VPN-шлюз" badge="Рекомендуем">
-              <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+              <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                 Raspberry Pi 3/4/5 — идеальный домашний VPN-шлюз. Тихий, энергоэффективный, достаточно мощный.
               </p>
-              <ul className="text-sm text-[var(--text-secondary)] leading-relaxed space-y-2 list-none">
+              <ul className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed space-y-2 list-none">
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Установите <strong className="text-[var(--text-primary)]">Raspberry Pi OS Lite</strong></span></li>
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Подключите RPi к роутеру по Ethernet</span></li>
                 <li className="flex items-start gap-2"><ChevronRight size={14} className="text-[var(--accent)] shrink-0 mt-1" /><span>Установите Xray (см. Шаг 3)</span></li>
@@ -419,43 +419,44 @@ export default function AtlasPage() {
         </div>
 
         {/* ═══ DOWNLOAD APPS ═══ */}
-        <div className="mt-10">
-          <h2 className="font-display font-bold text-[var(--text-primary)] mb-5" style={{ fontSize: "clamp(1.1rem, 3vw, 1.35rem)" }}>Скачать приложение</h2>
-          <div className="grid grid-cols-2 gap-3">
+        <div style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
+          <h2 className="font-display font-bold text-[var(--text-primary)]" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)", marginBottom: "clamp(14px, 3vw, 20px)" }}>Скачать приложение</h2>
+          <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
             <a href="https://apps.apple.com/app/v2raytun/id6476628951" target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-xl font-medium text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
-              style={{ padding: "clamp(12px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
-              <Apple size={18} /> iOS
+              className="flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl font-medium text-[13px] sm:text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
+              style={{ padding: "clamp(11px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+              <Apple size={16} /> iOS
             </a>
             <a href="https://play.google.com/store/apps/details?id=com.v2raytun.android" target="_blank" rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2.5 rounded-xl font-medium text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
-              style={{ padding: "clamp(12px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
-              <Smartphone size={18} /> Android
+              className="flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl font-medium text-[13px] sm:text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
+              style={{ padding: "clamp(11px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+              <Smartphone size={16} /> Android
             </a>
-            <a href="#" className="flex items-center justify-center gap-2.5 rounded-xl font-medium text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
-              style={{ padding: "clamp(12px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
-              <Monitor size={18} /> Windows
+            <a href="#" className="flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl font-medium text-[13px] sm:text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
+              style={{ padding: "clamp(11px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+              <Monitor size={16} /> Windows
             </a>
-            <a href="#" className="flex items-center justify-center gap-2.5 rounded-xl font-medium text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
-              style={{ padding: "clamp(12px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
-              <Laptop size={18} /> macOS
+            <a href="#" className="flex items-center justify-center gap-2 sm:gap-2.5 rounded-xl font-medium text-[13px] sm:text-sm transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)]"
+              style={{ padding: "clamp(11px, 3vw, 16px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+              <Laptop size={16} /> macOS
             </a>
           </div>
         </div>
 
         {/* ═══ CTA BUTTON ═══ */}
-        <div className="mt-8">
-          <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer"
-            className="btn-primary w-full justify-center" style={{ padding: "16px 24px", borderRadius: "14px", fontSize: "15px" }}>
+        <div style={{ marginTop: "clamp(24px, 4vw, 32px)" }}>
+          <a href="https://t.me/Atlas_SupportSecurity" target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90"
+            style={{ padding: "clamp(14px, 3vw, 16px) 24px", borderRadius: "14px", fontSize: "clamp(14px, 2.5vw, 15px)", background: "var(--accent)" }}>
             <Send size={16} /> Написать в поддержку
           </a>
         </div>
 
         {/* ═══ SUPPORT CARD ═══ */}
-        <div className="mt-8 rounded-2xl text-center" style={{ padding: "clamp(24px, 5vw, 36px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)", border: "1px solid var(--border-accent)" }}>
-          <Shield size={28} className="mx-auto mb-3 text-[var(--accent)]" />
-          <h3 className="font-display text-lg font-bold text-[var(--text-primary)] mb-2">Нужна помощь?</h3>
-          <p className="text-sm text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
+        <div className="rounded-xl sm:rounded-2xl text-center" style={{ marginTop: "clamp(24px, 4vw, 32px)", padding: "clamp(20px, 5vw, 36px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)", border: "1px solid var(--border-accent)" }}>
+          <Shield size={24} className="mx-auto mb-3 text-[var(--accent)]" />
+          <h3 className="font-display font-bold text-[var(--text-primary)]" style={{ fontSize: "clamp(1rem, 2.5vw, 1.125rem)", marginBottom: "8px" }}>Нужна помощь?</h3>
+          <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto leading-relaxed">
             Обратитесь к личному менеджеру Atlas Secure — поможем настроить VPN на любом устройстве и выдадим персональную конфигурацию.
           </p>
         </div>
