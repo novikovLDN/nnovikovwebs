@@ -399,7 +399,7 @@ export default function AtlasReport() {
     <div style={{ background: "var(--bg-deep)", minHeight: "100vh" }}>
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.7)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(16px, 4vw, 48px)" }}>
+        <div className="w-full flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(24px, 5vw, 64px)" }}>
           <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 shrink-0">
             <ArrowLeft size={16} />
             <span className="hidden min-[480px]:inline">QoDev</span>
@@ -413,11 +413,11 @@ export default function AtlasReport() {
         </div>
       </header>
 
-      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(16px, 4vw, 48px) clamp(48px, 8vw, 80px)" }}>
+      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(24px, 5vw, 64px) clamp(48px, 8vw, 80px)" }}>
 
         {/* ═══ TITLE ═══ */}
-        <div style={{ marginBottom: "clamp(32px, 5vw, 48px)" }}>
-          <div className="flex items-center gap-2" style={{ marginBottom: "clamp(12px, 2vw, 16px)" }}>
+        <div className="text-center" style={{ marginBottom: "clamp(32px, 5vw, 48px)" }}>
+          <div className="flex items-center justify-center gap-2" style={{ marginBottom: "clamp(12px, 2vw, 16px)" }}>
             <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ boxShadow: "0 0 12px rgba(0,255,106,0.35)" }} />
             <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">Financial Report</span>
           </div>
@@ -427,7 +427,7 @@ export default function AtlasReport() {
           <p className="text-[var(--text-secondary)]" style={{ fontSize: "clamp(0.825rem, 2vw, 1rem)", marginTop: "clamp(8px, 1.5vw, 12px)" }}>
             {t("Финансовый отчёт за I квартал 2025 · 1 января — 31 марта", "Financial Report Q1 2025 · January 1 — March 31")}
           </p>
-          <div className="flex items-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
             <Lock size={10} className="text-[var(--text-muted)] shrink-0 sm:w-3 sm:h-3" />
             <span className="text-[8px] sm:text-[10px] text-[var(--text-muted)] tracking-wider uppercase">{t("Конфиденциально · Atlas Secure", "Confidential · Atlas Secure")}</span>
           </div>
