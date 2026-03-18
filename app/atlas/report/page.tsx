@@ -399,7 +399,7 @@ export default function AtlasReport() {
     <div style={{ background: "var(--bg-deep)", minHeight: "100vh" }}>
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.7)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-[1000px] mx-auto flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(16px, 4vw, 40px)" }}>
+        <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(16px, 4vw, 48px)" }}>
           <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 shrink-0">
             <ArrowLeft size={16} />
             <span className="hidden min-[480px]:inline">QoDev</span>
@@ -413,7 +413,7 @@ export default function AtlasReport() {
         </div>
       </header>
 
-      <main className="max-w-[1000px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(16px, 4vw, 32px) clamp(48px, 8vw, 80px)" }}>
+      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(16px, 4vw, 48px) clamp(48px, 8vw, 80px)" }}>
 
         {/* ═══ TITLE ═══ */}
         <div style={{ marginBottom: "clamp(32px, 5vw, 48px)" }}>
@@ -434,7 +434,7 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ TOP KPI STRIP ═══ */}
-        <div ref={revenue.ref} className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(6px, 1.5vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
+        <div ref={revenue.ref} className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(8px, 1.5vw, 14px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
           <div className="rounded-xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(0,255,106,0.08), rgba(0,255,106,0.02))", border: "1px solid var(--border-accent)" }}>
             <div style={{ padding: "clamp(12px, 2.5vw, 20px)" }}>
               <div className="text-[9px] min-[480px]:text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-1.5 sm:mb-2">{t("Выручка", "Revenue")}</div>
@@ -481,7 +481,7 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ QUICK STATS ═══ */}
-        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(8px, 2vw, 14px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
           <KpiCard label={t("Подписок", "Subscriptions")} value="9 183" sub="Paid subscribers" icon={<Users size={16} />} />
           <KpiCard label={t("Ср. чек", "Avg. Check")} value="423,50 ₽" sub="AOV" icon={<CreditCard size={16} />} />
           <KpiCard label="MRR" value="1 297 276 ₽" sub="Monthly Recurring" icon={<Activity size={16} />} accent />
@@ -506,7 +506,7 @@ export default function AtlasReport() {
         <EmailSubscribe />
 
         {/* ═══ REPORT SECTIONS ═══ */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 14px)" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 16px)" }}>
 
           {/* 01 — EXECUTIVE SUMMARY */}
           <ReportSection id="01" icon={<BarChart3 size={20} className="text-[var(--accent)]" />} title="Executive Summary" badge={t("Ключевое", "Key")} defaultOpen>

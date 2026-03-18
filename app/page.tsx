@@ -635,20 +635,20 @@ function Nav() {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
-          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2" aria-label="QoDev">
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto flex items-center justify-between relative z-50" style={{ padding: "18px clamp(24px, 5vw, 48px)" }}>
+          <a href="#" className="font-display text-xl xl:text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2" aria-label="QoDev">
             <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
             {NAV.map((item) => (
-              <a key={item.href} href={item.href} className={`px-2 xl:px-3 2xl:px-4 py-2 text-[12px] xl:text-[13px] transition-colors duration-300 tracking-wide relative whitespace-nowrap ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              <a key={item.href} href={item.href} className={`px-3 xl:px-4 2xl:px-5 py-2 text-[13px] xl:text-[14px] transition-colors duration-300 tracking-wide relative whitespace-nowrap ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                 {item.label}
                 {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
               </a>
             ))}
-            <LangSwitcher className="ml-1 xl:ml-2" />
-            <a href="#contact" className="ml-2 xl:ml-3 btn-primary shrink-0" style={{ padding: "10px 20px", fontSize: "12px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
+            <LangSwitcher className="ml-2 xl:ml-3" />
+            <a href="#contact" className="ml-3 xl:ml-4 btn-primary shrink-0" style={{ padding: "12px 28px", fontSize: "13px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
