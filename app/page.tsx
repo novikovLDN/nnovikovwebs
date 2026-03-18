@@ -209,7 +209,7 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           style={{ fontSize: "clamp(2.5rem, 10vw, 5rem)", opacity: 0, willChange: "opacity, transform" }}
         >
           <span className="text-[var(--accent)]">Q</span>
-          <span className="text-[var(--text-primary)]">odev</span>
+          <span className="text-[var(--text-primary)]">oDev</span>
         </h1>
         <div
           ref={subtitleRef}
@@ -636,19 +636,19 @@ function Nav() {
         aria-label="Main navigation"
       >
         <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
-          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2" aria-label="Qodev">
-            <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
+          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2" aria-label="QoDev">
+            <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5 xl:gap-1">
             {NAV.map((item) => (
-              <a key={item.href} href={item.href} className={`px-3 xl:px-4 py-2 text-[13px] transition-colors duration-300 tracking-wide relative ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              <a key={item.href} href={item.href} className={`px-2 xl:px-3 2xl:px-4 py-2 text-[12px] xl:text-[13px] transition-colors duration-300 tracking-wide relative whitespace-nowrap ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                 {item.label}
                 {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
               </a>
             ))}
-            <LangSwitcher className="ml-2" />
-            <a href="#contact" className="ml-3 btn-primary" style={{ padding: "10px 24px", fontSize: "12px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
+            <LangSwitcher className="ml-1 xl:ml-2" />
+            <a href="#contact" className="ml-2 xl:ml-3 btn-primary shrink-0" style={{ padding: "10px 20px", fontSize: "12px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
@@ -719,22 +719,61 @@ function MobileDivider() {
 
 function TiltCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: 0, y: 0 });
+  const current = useRef({ x: 0, y: 0 });
+  const rafId = useRef<number>(0);
+  const active = useRef(false);
+
+  const animate = useCallback(() => {
+    const el = ref.current;
+    const glow = glowRef.current;
+    if (!el) return;
+
+    current.current.x += (target.current.x - current.current.x) * 0.12;
+    current.current.y += (target.current.y - current.current.y) * 0.12;
+
+    const rx = current.current.y * -8;
+    const ry = current.current.x * 8;
+    el.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px) scale(1.02)`;
+
+    if (glow) {
+      const gx = (current.current.x + 0.5) * 100;
+      const gy = (current.current.y + 0.5) * 100;
+      glow.style.background = `radial-gradient(circle at ${gx}% ${gy}%, rgba(0,255,106,0.08) 0%, transparent 60%)`;
+    }
+
+    if (active.current) {
+      rafId.current = requestAnimationFrame(animate);
+    }
+  }, []);
 
   const handleMove = useCallback((e: React.MouseEvent) => {
     const el = ref.current;
     if (!el || window.innerWidth < 768) return;
     const rect = el.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    el.style.transform = `perspective(800px) rotateY(${x * 5}deg) rotateX(${-y * 5}deg) translateY(-3px)`;
-  }, []);
+    target.current.x = (e.clientX - rect.left) / rect.width - 0.5;
+    target.current.y = (e.clientY - rect.top) / rect.height - 0.5;
+
+    if (!active.current) {
+      active.current = true;
+      rafId.current = requestAnimationFrame(animate);
+    }
+  }, [animate]);
 
   const handleLeave = useCallback(() => {
+    active.current = false;
+    cancelAnimationFrame(rafId.current);
+    target.current = { x: 0, y: 0 };
+    current.current = { x: 0, y: 0 };
     if (ref.current) ref.current.style.transform = "";
+    if (glowRef.current) glowRef.current.style.background = "transparent";
   }, []);
 
   return (
-    <div ref={ref} className={`tilt-card ${className}`} onMouseMove={handleMove} onMouseLeave={handleLeave} style={{ transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+    <div ref={ref} className={`tilt-card ${className}`} onMouseMove={handleMove} onMouseLeave={handleLeave}
+      style={{ transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)", willChange: "transform", position: "relative" }}>
+      <div ref={glowRef} className="absolute inset-0 rounded-2xl pointer-events-none z-10" style={{ transition: "background 0.3s ease" }} />
       {children}
     </div>
   );
@@ -898,7 +937,7 @@ export default function Home() {
             </div>
 
             <h1 className="reveal font-display font-bold tracking-tight leading-[0.95]" style={{ fontSize: "clamp(2.5rem, 9vw, 6rem)" }}>
-              <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
+              <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
             </h1>
 
             <p className="reveal text-[var(--text-secondary)] max-w-xl" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(1rem, 2.5vw, 1.35rem)", lineHeight: 1.6 }}>
@@ -1021,19 +1060,19 @@ export default function Home() {
 
       {/* ═══ CTA BANNER ═══ */}
       <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 64px) clamp(20px, 5vw, 64px)" }}>
-        <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(28px, 5vw, 64px) clamp(20px, 4vw, 48px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
-          <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
+        <div className="card text-center border-[var(--border-accent)] overflow-hidden" style={{ padding: "clamp(24px, 5vw, 64px) clamp(16px, 4vw, 48px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
+          <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.15rem, 4vw, 2.5rem)", marginBottom: "clamp(12px, 3vw, 20px)", lineHeight: 1.2 }}>
             {t("Есть идея?", "Got an idea?")} <span className="gradient-text">{t("Давайте реализуем.", "Let's bring it to life.")}</span>
           </h3>
-          <p className="text-[var(--text-secondary)] max-w-xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1rem)", marginBottom: "clamp(24px, 4vw, 32px)" }}>
+          <p className="text-[var(--text-secondary)] max-w-xl mx-auto" style={{ fontSize: "clamp(0.8rem, 2vw, 1rem)", marginBottom: "clamp(20px, 4vw, 32px)", lineHeight: 1.6 }}>
             {t(
               "Расскажите о вашем проекте — проведём бесплатную консультацию, оценим сроки и предложим оптимальное технологическое решение.",
               "Tell us about your project — we'll provide a free consultation, estimate timelines, and propose the optimal technology solution."
             )}
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-            <a href="#contact" className="btn-primary w-full sm:w-auto">{t("Обсудить проект", "Start a Project")} <ArrowRight size={14} /></a>
-            <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="btn-secondary w-full sm:w-auto">{t("Написать в Telegram", "Message on Telegram")}</a>
+          <div className="flex flex-col min-[400px]:flex-row justify-center gap-3 min-[400px]:gap-4">
+            <a href="#contact" className="btn-primary w-full min-[400px]:w-auto text-center">{t("Обсудить проект", "Start a Project")} <ArrowRight size={14} /></a>
+            <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="btn-secondary w-full min-[400px]:w-auto text-center">{t("Написать в Telegram", "Message on Telegram")}</a>
           </div>
         </div>
       </div>
@@ -1070,7 +1109,7 @@ export default function Home() {
 
       {/* ═══ WHY US ═══ */}
       <Section id="why">
-        <SectionHeader label={t("Преимущества", "Advantages")} title={t("Почему выбирают", "Why Choose")} secondary="Qodev" />
+        <SectionHeader label={t("Преимущества", "Advantages")} title={t("Почему выбирают", "Why Choose")} secondary="QoDev" />
         <div className="grid lg:grid-cols-3" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
           {WHY_US.map((item, i) => (
             <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
@@ -1117,21 +1156,6 @@ export default function Home() {
               </TiltCard>
             ))}
 
-            {/* Atlas Secure link */}
-            <TiltCard>
-              <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer" className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)", gap: "12px", borderColor: "var(--border-accent)" }}>
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(0, 255, 106, 0.1)", border: "1px solid rgba(0, 255, 106, 0.2)" }}>
-                    <Shield size={16} className="text-[var(--accent)]" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">Atlas Secure</div>
-                    <div className="text-[11px] text-[var(--text-muted)]">{t("VPN — подключить через Telegram", "VPN — Connect via Telegram")}</div>
-                  </div>
-                </div>
-                <ArrowRight size={18} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
-              </a>
-            </TiltCard>
           </div>
         </div>
       </Section>
@@ -1145,7 +1169,7 @@ export default function Home() {
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(24px, 4vw, 40px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
             <div>
               <span className="font-display text-xl sm:text-2xl font-bold">
-                <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
+                <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
               </span>
               <p className="mt-3 sm:mt-4 text-[13px] sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
                 {t(
@@ -1168,7 +1192,6 @@ export default function Home() {
                 {CONTACTS.map((c) => (
                   <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} className="block text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{c.value}</a>
                 ))}
-                <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer" className="block text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">Atlas Secure VPN</a>
               </div>
             </div>
             <div>
@@ -1180,15 +1203,15 @@ export default function Home() {
           {/* Legal info */}
           <div className="flex flex-col gap-4 text-[11px] sm:text-[12px] text-[var(--text-muted)] leading-relaxed">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <p><span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Qodev Software Agency</p>
+              <p><span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} QoDev Software Agency</p>
               <p className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full bg-[var(--accent)]" />
-                Crafted with precision
+                {t("Разработано QoDev", "Developed by QoDev")}
               </p>
             </div>
             <div className="h-[1px] bg-[var(--border)]" />
             <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed space-y-1.5">
-              <p>Qodev Limited</p>
+              <p>QoDev Limited</p>
               <p>{t(
                 "Юридический адрес: Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong",
                 "Registered address: Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong"

@@ -10,9 +10,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Qodev — Software Agency | Веб и мобильная разработка, UI/UX дизайн",
+  title: "QoDev — Software Agency | Веб и мобильная разработка, UI/UX дизайн",
   description:
-    "Qodev — агентство полного цикла разработки. Создаём веб-приложения, мобильные продукты, UI/UX дизайн, DevOps-инфраструктуру. От идеи до масштабирования.",
+    "QoDev — агентство полного цикла разработки. Создаём веб-приложения, мобильные продукты, UI/UX дизайн, DevOps-инфраструктуру. От идеи до масштабирования.",
   keywords: [
     "software agency",
     "веб-разработка",
@@ -30,31 +30,31 @@ export const metadata: Metadata = {
     "Android",
     "Kubernetes",
     "облачная инфраструктура",
-    "Qodev",
+    "QoDev",
     "software development",
     "IT агентство",
     "заказная разработка",
   ],
-  authors: [{ name: "Qodev" }],
-  creator: "Qodev",
-  publisher: "Qodev",
+  authors: [{ name: "QoDev" }],
+  creator: "QoDev",
+  publisher: "QoDev",
   metadataBase: new URL("https://godev.dev"),
   alternates: {
     canonical: "/",
     languages: { "ru-RU": "/", "en-US": "/" },
   },
   openGraph: {
-    title: "Qodev — Software Agency | Разработка цифровых продуктов",
+    title: "QoDev — Software Agency | Разработка цифровых продуктов",
     description:
       "Агентство полного цикла разработки. Веб-приложения, мобильные продукты, UI/UX, DevOps. Превращаем идеи в технологии.",
     type: "website",
     locale: "ru_RU",
     url: "/",
-    siteName: "Qodev Software Agency",
+    siteName: "QoDev Software Agency",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Qodev — Software Agency",
+    title: "QoDev — Software Agency",
     description:
       "Создаём цифровые продукты: веб, мобайл, дизайн, DevOps. Полный цикл от идеи до масштабирования.",
   },
@@ -75,7 +75,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Qodev",
+  name: "QoDev",
   description:
     "Software agency полного цикла. Веб-разработка, мобильные приложения, UI/UX дизайн, DevOps и облачная инфраструктура.",
   url: "https://godev.dev",
