@@ -209,10 +209,10 @@ export default function AtlasPage() {
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.6)", borderBottom: "1px solid var(--border)" }}>
         <div className="max-w-[900px] mx-auto flex items-center justify-between" style={{ padding: "clamp(12px, 2vw, 14px) clamp(16px, 4vw, 32px)" }}>
-          <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">
+          <span className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-muted)] cursor-default opacity-40 select-none">
             <ArrowLeft size={16} />
             <span className="hidden sm:inline">На главную</span>
-          </a>
+          </span>
           <div className="flex items-center gap-2">
             <Shield size={16} className="text-[var(--accent)]" />
             <span className="font-display font-bold text-[var(--text-primary)] text-[13px] sm:text-sm">Atlas Secure</span>
