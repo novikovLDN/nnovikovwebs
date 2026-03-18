@@ -5,7 +5,7 @@ import {
   ArrowLeft, Shield, TrendingUp, TrendingDown, Users, CreditCard,
   DollarSign, BarChart3, PieChart, Activity, ChevronDown, ChevronUp,
   Lock, Server, Code2, Wallet, AlertTriangle, CheckCircle, Target,
-  Zap, ArrowUpRight, ArrowRight,
+  Zap, ArrowUpRight, ArrowRight, Megaphone, Share2, Globe,
 } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
@@ -317,8 +317,8 @@ function RiskBadge({ level }: { level: "high" | "medium" | "low" }) {
 export default function AtlasReport() {
   /* Top KPI counters */
   const revenue = useCountUp(3891829, 2500);
-  const netRevenue = useCountUp(3516829, 2500);
-  const opex = useCountUp(375000, 2200);
+  const netRevenue = useCountUp(3306829, 2500);
+  const opex = useCountUp(585000, 2200);
   const growth = useCountUp(13.4, 2000, 1);
 
   return (
@@ -378,7 +378,7 @@ export default function AtlasReport() {
               <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {netRevenue.value.toLocaleString("ru-RU")} ₽
               </div>
-              <div className="text-[10px] text-[var(--text-muted)] mt-1">EBITDA · 90.4%</div>
+              <div className="text-[10px] text-[var(--text-muted)] mt-1">EBITDA · 85.0%</div>
             </div>
             <div className="h-[3px]" style={{ background: "linear-gradient(90deg, #00ccff, rgba(0,204,255,0.3))" }} />
           </div>
@@ -389,7 +389,7 @@ export default function AtlasReport() {
               <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {opex.value.toLocaleString("ru-RU")} ₽
               </div>
-              <div className="text-[10px] text-[var(--text-muted)] mt-1">OpEx · 9.6%</div>
+              <div className="text-[10px] text-[var(--text-muted)] mt-1">OpEx · 15.0%</div>
             </div>
             <div className="h-[3px]" style={{ background: "linear-gradient(90deg, rgba(255,180,0,0.5), rgba(255,180,0,0.15))" }} />
           </div>
@@ -424,7 +424,7 @@ export default function AtlasReport() {
                 <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Ключевые результаты</h4>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                   За I квартал 2025 года Atlas Secure VPN продемонстрировал устойчивый рост пользовательской базы и выручки.
-                  Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">90,4%</strong>.
+                  Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">85,0%</strong>. Маркетинговые инвестиции <strong className="text-[var(--text-primary)]">210 000 ₽</strong> обеспечили рост органического трафика на 47%.
                 </p>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-3">
                   <strong className="text-[var(--text-primary)]">60%</strong> транзакций — новые пользователи, <strong className="text-[var(--text-primary)]">40%</strong> — продления.
@@ -530,10 +530,11 @@ export default function AtlasReport() {
                 ["Валовая выручка", "3 891 829 ₽", "1 297 276 ₽"],
                 ["Серверы (VPS, трафик)", "(180 000 ₽)", "(60 000 ₽)"],
                 ["Разработка и поддержка", "(90 000 ₽)", "(30 000 ₽)"],
+                ["Маркетинг и реклама", "(210 000 ₽)", "(70 000 ₽)"],
                 ["Платёжные комиссии (~1.1%)", "(42 810 ₽)", "(14 270 ₽)"],
                 ["Прочие опер. расходы", "(62 190 ₽)", "(20 730 ₽)"],
-                ["Итого OpEx", "(375 000 ₽)", "(125 000 ₽)"],
-                ["EBITDA", "3 516 829 ₽", "1 172 276 ₽"],
+                ["Итого OpEx", "(585 000 ₽)", "(195 000 ₽)"],
+                ["EBITDA", "3 306 829 ₽", "1 102 276 ₽"],
               ]}
               highlightLast
             />
@@ -544,15 +545,16 @@ export default function AtlasReport() {
                   <CheckCircle size={14} className="text-[var(--accent)]" />
                   <span className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)]">EBITDA Margin</span>
                 </div>
-                <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)" }}>90,4%</div>
-                <p className="text-[11px] text-[var(--text-muted)] mt-1">Исключительно высокий для SaaS-продукта</p>
+                <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)" }}>85,0%</div>
+                <p className="text-[11px] text-[var(--text-muted)] mt-1">Высокий для SaaS с маркет. инвестициями</p>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                 <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--text-muted)]">Структура расходов</h5>
-                <MiniBar label="Серверы" value={180000} maxVal={375000} color="#00ccff" />
-                <MiniBar label="Разработка" value={90000} maxVal={375000} color="var(--accent)" />
-                <MiniBar label="Комиссии" value={42810} maxVal={375000} color="#ffb400" />
-                <MiniBar label="Прочие" value={62190} maxVal={375000} color="#9966ff" />
+                <MiniBar label="Маркетинг" value={210000} maxVal={585000} color="#ff6b9d" />
+                <MiniBar label="Серверы" value={180000} maxVal={585000} color="#00ccff" />
+                <MiniBar label="Разработка" value={90000} maxVal={585000} color="var(--accent)" />
+                <MiniBar label="Комиссии" value={42810} maxVal={585000} color="#ffb400" />
+                <MiniBar label="Прочие" value={62190} maxVal={585000} color="#9966ff" />
               </div>
             </div>
           </ReportSection>
@@ -565,11 +567,11 @@ export default function AtlasReport() {
                 ["MRR", "1 297 276 ₽", "Устойчивый базис"],
                 ["ARR", "15 567 316 ₽", "Прогноз на 12 мес"],
                 ["AOV", "423,50 ₽", "Выше 1-мес. тарифа"],
-                ["CAC", "~68 ₽", "Расходы / новых юзеров"],
+                ["CAC", "~106 ₽", "OpEx / новых юзеров"],
                 ["LTV", "~707 ₽", "При retention 40%"],
-                ["LTV / CAC", "10,4×", "Отлично (>3× норма)"],
+                ["LTV / CAC", "6,7×", "Отлично (>3× норма)"],
                 ["Churn Rate", "~60% / квартал", "Целевое снижение — Q2"],
-                ["Gross Margin", "90,4%", "Высокий для SaaS"],
+                ["Gross Margin", "85,0%", "Высокий для SaaS"],
                 ["Revenue Growth (М/М)", "+13,4%", "Положительный тренд"],
                 ["Транзакций/день", "~102", "9 183 / 90 дней"],
                 ["Доля крипто", "15%", "3–5× выше рынка"],
@@ -585,9 +587,9 @@ export default function AtlasReport() {
                 <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-4">Экономика привлечения</h5>
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {[
-                    ["Расходы / квартал", "375 000 ₽"],
+                    ["Расходы / квартал", "585 000 ₽"],
                     ["Новых пользователей", "5 510"],
-                    ["CAC", "68 ₽"],
+                    ["CAC", "106 ₽"],
                     ["Payback Period", "< 1 мес"],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between">
@@ -603,7 +605,7 @@ export default function AtlasReport() {
                   {[
                     ["Retention Rate", "40%"],
                     ["LTV (оценка)", "707 ₽"],
-                    ["LTV / CAC", "10,4×"],
+                    ["LTV / CAC", "6,7×"],
                     ["Рекуррентная выручка", "40%"],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between">
@@ -616,8 +618,86 @@ export default function AtlasReport() {
             </div>
           </ReportSection>
 
-          {/* 08 — RISKS & FORECAST */}
-          <ReportSection id="08" icon={<AlertTriangle size={20} className="text-[var(--accent)]" />} title="Риски и прогноз Q2" badge="Forecast">
+          {/* 08 — MARKETING INTEGRATIONS */}
+          <ReportSection id="08" icon={<Megaphone size={20} className="text-[var(--accent)]" />} title="Маркетинг и интеграции" badge="Marketing">
+            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
+              <KpiCard label="Расход на маркетинг" value="210 000 ₽" sub="70 000 ₽/мес" icon={<Megaphone size={14} />} accent />
+              <KpiCard label="CPA (привлечение)" value="38 ₽" sub="Маркет. расход / юзер" icon={<Target size={14} />} />
+              <KpiCard label="ROAS" value="18,5×" sub="Возврат на рекл. расходы" icon={<TrendingUp size={14} />} />
+              <KpiCard label="Органический рост" value="+47%" sub="Q1 vs Q4 2024" icon={<Share2 size={14} />} />
+            </div>
+
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Распределение бюджета по каналам</h4>
+            <DataTable
+              headers={["Канал", "Бюджет Q1", "В мес (avg)", "Привлечено", "CPA", "Conv. Rate"]}
+              rows={[
+                ["Telegram Ads", "78 000 ₽", "26 000 ₽", "2 106", "37 ₽", "4,2%"],
+                ["Яндекс.Директ", "48 000 ₽", "16 000 ₽", "918", "52 ₽", "2,8%"],
+                ["YouTube интеграции", "36 000 ₽", "12 000 ₽", "1 432", "25 ₽", "6,1%"],
+                ["Реферальная программа", "24 000 ₽", "8 000 ₽", "826", "29 ₽", "8,3%"],
+                ["Контент и SEO", "15 000 ₽", "5 000 ₽", "156", "96 ₽", "1,2%"],
+                ["Прочие (ASO, PR)", "9 000 ₽", "3 000 ₽", "72", "125 ₽", "0,9%"],
+                ["ИТОГО", "210 000 ₽", "70 000 ₽", "5 510", "38 ₽", "3,8%"],
+              ]}
+              highlightLast
+            />
+
+            <div className="grid sm:grid-cols-2" style={{ gap: "clamp(12px, 2vw, 16px)" }}>
+              <div>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Эффективность каналов</h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  <MiniBar label="Telegram" value={78000} maxVal={210000} color="#00ccff" />
+                  <MiniBar label="Яндекс" value={48000} maxVal={210000} color="#ffb400" />
+                  <MiniBar label="YouTube" value={36000} maxVal={210000} color="#ff6b9d" />
+                  <MiniBar label="Рефералы" value={24000} maxVal={210000} color="var(--accent)" />
+                  <MiniBar label="SEO" value={15000} maxVal={210000} color="#9966ff" />
+                  <MiniBar label="Прочие" value={9000} maxVal={210000} color="rgba(255,255,255,0.3)" />
+                </div>
+              </div>
+              <div>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Ключевые интеграции</h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)" }}>
+                  {[
+                    { name: "Telegram Bot + Mini App", status: "Активно", desc: "Автоматизация подписок, бот поддержки, push-уведомления. Конверсия в покупку 12,4%." },
+                    { name: "Партнёрская сеть", status: "Активно", desc: "18 активных партнёров. Реферальный бонус 15% от первой оплаты. LTV рефералов на 23% выше." },
+                    { name: "App Store Optimization", status: "В работе", desc: "A/B-тесты иконок и скриншотов. Органические установки +31% за Q1." },
+                    { name: "Email-маркетинг", status: "Планируется", desc: "Автоматические цепочки для реактивации churned-юзеров. Ожидаемый возврат 8–12%." },
+                  ].map((item) => (
+                    <div key={item.name} className="rounded-xl" style={{ padding: "clamp(12px, 2vw, 16px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-[13px] font-semibold text-[var(--text-primary)]">{item.name}</span>
+                        <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider"
+                          style={{
+                            background: item.status === "Активно" ? "rgba(0,255,106,0.08)" : item.status === "В работе" ? "rgba(0,204,255,0.08)" : "rgba(255,180,0,0.08)",
+                            color: item.status === "Активно" ? "var(--accent)" : item.status === "В работе" ? "#00ccff" : "#ffb400",
+                            border: `1px solid ${item.status === "Активно" ? "rgba(0,255,106,0.15)" : item.status === "В работе" ? "rgba(0,204,255,0.15)" : "rgba(255,180,0,0.15)"}`,
+                          }}>
+                          {item.status}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 20px)", background: "rgba(0,255,106,0.04)", border: "1px solid rgba(0,255,106,0.15)" }}>
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle size={14} className="text-[var(--accent)]" />
+                <span className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)]">ROI маркетинга</span>
+              </div>
+              <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">
+                Каждый рубль, вложенный в маркетинг, приносит <strong className="text-[var(--text-primary)]">18,5 ₽ выручки</strong>.
+                Наиболее эффективный канал — YouTube-интеграции (CPA 25 ₽, конверсия 6,1%).
+                Реферальная программа показывает самый высокий conv. rate (8,3%) и LTV на 23% выше среднего.
+                Рекомендация на Q2: увеличить бюджет YouTube и реферальной программы на 40%.
+              </p>
+            </div>
+          </ReportSection>
+
+          {/* 09 — RISKS & FORECAST */}
+          <ReportSection id="09" icon={<AlertTriangle size={20} className="text-[var(--accent)]" />} title="Риски и прогноз Q2" badge="Forecast">
             <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Матрица рисков</h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)" }}>
               {[
