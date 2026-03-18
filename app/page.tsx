@@ -519,41 +519,53 @@ function Nav() {
     return () => document.removeEventListener("keydown", onKey);
   }, [mobileOpen]);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 ${scrolled && !mobileOpen ? "backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]" : ""}`}
-      style={{
-        background: mobileOpen ? "transparent" : scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
-        transform: hidden && !mobileOpen ? "translateY(-100%)" : "translateY(0)",
-        transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s ease, backdrop-filter 0.6s ease",
-      }}
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
-        <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
-          <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
-        </a>
+    <>
+      <nav
+        className={`fixed top-0 left-0 w-full z-50 ${scrolled && !mobileOpen ? "backdrop-blur-xl border-b border-[rgba(255,255,255,0.06)]" : ""}`}
+        style={{
+          background: mobileOpen ? "transparent" : scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
+          transform: hidden && !mobileOpen ? "translateY(-100%)" : undefined,
+          transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s ease, backdrop-filter 0.6s ease",
+        }}
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
+          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
+            <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
+          </a>
 
-        <div className="hidden lg:flex items-center gap-1">
-          {NAV.map((item) => (
-            <a key={item.href} href={item.href} className={`px-3 xl:px-4 py-2 text-[13px] transition-colors duration-300 tracking-wide relative ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-              {item.label}
-              {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
-            </a>
-          ))}
-          <a href="#contact" className="ml-3 btn-primary !py-2.5 !px-6 !text-[12px] !w-auto !rounded-full">Обсудить проект</a>
+          <div className="hidden lg:flex items-center gap-1">
+            {NAV.map((item) => (
+              <a key={item.href} href={item.href} className={`px-3 xl:px-4 py-2 text-[13px] transition-colors duration-300 tracking-wide relative ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                {item.label}
+                {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
+              </a>
+            ))}
+            <a href="#contact" className="ml-3 btn-primary !py-2.5 !px-6 !text-[12px] !w-auto !rounded-full">Обсудить проект</a>
+          </div>
+
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden text-[var(--text-primary)] w-10 h-10 flex flex-col items-center justify-center gap-1.5 relative z-[60]" aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"} aria-expanded={mobileOpen}>
+            <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
+            <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[1.5px]" : ""}`} />
+          </button>
         </div>
+      </nav>
 
-        <button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden text-[var(--text-primary)] w-10 h-10 flex flex-col items-center justify-center gap-1.5" aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"} aria-expanded={mobileOpen}>
-          <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
-          <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[1.5px]" : ""}`} />
-        </button>
-      </div>
-
-      {/* Mobile fullscreen menu */}
+      {/* Mobile fullscreen menu — outside nav to avoid transform containment issues */}
       <div
-        className="lg:hidden fixed inset-0 z-40"
+        className="lg:hidden fixed inset-0 z-[55]"
         style={{
           pointerEvents: mobileOpen ? "auto" : "none",
           opacity: mobileOpen ? 1 : 0,
@@ -563,22 +575,23 @@ function Nav() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(8, 8, 8, 0.92)",
+            background: "rgba(8, 8, 8, 0.95)",
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
           }}
           onClick={() => setMobileOpen(false)}
         />
-        <div className="relative flex flex-col justify-center items-center h-full" style={{ paddingBottom: "60px" }}>
-          <div className="flex flex-col items-center" style={{ gap: "8px" }}>
+        <div className="relative flex flex-col justify-center items-center h-full px-6" style={{ paddingTop: "80px", paddingBottom: "60px" }}>
+          <div className="flex flex-col items-center w-full" style={{ gap: "4px" }}>
             {NAV.map((item, i) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={`text-center text-2xl font-display font-semibold tracking-tight ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-primary)] hover:text-[var(--accent)]"}`}
+                className={`mobile-menu-link text-center font-display font-semibold tracking-tight ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-primary)] hover:text-[var(--accent)]"}`}
                 style={{
-                  padding: "10px 24px",
+                  fontSize: "clamp(1.25rem, 5vw, 1.75rem)",
+                  padding: "clamp(8px, 2vw, 14px) 24px",
                   transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
                   opacity: mobileOpen ? 1 : 0,
                   transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.05}s, opacity 0.4s ease ${i * 0.05}s, color 0.3s ease`,
@@ -589,16 +602,16 @@ function Nav() {
             ))}
           </div>
           <div style={{
-            marginTop: "32px",
+            marginTop: "clamp(20px, 4vw, 32px)",
             transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
             opacity: mobileOpen ? 1 : 0,
             transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.05}s, opacity 0.4s ease ${NAV.length * 0.05}s`,
           }}>
-            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary !w-auto !px-10">Обсудить проект</a>
+            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary !w-auto !px-10 !rounded-full">Обсудить проект</a>
           </div>
         </div>
       </div>
-    </nav>
+    </>
   );
 }
 
