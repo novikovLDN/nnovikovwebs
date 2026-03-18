@@ -561,7 +561,7 @@ const PROJECTS = [
     desc: "Комплексная VPN-платформа с собственной инфраструктурой шифрования на базе VLESS + Reality. Кроссплатформенное решение для iOS, Android, macOS, Windows, роутеров и Smart TV. Безопасность корпоративного уровня для частных пользователей.",
     tags: ["VPN", "Security", "Cross-platform", "Infrastructure"],
     accent: true,
-    link: "/atlas",
+    link: "/atlas/report",
   },
   {
     num: "02",
@@ -931,6 +931,36 @@ export default function Home() {
 
       <MobileDivider />
 
+      {/* ═══ PROJECTS ═══ */}
+      <Section id="projects">
+        <SectionHeader label="Портфолио" title="Избранные" secondary="проекты" />
+        <div className="grid min-[540px]:grid-cols-2 xl:grid-cols-2" style={{ gap: "clamp(16px, 2vw, 28px)" }}>
+          {PROJECTS.map((p, i) => (
+            <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
+              <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(20px, 3vw, 32px)" }}>
+                <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
+                  <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
+                  {p.link ? (
+                    <a href={p.link} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300">
+                      <ArrowUpRight size={20} />
+                    </a>
+                  ) : (
+                    <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                  )}
+                </div>
+                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
+                <div className="flex flex-wrap gap-2">
+                  {p.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
+                </div>
+              </div>
+            </TiltCard>
+          ))}
+        </div>
+      </Section>
+
+      <MobileDivider />
+
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
         <SectionHeader label="Услуги" title="Полный спектр" secondary="digital-решений" />
@@ -964,36 +994,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
-      <MobileDivider />
-
-      {/* ═══ PROJECTS ═══ */}
-      <Section id="projects">
-        <SectionHeader label="Портфолио" title="Избранные" secondary="проекты" />
-        <div className="grid min-[540px]:grid-cols-2 xl:grid-cols-2" style={{ gap: "clamp(16px, 2vw, 28px)" }}>
-          {PROJECTS.map((p, i) => (
-            <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
-              <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(20px, 3vw, 32px)" }}>
-                <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
-                  <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
-                  {p.link ? (
-                    <a href={p.link} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300">
-                      <ArrowUpRight size={20} />
-                    </a>
-                  ) : (
-                    <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-                  )}
-                </div>
-                <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {p.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
-                </div>
-              </div>
-            </TiltCard>
-          ))}
-        </div>
-      </Section>
 
       <MobileDivider />
 
