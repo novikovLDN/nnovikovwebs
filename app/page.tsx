@@ -117,28 +117,66 @@ function useCountUp(target: number, duration = 2000) {
    ═══════════════════════════════════════════════════ */
 
 function LoadingScreen({ onComplete }: { onComplete: () => void }) {
-  const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
+  const barFillRef = useRef<HTMLDivElement>(null);
+  const percentRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    const container = containerRef.current;
+    const orb = orbRef.current;
+    const logo = logoRef.current;
+    const subtitle = subtitleRef.current;
+    const barFill = barFillRef.current;
+    const percent = percentRef.current;
+    if (!container || !orb || !logo || !subtitle || !barFill || !percent) return;
+
     let raf: number;
     const start = performance.now();
-    const duration = 1800;
+    const duration = 2200;
 
     const animate = (now: number) => {
       const elapsed = now - start;
-      const p = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 4);
-      setProgress(Math.floor(eased * 100));
+      const t = Math.min(elapsed / duration, 1);
+      /* Ultra-smooth quintic ease-out */
+      const e = 1 - Math.pow(1 - t, 5);
+      const p = e * 100;
 
-      if (p < 1) {
+      /* Direct DOM — zero React re-renders, native 120fps */
+      orb.style.opacity = String(e);
+      orb.style.transform = `scale(${0.8 + e * 0.2})`;
+
+      const logoOpacity = Math.min(t / 0.25, 1);
+      const logoY = (1 - Math.min(t / 0.35, 1)) * 16;
+      logo.style.opacity = String(logoOpacity);
+      logo.style.transform = `translate3d(0, ${logoY}px, 0)`;
+
+      const subOpacity = Math.max(0, (t - 0.2) / 0.3);
+      const subY = Math.max(0, (1 - Math.min((t - 0.2) / 0.35, 1)) * 10);
+      subtitle.style.opacity = String(Math.min(subOpacity, 1));
+      subtitle.style.transform = `translate3d(0, ${subY}px, 0)`;
+
+      barFill.style.transform = `scaleX(${e})`;
+
+      const pctOpacity = Math.min(t / 0.15, 1);
+      percent.style.opacity = String(pctOpacity);
+      percent.textContent = `${Math.round(p)}%`;
+
+      if (t < 1) {
         raf = requestAnimationFrame(animate);
       } else {
-        setPhase("reveal");
+        /* Smooth fade-out: no scale jump, just gentle dissolve */
+        container.style.transition = "opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
+        container.style.opacity = "0";
+        container.style.filter = "blur(8px)";
+        container.style.pointerEvents = "none";
         setTimeout(() => {
-          setPhase("done");
+          setVisible(false);
           onComplete();
-        }, 600);
+        }, 820);
       }
     };
 
@@ -146,50 +184,54 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     return () => cancelAnimationFrame(raf);
   }, [onComplete]);
 
-  if (phase === "done") return null;
+  if (!visible) return null;
 
   return (
     <div
+      ref={containerRef}
       className="fixed inset-0 z-[99999] flex flex-col items-center justify-center"
       style={{
         background: "var(--bg-deep)",
-        opacity: phase === "reveal" ? 0 : 1,
-        transform: phase === "reveal" ? "scale(1.05)" : "scale(1)",
-        transition: "opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-        pointerEvents: phase === "reveal" ? "none" : "auto",
+        willChange: "opacity, filter",
       }}
     >
       {/* Orb glow behind logo */}
       <div
+        ref={orbRef}
         className="absolute rounded-full"
         style={{
-          width: "300px",
-          height: "300px",
-          background: "radial-gradient(circle, rgba(0,255,106,0.12) 0%, transparent 70%)",
+          width: "clamp(200px, 50vw, 400px)",
+          height: "clamp(200px, 50vw, 400px)",
+          background: "radial-gradient(circle, rgba(0,255,106,0.1) 0%, rgba(0,204,255,0.04) 40%, transparent 70%)",
           filter: "blur(60px)",
-          opacity: progress / 100,
+          opacity: 0,
+          willChange: "opacity, transform",
         }}
       />
 
       {/* Logo */}
-      <div className="relative mb-8">
+      <div className="relative" style={{ marginBottom: "clamp(24px, 5vw, 40px)" }}>
         <h1
+          ref={logoRef}
           className="font-display font-bold tracking-tight"
           style={{
             fontSize: "clamp(2.5rem, 10vw, 5rem)",
-            opacity: Math.min(progress / 30, 1),
-            transform: `translateY(${Math.max(20 - (progress / 100) * 20, 0)}px)`,
-            transition: "transform 0.3s ease",
+            opacity: 0,
+            willChange: "opacity, transform",
           }}
         >
           <span className="text-[var(--accent)]">Q</span>
           <span className="text-[var(--text-primary)]">odev</span>
         </h1>
         <div
-          className="text-center text-[11px] tracking-[0.3em] uppercase font-medium mt-2"
+          ref={subtitleRef}
+          className="text-center tracking-[0.3em] uppercase font-medium"
           style={{
+            fontSize: "clamp(9px, 2vw, 11px)",
             color: "var(--text-muted)",
-            opacity: Math.max(0, (progress - 30) / 40),
+            marginTop: "clamp(4px, 1vw, 8px)",
+            opacity: 0,
+            willChange: "opacity, transform",
           }}
         >
           Software Agency
@@ -197,29 +239,35 @@ function LoadingScreen({ onComplete }: { onComplete: () => void }) {
       </div>
 
       {/* Progress bar */}
-      <div className="relative" style={{ width: "clamp(180px, 40vw, 280px)" }}>
+      <div className="relative" style={{ width: "clamp(160px, 40vw, 280px)" }}>
         <div
           className="h-[2px] rounded-full overflow-hidden"
           style={{ background: "var(--border)" }}
         >
           <div
+            ref={barFillRef}
             className="h-full rounded-full"
             style={{
-              width: `${progress}%`,
               background: "linear-gradient(90deg, var(--accent), #00ccff)",
-              boxShadow: "0 0 20px var(--accent-glow)",
-              transition: "width 0.1s linear",
+              boxShadow: "0 0 16px var(--accent-glow)",
+              transformOrigin: "left",
+              transform: "scaleX(0)",
+              willChange: "transform",
             }}
           />
         </div>
         <div
-          className="text-center mt-4 text-[11px] tracking-[0.15em] font-medium tabular-nums"
+          ref={percentRef}
+          className="text-center tracking-[0.15em] font-medium tabular-nums"
           style={{
+            fontSize: "clamp(10px, 2vw, 11px)",
             color: "var(--text-muted)",
-            opacity: Math.min(progress / 20, 1),
+            marginTop: "clamp(12px, 3vw, 16px)",
+            opacity: 0,
+            willChange: "opacity",
           }}
         >
-          {progress}%
+          0%
         </div>
       </div>
     </div>
@@ -689,7 +737,7 @@ function Nav() {
         style={{
           background: mobileOpen ? "transparent" : scrolled ? "rgba(8, 8, 8, 0.35)" : "transparent",
           transform: hidden && !mobileOpen ? "translateY(-100%)" : undefined,
-          transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.6s ease, backdrop-filter 0.6s ease",
+          transition: "transform 0.7s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.8s cubic-bezier(0.25, 1, 0.5, 1), backdrop-filter 0.8s cubic-bezier(0.25, 1, 0.5, 1)",
         }}
         role="navigation"
         aria-label="Main navigation"
