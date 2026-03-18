@@ -431,11 +431,10 @@ body.custom-cursor-active [role="button"] {
     border-radius: 14px;
   }
 
-  /* ── Buttons: full width, larger touch targets ── */
+  /* ── Buttons: larger touch targets ── */
   .btn-primary, .btn-secondary {
     padding: 14px 24px !important;
     font-size: 14px !important;
-    width: 100% !important;
     justify-content: center !important;
     border-radius: 14px !important;
   }
