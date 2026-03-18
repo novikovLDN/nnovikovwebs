@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, ArrowUpRight, Code2, Layers, Zap, BarChart3, Palette, ShieldCheck, Send, Mail, ChevronDown, Shield, Smartphone, Globe, CheckCircle, Users, Rocket, MessageSquare } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Code2, Layers, Zap, BarChart3, Palette, ShieldCheck, Send, Mail, ChevronDown, Shield, Smartphone, Globe, CheckCircle, Users, Rocket, MessageSquare, Sparkles } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -73,6 +73,182 @@ function useSmoothAnchors() {
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
+}
+
+/* ═══════════════════════════════════════════════════
+   ANIMATED COUNTER
+   ═══════════════════════════════════════════════════ */
+
+function useCountUp(target: number, duration = 2000) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const animate = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  return { value, ref };
+}
+
+/* ═══════════════════════════════════════════════════
+   LOADING SCREEN
+   ═══════════════════════════════════════════════════ */
+
+function LoadingScreen({ onComplete }: { onComplete: () => void }) {
+  const [progress, setProgress] = useState(0);
+  const [phase, setPhase] = useState<"loading" | "reveal" | "done">("loading");
+
+  useEffect(() => {
+    let raf: number;
+    const start = performance.now();
+    const duration = 1800;
+
+    const animate = (now: number) => {
+      const elapsed = now - start;
+      const p = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 4);
+      setProgress(Math.floor(eased * 100));
+
+      if (p < 1) {
+        raf = requestAnimationFrame(animate);
+      } else {
+        setPhase("reveal");
+        setTimeout(() => {
+          setPhase("done");
+          onComplete();
+        }, 600);
+      }
+    };
+
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [onComplete]);
+
+  if (phase === "done") return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center"
+      style={{
+        background: "var(--bg-deep)",
+        opacity: phase === "reveal" ? 0 : 1,
+        transform: phase === "reveal" ? "scale(1.05)" : "scale(1)",
+        transition: "opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+        pointerEvents: phase === "reveal" ? "none" : "auto",
+      }}
+    >
+      {/* Orb glow behind logo */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: "300px",
+          height: "300px",
+          background: "radial-gradient(circle, rgba(0,255,106,0.12) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          opacity: progress / 100,
+        }}
+      />
+
+      {/* Logo */}
+      <div className="relative mb-8">
+        <h1
+          className="font-display font-bold tracking-tight"
+          style={{
+            fontSize: "clamp(2.5rem, 10vw, 5rem)",
+            opacity: Math.min(progress / 30, 1),
+            transform: `translateY(${Math.max(20 - (progress / 100) * 20, 0)}px)`,
+            transition: "transform 0.3s ease",
+          }}
+        >
+          <span className="text-[var(--accent)]">Q</span>
+          <span className="text-[var(--text-primary)]">odev</span>
+        </h1>
+        <div
+          className="text-center text-[11px] tracking-[0.3em] uppercase font-medium mt-2"
+          style={{
+            color: "var(--text-muted)",
+            opacity: Math.max(0, (progress - 30) / 40),
+          }}
+        >
+          Software Agency
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="relative" style={{ width: "clamp(180px, 40vw, 280px)" }}>
+        <div
+          className="h-[2px] rounded-full overflow-hidden"
+          style={{ background: "var(--border)" }}
+        >
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${progress}%`,
+              background: "linear-gradient(90deg, var(--accent), #00ccff)",
+              boxShadow: "0 0 20px var(--accent-glow)",
+              transition: "width 0.1s linear",
+            }}
+          />
+        </div>
+        <div
+          className="text-center mt-4 text-[11px] tracking-[0.15em] font-medium tabular-nums"
+          style={{
+            color: "var(--text-muted)",
+            opacity: Math.min(progress / 20, 1),
+          }}
+        >
+          {progress}%
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   MARQUEE — бегущая строка с технологиями
+   ═══════════════════════════════════════════════════ */
+
+const MARQUEE_ITEMS = [
+  "React", "Next.js", "TypeScript", "Node.js", "Swift", "Kotlin",
+  "Figma", "Kubernetes", "Docker", "AWS", "PostgreSQL", "Redis",
+  "GraphQL", "REST API", "CI/CD", "Terraform",
+];
+
+function Marquee() {
+  return (
+    <div className="relative z-10 border-y border-[var(--border)] overflow-hidden" style={{ background: "rgba(8,8,8,0.5)" }}>
+      <div className="marquee-track flex" style={{ padding: "clamp(14px, 2vw, 20px) 0" }}>
+        {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+          <span key={i} className="flex items-center gap-3 shrink-0" style={{ padding: "0 clamp(16px, 3vw, 32px)" }}>
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] opacity-50" />
+            <span className="text-[13px] sm:text-sm font-medium text-[var(--text-muted)] whitespace-nowrap tracking-wide">{item}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 /* ═══════════════════════════════════════════════════
@@ -646,13 +822,28 @@ function SectionHeader({ label, title, secondary }: { label: string; title: stri
    PAGE
    ═══════════════════════════════════════════════════ */
 
+function AnimatedStat({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
+  const counter = useCountUp(value, 2200);
+  return (
+    <div ref={counter.ref} className="text-center group">
+      <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>
+        {counter.value}{suffix}
+      </div>
+      <div className="text-[12px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">{label}</div>
+    </div>
+  );
+}
+
 export default function Home() {
   const typed = useTyping(["создаём цифровые продукты", "проектируем масштабируемые системы", "трансформируем бизнес в технологии", "строим будущее вашего бизнеса"], 65, 2000);
   const heroRef = useScrollReveal();
+  const [loaded, setLoaded] = useState(false);
+  const onLoadComplete = useCallback(() => setLoaded(true), []);
   useSmoothAnchors();
 
   return (
     <div className="grain">
+      {!loaded && <LoadingScreen onComplete={onLoadComplete} />}
       <CustomCursor />
       <ClickRipples />
       <AnimatedBackground />
@@ -664,9 +855,9 @@ export default function Home() {
       <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 10vw, 160px) clamp(20px, 5vw, 64px) clamp(80px, 10vw, 160px)" }}>
         <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
           <div>
-            <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
+            <div className="reveal inline-flex items-center gap-2.5 rounded-full" style={{ marginBottom: "clamp(24px, 4vw, 32px)", padding: "8px 18px 8px 12px", background: "rgba(0,255,106,0.06)", border: "1px solid rgba(0,255,106,0.15)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
-              <span className="text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">Software Agency</span>
+              <span className="text-[12px] tracking-[0.15em] uppercase text-[var(--accent)] font-semibold">Software Agency</span>
             </div>
 
             <h1 className="reveal font-display font-bold tracking-tight leading-[0.95]" style={{ fontSize: "clamp(2.5rem, 9vw, 6rem)" }}>
@@ -725,14 +916,18 @@ export default function Home() {
       <div className="relative z-10 border-y border-[var(--border)] bg-[var(--bg-elevated)]">
         <div className="glow-line absolute top-0 left-0 w-full h-[1px]" />
         <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4" style={{ padding: "clamp(28px, 4vw, 56px) clamp(20px, 5vw, 64px)", gap: "clamp(16px, 3vw, 48px)" }}>
-          {STATS.map((s, i) => (
-            <div key={s.label} className="text-center group" style={{ animation: `fadeUp 0.6s ease ${i * 0.1}s both` }}>
-              <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>{s.value}</div>
-              <div className="text-[12px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">{s.label}</div>
-            </div>
-          ))}
+          <AnimatedStat value={50} suffix="+" label="проектов" />
+          <AnimatedStat value={98} suffix="%" label="довольных клиентов" />
+          <AnimatedStat value={4} label="года на рынке" />
+          <div className="text-center group">
+            <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.75rem, 5vw, 2.5rem)" }}>24/7</div>
+            <div className="text-[12px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">поддержка</div>
+          </div>
         </div>
       </div>
+
+      {/* ═══ MARQUEE ═══ */}
+      <Marquee />
 
       <MobileDivider />
 
