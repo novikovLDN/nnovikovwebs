@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, ArrowUpRight, Cloud, RefreshCw, Settings, BarChart3, FileCode, ShieldCheck, Github, Send, Linkedin, Mail, ChevronDown, Menu, X, Quote, Award, Shield } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Code2, Layers, Zap, BarChart3, Palette, ShieldCheck, Send, Mail, ChevronDown, Shield, Smartphone, Globe, CheckCircle, Users, Rocket, MessageSquare } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -76,7 +76,7 @@ function useSmoothAnchors() {
 }
 
 /* ═══════════════════════════════════════════════════
-   CUSTOM CURSOR (safe: body class only when active)
+   CUSTOM CURSOR
    ═══════════════════════════════════════════════════ */
 
 function CustomCursor() {
@@ -336,7 +336,7 @@ function ParticleField() {
     const draw = (now: number) => {
       if (!running) return;
       rafId = requestAnimationFrame(draw);
-      if (now - lastTime < 33) return; // cap at ~30fps
+      if (now - lastTime < 33) return;
       lastTime = now;
       ctx.clearRect(0, 0, w, h);
       for (const p of particles) {
@@ -358,103 +358,84 @@ function ParticleField() {
 }
 
 /* ═══════════════════════════════════════════════════
-   SERVICE ICON MAP
-   ═══════════════════════════════════════════════════ */
-
-const SERVICE_ICONS: Record<string, React.ReactNode> = {
-  cloud: <Cloud size={28} />,
-  cicd: <RefreshCw size={28} />,
-  k8s: <Settings size={28} />,
-  monitoring: <BarChart3 size={28} />,
-  iac: <FileCode size={28} />,
-  devsecops: <ShieldCheck size={28} />,
-};
-
-/* ═══════════════════════════════════════════════════
    DATA
    ═══════════════════════════════════════════════════ */
 
 const NAV = [
-  { href: "#about", label: "Обо мне" },
   { href: "#services", label: "Услуги" },
-  { href: "#skills", label: "Навыки" },
   { href: "#projects", label: "Проекты" },
-  { href: "#experience", label: "Опыт" },
+  { href: "#process", label: "Процесс" },
+  { href: "#why", label: "Почему мы" },
   { href: "#contact", label: "Контакт" },
 ] as const;
 
 const SERVICES = [
-  { title: "Облачная инфраструктура", desc: "Проектирование и развёртывание отказоустойчивой инфраструктуры на AWS, GCP, Azure. Миграция on-premise в облако с нулевым downtime.", icon: "cloud" },
-  { title: "CI/CD Пайплайны", desc: "Построение автоматизированных конвейеров сборки, тестирования и деплоя. Canary-релизы, blue-green, автоматический откат.", icon: "cicd" },
-  { title: "Kubernetes и Контейнеризация", desc: "Настройка и управление кластерами K8s. Helm-чарты, операторы, service mesh, автоскейлинг.", icon: "k8s" },
-  { title: "Мониторинг и Observability", desc: "Полный стек: метрики, логи, трейсы. Кастомные дашборды, алертинг, SLI/SLO, инцидент-менеджмент.", icon: "monitoring" },
-  { title: "Infrastructure as Code", desc: "Terraform, Ansible, Packer. Декларативное управление инфраструктурой с drift detection и policy enforcement.", icon: "iac" },
-  { title: "DevSecOps", desc: "Интеграция безопасности в CI/CD: SAST/DAST, сканирование образов, секрет-менеджмент через Vault.", icon: "devsecops" },
-] as const;
-
-const SKILLS = [
-  { title: "Облако", items: ["AWS", "GCP", "Terraform", "Ansible", "Packer"] },
-  { title: "Контейнеризация", items: ["Docker", "Kubernetes", "Helm", "Istio", "ArgoCD"] },
-  { title: "CI/CD", items: ["GitLab CI", "GitHub Actions", "Jenkins", "Bash", "Python"] },
-  { title: "Мониторинг", items: ["Prometheus", "Grafana", "Loki", "Jaeger", "ELK Stack"] },
+  { title: "Веб-приложения", desc: "Высоконагруженные веб-платформы, SaaS-решения и корпоративные порталы. Архитектура, которая масштабируется вместе с вашим бизнесом.", icon: <Globe size={28} /> },
+  { title: "Мобильная разработка", desc: "Нативные и кроссплатформенные приложения для iOS и Android. Безупречный UX, который удерживает пользователей.", icon: <Smartphone size={28} /> },
+  { title: "UI/UX Дизайн", desc: "Интерфейсы, которые конвертируют. Исследования, прототипирование, дизайн-системы — каждый пиксель работает на ваш бизнес.", icon: <Palette size={28} /> },
+  { title: "DevOps и Инфраструктура", desc: "CI/CD, Kubernetes, облачная инфраструктура. Автоматизация, которая сокращает time-to-market в разы.", icon: <Layers size={28} /> },
+  { title: "MVP и Стартапы", desc: "От идеи до работающего продукта за 6-8 недель. Lean-подход, быстрые итерации, валидация гипотез через реальный продукт.", icon: <Rocket size={28} /> },
+  { title: "Аудит и Оптимизация", desc: "Глубокий анализ кодовой базы, производительности и архитектуры. Находим узкие места и устраняем технический долг.", icon: <BarChart3 size={28} /> },
 ] as const;
 
 const PROJECTS = [
-  { num: "01", title: "K8s Cluster Autopilot", desc: "Автоматическое масштабирование и самовосстановление кластеров Kubernetes с кастомными операторами и предиктивным автоскейлингом. Снизили расходы на инфраструктуру на 35%.", tags: ["Kubernetes", "Go", "Prometheus"], accent: true },
-  { num: "02", title: "CI/CD Pipeline Engine", desc: "Универсальный конвейер для 40+ микросервисов с canary-релизами, автооткатом и security-проверками. Время деплоя: 45 мин → 8 мин.", tags: ["GitLab CI", "ArgoCD", "Docker"], accent: false },
-  { num: "03", title: "Infra-as-Code Platform", desc: "Self-service платформа для разработчиков: заказ инфраструктуры через UI. Drift detection, policy enforcement, автоматический аудит.", tags: ["Terraform", "AWS", "Python"], accent: false },
-  { num: "04", title: "Observability Stack", desc: "Единый стек мониторинга для 200+ сервисов: метрики, логи, трейсы. ML-детекция аномалий сократила MTTR на 60%.", tags: ["Grafana", "Loki", "Tempo"], accent: true },
+  {
+    num: "01",
+    title: "Atlas Secure",
+    desc: "Комплексная VPN-платформа с собственной инфраструктурой шифрования на базе VLESS + Reality. Кроссплатформенное решение для iOS, Android, macOS, Windows, роутеров и Smart TV. Безопасность корпоративного уровня для частных пользователей.",
+    tags: ["VPN", "Security", "Cross-platform", "Infrastructure"],
+    accent: true,
+    link: "/atlas",
+  },
+  {
+    num: "02",
+    title: "Only — Трекер привычек",
+    desc: "Интеллектуальный трекер привычек с адаптивной системой мотивации и глубокой аналитикой прогресса. Минималистичный интерфейс, геймификация и персональные инсайты, которые действительно меняют поведение пользователей.",
+    tags: ["Mobile App", "iOS", "Android", "AI Analytics"],
+    accent: true,
+    link: null,
+  },
+  {
+    num: "03",
+    title: "FinTrack Pro",
+    desc: "Платформа финансовой аналитики для малого и среднего бизнеса. Автоматическая категоризация транзакций, прогнозирование cash flow, интеграция с банковскими API. Данные, которые превращаются в стратегические решения.",
+    tags: ["FinTech", "Web App", "API", "Dashboard"],
+    accent: false,
+    link: null,
+  },
+  {
+    num: "04",
+    title: "CloudSync Hub",
+    desc: "Корпоративная платформа для синхронизации и управления данными между облачными сервисами. Real-time синхронизация, end-to-end шифрование, гранулярный контроль доступа. Инфраструктура для команд, которые не идут на компромиссы.",
+    tags: ["Enterprise", "Cloud", "Real-time", "Security"],
+    accent: false,
+    link: null,
+  },
 ] as const;
 
-const EXPERIENCE = [
-  { period: "2022 — н.в.", role: "Senior DevOps Engineer", company: "Tech Corp", desc: "Проектирование облачной инфраструктуры на AWS/GCP для продуктов с 1M+ пользователей. Внедрение GitOps через ArgoCD, оптимизация CI/CD — деплой с 45 до 8 минут. Управление кластером 200+ нод, SLA 99.95%." },
-  { period: "2020 — 2022", role: "DevOps Engineer", company: "Cloud Solutions", desc: "Миграция 50+ сервисов из on-premise в AWS без downtime. Построение observability-стека (Prometheus + Grafana + Loki). Автоматизация снизила число инцидентов на 60%." },
-  { period: "2018 — 2020", role: "System Administrator", company: "StartupXYZ", desc: "Администрирование 100+ Linux-серверов. Внедрение Docker и Kubernetes с нуля. Настройка сетевой инфраструктуры, VPN, бэкапов." },
+const PROCESS = [
+  { num: "01", title: "Аналитика и стратегия", desc: "Погружаемся в ваш бизнес, изучаем аудиторию, конкурентов и рыночные возможности. Формируем чёткое техническое задание и дорожную карту проекта." },
+  { num: "02", title: "Дизайн и прототипирование", desc: "Создаём детализированные прототипы и UI-дизайн. Каждый экран проходит через пользовательское тестирование до начала разработки." },
+  { num: "03", title: "Разработка и итерации", desc: "Agile-спринты, ежедневные стендапы, еженедельные демо. Вы видите прогресс в реальном времени и влияете на результат на каждом этапе." },
+  { num: "04", title: "Запуск и поддержка", desc: "Деплой, мониторинг, A/B-тесты. После запуска — непрерывная оптимизация, техническая поддержка и развитие продукта." },
 ] as const;
 
 const STATS = [
-  { value: "5+", label: "лет опыта" },
-  { value: "99.95%", label: "uptime SLA" },
   { value: "50+", label: "проектов" },
-  { value: "200+", label: "нод K8s" },
+  { value: "98%", label: "довольных клиентов" },
+  { value: "4", label: "года на рынке" },
+  { value: "24/7", label: "поддержка" },
 ] as const;
 
-const VALUES = [
-  { title: "Автоматизация", desc: "Всё, что делается руками больше двух раз, должно быть автоматизировано. Zero-touch deployments." },
-  { title: "Надёжность", desc: "Проектирование систем с учётом отказоустойчивости, chaos engineering и быстрого восстановления." },
-  { title: "Масштабируемость", desc: "Инфраструктура, которая растёт с бизнесом — от 10 до 10 000 rps без боли." },
+const WHY_US = [
+  { title: "Полный цикл разработки", desc: "От аналитики и дизайна до DevOps и поддержки — все компетенции внутри одной команды. Никаких субподрядчиков.", icon: <Code2 size={24} /> },
+  { title: "Продуктовый подход", desc: "Мы не просто пишем код — мы строим продукты. Каждое техническое решение обосновано бизнес-метриками.", icon: <BarChart3 size={24} /> },
+  { title: "Прозрачность процессов", desc: "Доступ к задачам, коду и аналитике в реальном времени. Еженедельные отчёты и демонстрации прогресса.", icon: <Users size={24} /> },
 ] as const;
 
 const CONTACTS = [
-  { label: "Email", value: "your@email.com", href: "mailto:your@email.com" },
-  { label: "Telegram", value: "@your_telegram", href: "https://t.me/your_telegram" },
-  { label: "GitHub", value: "github.com/username", href: "https://github.com/username" },
-  { label: "LinkedIn", value: "linkedin.com/in/username", href: "https://linkedin.com/in/username" },
-] as const;
-
-const HERO_SOCIALS = [
-  { label: "GitHub", icon: "github", href: "https://github.com/username" },
-  { label: "Telegram", icon: "telegram", href: "https://t.me/your_telegram" },
-  { label: "LinkedIn", icon: "linkedin", href: "https://linkedin.com/in/username" },
-] as const;
-
-const SOCIAL_ICONS: Record<string, React.ReactNode> = {
-  github: <Github size={18} />,
-  telegram: <Send size={18} />,
-  linkedin: <Linkedin size={18} />,
-};
-
-const TESTIMONIALS = [
-  { text: "Максим перестроил наш CI/CD пайплайн с нуля — время деплоя упало в 5 раз, а количество инцидентов снизилось на 60%. Лучший DevOps-инженер, с которым мы работали.", author: "Алексей К.", role: "CTO, Cloud Solutions" },
-  { text: "Благодаря миграции в облако, которую провёл Максим, мы сократили расходы на инфраструктуру на 40% и получили автоскейлинг, о котором раньше только мечтали.", author: "Дмитрий В.", role: "VP of Engineering, Tech Corp" },
-  { text: "Профессионализм и глубина знаний. Максим не просто настраивает инструменты — он проектирует системы, которые работают годами без вмешательства.", author: "Мария С.", role: "Lead Developer, StartupXYZ" },
-] as const;
-
-const CERTIFICATIONS = [
-  { name: "AWS Solutions Architect", issuer: "Amazon Web Services", year: "2023" },
-  { name: "Certified Kubernetes Administrator", issuer: "CNCF", year: "2022" },
-  { name: "Terraform Associate", issuer: "HashiCorp", year: "2023" },
-  { name: "Docker Certified Associate", issuer: "Docker", year: "2021" },
+  { label: "Email", value: "hello@qodev.com", href: "mailto:hello@qodev.com" },
+  { label: "Telegram", value: "@qodev_agency", href: "https://t.me/qodev_agency" },
 ] as const;
 
 /* ═══════════════════════════════════════════════════
@@ -479,11 +460,9 @@ function Nav() {
         const scrollingUp = y < lastScrollY.current && lastScrollY.current - y > 5;
 
         if (scrollingDown) {
-          // Hide immediately on scroll down
           if (showTimer.current) { clearTimeout(showTimer.current); showTimer.current = null; }
           setHidden(true);
         } else if (scrollingUp) {
-          // Show after 60ms delay on scroll up
           if (!showTimer.current) {
             showTimer.current = setTimeout(() => {
               setHidden(false);
@@ -511,7 +490,6 @@ function Nav() {
     };
   }, []);
 
-  // Close on Escape
   useEffect(() => {
     if (!mobileOpen) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMobileOpen(false); };
@@ -519,7 +497,6 @@ function Nav() {
     return () => document.removeEventListener("keydown", onKey);
   }, [mobileOpen]);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
@@ -542,8 +519,8 @@ function Nav() {
         aria-label="Main navigation"
       >
         <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto py-4 flex items-center justify-between relative z-50" style={{ padding: "16px clamp(20px, 5vw, 40px)" }}>
-          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity" aria-label="На главную">
-            <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
+          <a href="#" className="font-display text-xl font-bold tracking-tight hover:opacity-80 transition-opacity flex items-center gap-2" aria-label="Qodev">
+            <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
           </a>
 
           <div className="hidden lg:flex items-center gap-1">
@@ -563,7 +540,7 @@ function Nav() {
         </div>
       </nav>
 
-      {/* Mobile fullscreen menu — outside nav to avoid transform containment issues */}
+      {/* Mobile fullscreen menu */}
       <div
         className="lg:hidden fixed inset-0 z-[55]"
         style={{
@@ -670,7 +647,7 @@ function SectionHeader({ label, title, secondary }: { label: string; title: stri
    ═══════════════════════════════════════════════════ */
 
 export default function Home() {
-  const typed = useTyping(["строю облачную инфраструктуру", "автоматизирую CI/CD пайплайны", "оркеструю контейнеры", "проектирую отказоустойчивые системы"], 65, 2000);
+  const typed = useTyping(["создаём цифровые продукты", "проектируем масштабируемые системы", "трансформируем бизнес в технологии", "строим будущее вашего бизнеса"], 65, 2000);
   const heroRef = useScrollReveal();
   useSmoothAnchors();
 
@@ -689,31 +666,25 @@ export default function Home() {
           <div>
             <div className="reveal flex items-center gap-3" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
-              <span className="text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">DevOps Engineer</span>
+              <span className="text-[12px] tracking-[0.2em] uppercase text-[var(--text-secondary)] font-medium">Software Agency</span>
             </div>
 
-            <h1 className="reveal font-display font-bold tracking-tight leading-[0.95]" style={{ fontSize: "clamp(2rem, 9vw, 6rem)" }}>
-              <span className="text-[var(--text-primary)]">Максим</span><br />
-              <span className="gradient-text">Новиков</span>
+            <h1 className="reveal font-display font-bold tracking-tight leading-[0.95]" style={{ fontSize: "clamp(2.5rem, 9vw, 6rem)" }}>
+              <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
             </h1>
 
-            <div className="reveal text-[var(--text-secondary)] max-w-xl" style={{ marginTop: "clamp(24px, 4vw, 32px)", fontSize: "clamp(1rem, 2.5vw, 1.25rem)", minHeight: "2.5em" }}>
-              <span>{typed}</span>
+            <p className="reveal text-[var(--text-secondary)] max-w-xl" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(1rem, 2.5vw, 1.35rem)", lineHeight: 1.6 }}>
+              Превращаем амбициозные идеи в высокотехнологичные цифровые продукты. Полный цикл разработки — от стратегии до масштабирования.
+            </p>
+
+            <div className="reveal text-[var(--text-muted)] max-w-xl" style={{ marginTop: "clamp(12px, 2vw, 16px)", fontSize: "clamp(0.875rem, 2vw, 1.05rem)", minHeight: "1.8em" }}>
+              <span className="text-[var(--text-secondary)]">{typed}</span>
               <span className="inline-block w-[2px] h-[1.1em] bg-[var(--accent)] ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
             </div>
 
             <div className="reveal flex flex-col sm:flex-row gap-4" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
               <a href="#contact" className="btn-primary">Обсудить проект <ArrowRight size={14} /></a>
-              <a href="#projects" className="btn-secondary">Смотреть проекты</a>
-            </div>
-
-            <div className="reveal flex items-center gap-5 sm:gap-6" style={{ marginTop: "clamp(32px, 5vw, 48px)" }}>
-              {HERO_SOCIALS.map((s) => (
-                <a key={s.icon} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300">
-                  {SOCIAL_ICONS[s.icon]}
-                </a>
-              ))}
-              <div className="h-[1px] flex-1 bg-gradient-to-r from-[var(--border)] to-transparent" />
+              <a href="#projects" className="btn-secondary">Наши проекты</a>
             </div>
           </div>
 
@@ -724,8 +695,8 @@ export default function Home() {
               <div className="absolute inset-4 rounded-full border border-[var(--border)] opacity-50" />
               <div className="absolute inset-10 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
                 <div className="text-center">
-                  <div className="font-display text-4xl xl:text-5xl font-bold gradient-text">5+</div>
-                  <div className="text-[10px] xl:text-[11px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">лет опыта</div>
+                  <div className="font-display text-4xl xl:text-5xl font-bold gradient-text">50+</div>
+                  <div className="text-[10px] xl:text-[11px] text-[var(--text-muted)] mt-2 tracking-wider uppercase">проектов</div>
                 </div>
               </div>
               {[
@@ -765,45 +736,14 @@ export default function Home() {
 
       <MobileDivider />
 
-      {/* ═══ ABOUT ═══ */}
-      <Section id="about">
-        <SectionHeader label="Обо мне" title="Создаю надёжную" secondary="инфраструктуру" />
-        <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 80px)" }}>
-          <div>
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
-              DevOps инженер с опытом 5+ лет в продуктовых компаниях. Специализируюсь на построении и автоматизации облачной инфраструктуры, Kubernetes, CI/CD и observability для highload-проектов.
-            </p>
-            <p className="reveal text-[var(--text-secondary)] leading-relaxed" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(0.875rem, 1.8vw, 1rem)" }}>
-              Превращаю сложные инфраструктурные задачи в элегантные автоматизированные решения. GitOps, immutable infrastructure, culture of reliability — не просто модные слова, а ежедневная практика, которая помогает командам двигаться быстрее и спать спокойнее.
-            </p>
-            <div className="reveal h-[1px] bg-gradient-to-r from-[var(--border-accent)] via-[var(--border)] to-transparent" style={{ marginTop: "clamp(24px, 4vw, 32px)" }} />
-          </div>
-          <div className="grid" style={{ gap: "clamp(20px, 3vw, 20px)" }}>
-            {VALUES.map((item, i) => (
-              <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
-                <div className="card card-glow" style={{ padding: "clamp(20px, 4vw, 24px)" }}>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="accent-dot" />
-                    <h3 className="font-semibold text-[var(--text-primary)] text-base">{item.title}</h3>
-                  </div>
-                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
-                </div>
-              </TiltCard>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      <MobileDivider />
-
       {/* ═══ SERVICES ═══ */}
       <Section id="services">
-        <SectionHeader label="Услуги" title="Чем могу" secondary="помочь" />
+        <SectionHeader label="Услуги" title="Полный спектр" secondary="digital-решений" />
         <div className="grid min-[480px]:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
           {SERVICES.map((s, i) => (
             <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(20px, 3vw, 28px)" }}>
-                <div className="text-[var(--accent)] mb-5">{SERVICE_ICONS[s.icon]}</div>
+                <div className="text-[var(--accent)] mb-5">{s.icon}</div>
                 <h3 className="font-display text-lg font-semibold text-[var(--text-primary)] mb-3">{s.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.desc}</p>
               </div>
@@ -818,52 +758,36 @@ export default function Home() {
       <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 64px) clamp(20px, 5vw, 64px)" }}>
         <div className="card text-center border-[var(--border-accent)]" style={{ padding: "clamp(28px, 5vw, 64px) clamp(20px, 4vw, 48px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
           <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 20px)" }}>
-            Нужна надёжная <span className="gradient-text">инфраструктура?</span>
+            Есть идея? <span className="gradient-text">Давайте реализуем.</span>
           </h3>
           <p className="text-[var(--text-secondary)] max-w-xl mx-auto" style={{ fontSize: "clamp(0.875rem, 2vw, 1rem)", marginBottom: "clamp(24px, 4vw, 32px)" }}>
-            Расскажите о вашем проекте — предложу оптимальное решение по архитектуре, стеку и автоматизации. Первая консультация бесплатна.
+            Расскажите о вашем проекте — проведём бесплатную консультацию, оценим сроки и предложим оптимальное технологическое решение.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <a href="#contact" className="btn-primary sm:!w-auto">Обсудить проект <ArrowRight size={14} /></a>
-            <a href="https://t.me/your_telegram" target="_blank" rel="noopener noreferrer" className="btn-secondary sm:!w-auto">Написать в Telegram</a>
+            <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="btn-secondary sm:!w-auto">Написать в Telegram</a>
           </div>
         </div>
       </div>
 
       <MobileDivider />
 
-      {/* ═══ SKILLS ═══ */}
-      <Section id="skills">
-        <SectionHeader label="Навыки" title="Технологии и" secondary="инструменты" />
-        <div className="grid grid-cols-1 min-[480px]:grid-cols-2 lg:grid-cols-4" style={{ gap: "clamp(24px, 4vw, 32px)" }}>
-          {SKILLS.map((cat, i) => (
-            <div key={cat.title} className={`reveal stagger-${i + 1}`}>
-              <h3 className="text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)]" style={{ marginBottom: "clamp(12px, 2vw, 20px)" }}>{cat.title}</h3>
-              <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 10px)" }}>
-                {cat.items.map((skill) => (
-                  <div key={skill} className="group flex items-center gap-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--border-accent)] hover:bg-[var(--bg-card-hover)] transition-all duration-300 cursor-default" style={{ padding: "clamp(10px, 2vw, 12px) clamp(12px, 2vw, 16px)" }}>
-                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0 scale-0 group-hover:scale-100 transition-transform duration-300" />
-                    <span className="text-sm text-[var(--text-secondary)] group-hover:text-[var(--text-primary)] transition-colors duration-300">{skill}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <MobileDivider />
-
       {/* ═══ PROJECTS ═══ */}
       <Section id="projects">
-        <SectionHeader label="Проекты" title="Избранные" secondary="кейсы" />
+        <SectionHeader label="Портфолио" title="Избранные" secondary="проекты" />
         <div className="grid min-[540px]:grid-cols-2 xl:grid-cols-2" style={{ gap: "clamp(16px, 2vw, 28px)" }}>
           {PROJECTS.map((p, i) => (
             <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
               <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(20px, 3vw, 32px)" }}>
                 <div className="flex items-start justify-between" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>
                   <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>{p.num}</span>
-                  <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                  {p.link ? (
+                    <a href={p.link} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300">
+                      <ArrowUpRight size={20} />
+                    </a>
+                  ) : (
+                    <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                  )}
                 </div>
                 <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(16px, 3vw, 24px)" }}>{p.desc}</p>
@@ -878,25 +802,23 @@ export default function Home() {
 
       <MobileDivider />
 
-      {/* ═══ EXPERIENCE ═══ */}
-      <Section id="experience">
-        <SectionHeader label="Опыт" title="Карьерный" secondary="путь" />
+      {/* ═══ PROCESS ═══ */}
+      <Section id="process">
+        <SectionHeader label="Процесс" title="Как мы" secondary="работаем" />
         <div className="relative">
           <div className="absolute left-[11px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-[var(--accent-muted)] via-[var(--border)] to-transparent hidden md:block" aria-hidden="true" />
           <div style={{ display: "flex", flexDirection: "column", gap: "clamp(24px, 4vw, 32px)" }}>
-            {EXPERIENCE.map((exp, i) => (
-              <div key={exp.period} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
+            {PROCESS.map((step, i) => (
+              <div key={step.num} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
                 <TiltCard>
                   <div className="card" style={{ padding: "clamp(20px, 4vw, 32px)" }}>
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between" style={{ gap: "clamp(8px, 2vw, 16px)" }}>
-                      <div className="flex-1 min-w-0">
-                        <span className="inline-block md:hidden text-[11px] tracking-wider text-[var(--text-muted)] uppercase font-medium mb-2">{exp.period}</span>
-                        <h3 className="font-display text-base sm:text-lg font-semibold text-[var(--text-primary)]">{exp.role}</h3>
-                        <p className="text-sm text-[var(--accent)] mt-1.5 mb-3">{exp.company}</p>
-                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{exp.desc}</p>
+                    <div className="flex items-start gap-4">
+                      <span className="font-display font-bold text-[var(--accent)] shrink-0" style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}>{step.num}</span>
+                      <div className="min-w-0">
+                        <h3 className="font-display text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2">{step.title}</h3>
+                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{step.desc}</p>
                       </div>
-                      <span className="hidden md:inline-block text-[12px] tracking-wider text-[var(--text-muted)] uppercase whitespace-nowrap font-medium md:mt-1 shrink-0">{exp.period}</span>
                     </div>
                   </div>
                 </TiltCard>
@@ -908,39 +830,20 @@ export default function Home() {
 
       <MobileDivider />
 
-      {/* ═══ TESTIMONIALS ═══ */}
-      <Section id="testimonials">
-        <SectionHeader label="Отзывы" title="Что говорят" secondary="коллеги и клиенты" />
-        <div className="grid md:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
-          {TESTIMONIALS.map((t, i) => (
-            <TiltCard key={t.author} className={`reveal stagger-${i + 1}`}>
-              <div className="card card-glow h-full flex flex-col" style={{ padding: "clamp(24px, 4vw, 28px)" }}>
-                <div className="text-[var(--accent)] text-3xl font-display leading-none mb-4">&ldquo;</div>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">{t.text}</p>
-                <div className="pt-4 border-t border-[var(--border)]" style={{ marginTop: "clamp(16px, 3vw, 24px)" }}>
-                  <div className="text-sm font-semibold text-[var(--text-primary)]">{t.author}</div>
-                  <div className="text-[11px] text-[var(--text-muted)] mt-1">{t.role}</div>
+      {/* ═══ WHY US ═══ */}
+      <Section id="why">
+        <SectionHeader label="Преимущества" title="Почему выбирают" secondary="Qodev" />
+        <div className="grid lg:grid-cols-3" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
+          {WHY_US.map((item, i) => (
+            <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
+              <div className="card card-glow h-full" style={{ padding: "clamp(24px, 4vw, 32px)" }}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ background: "rgba(0,255,106,0.08)", border: "1px solid rgba(0,255,106,0.15)" }}>
+                  <span className="text-[var(--accent)]">{item.icon}</span>
                 </div>
+                <h3 className="font-display text-lg font-semibold text-[var(--text-primary)] mb-3">{item.title}</h3>
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{item.desc}</p>
               </div>
             </TiltCard>
-          ))}
-        </div>
-      </Section>
-
-      <MobileDivider />
-
-      {/* ═══ CERTIFICATIONS ═══ */}
-      <Section id="certifications">
-        <SectionHeader label="Сертификации" title="Подтверждённые" secondary="компетенции" />
-        <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(16px, 3vw, 20px)" }}>
-          {CERTIFICATIONS.map((cert, i) => (
-            <div key={cert.name} className={`reveal stagger-${i + 1} card card-glow text-center`} style={{ padding: "clamp(20px, 4vw, 24px)" }}>
-              <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[var(--accent-glow)] border border-[var(--border-accent)] flex items-center justify-center">
-                <span className="text-[var(--accent)] text-lg font-bold font-display">{cert.issuer.charAt(0)}</span>
-              </div>
-              <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">{cert.name}</h3>
-              <p className="text-[11px] text-[var(--text-muted)]">{cert.issuer} &middot; {cert.year}</p>
-            </div>
           ))}
         </div>
       </Section>
@@ -951,13 +854,13 @@ export default function Home() {
       <Section id="contact">
         <div className="grid lg:grid-cols-2 items-start" style={{ gap: "clamp(32px, 5vw, 80px)" }}>
           <div>
-            <SectionHeader label="Контакт" title="Давайте" secondary="работать вместе" />
+            <SectionHeader label="Контакт" title="Начнём" secondary="сотрудничество" />
             <p className="reveal text-[var(--text-secondary)] leading-relaxed max-w-md" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>
-              Открыт к интересным предложениям и проектам. Расскажите о задаче — обсудим, как я могу помочь.
+              Расскажите о вашей идее или задаче. Мы проведём бесплатную консультацию, оценим объём работ и предложим оптимальное решение.
             </p>
             <div className="reveal flex items-center gap-3 text-[var(--text-muted)] text-sm" style={{ marginTop: "clamp(20px, 3vw, 32px)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
-              Обычно отвечаю в течение 24 часов
+              Обычно отвечаем в течение 2 часов
             </div>
           </div>
           <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(16px, 3vw, 16px)" }}>
@@ -972,25 +875,25 @@ export default function Home() {
                 </a>
               </TiltCard>
             ))}
+
+            {/* Atlas Secure link */}
+            <TiltCard>
+              <a href="/atlas" className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)", gap: "12px", borderColor: "var(--border-accent)" }}>
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(0, 255, 106, 0.1)", border: "1px solid rgba(0, 255, 106, 0.2)" }}>
+                    <Shield size={16} className="text-[var(--accent)]" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-sm font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300">Atlas Secure</div>
+                    <div className="text-[11px] text-[var(--text-muted)]">VPN — инструкция по настройке</div>
+                  </div>
+                </div>
+                <ArrowRight size={18} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
+              </a>
+            </TiltCard>
           </div>
         </div>
       </Section>
-
-      {/* ═══ ATLAS SECURE ═══ */}
-      <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 40px) clamp(20px, 5vw, 64px)" }}>
-        <a href="/atlas" className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(20px, 4vw, 28px)", borderColor: "var(--border-accent)" }}>
-          <div className="flex items-center gap-4 min-w-0">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(0, 255, 106, 0.1)", border: "1px solid rgba(0, 255, 106, 0.2)" }}>
-              <Shield size={20} className="text-[var(--accent)]" />
-            </div>
-            <div className="min-w-0">
-              <div className="font-display font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>Atlas Secure — Инструкция</div>
-              <div className="text-[12px] text-[var(--text-muted)] mt-0.5">Настройка VPN на роутер, ПК, iOS, Android, macOS, Smart TV</div>
-            </div>
-          </div>
-          <ArrowRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0 ml-4" />
-        </a>
-      </div>
 
       </main>
 
@@ -1001,10 +904,10 @@ export default function Home() {
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 md:grid-cols-3" style={{ gap: "clamp(24px, 4vw, 40px)", marginBottom: "clamp(24px, 4vw, 40px)" }}>
             <div>
               <span className="font-display text-2xl font-bold">
-                <span className="text-[var(--accent)]">M</span><span className="text-[var(--text-primary)]">.</span>
+                <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">odev</span>
               </span>
               <p className="mt-4 text-sm text-[var(--text-muted)] leading-relaxed max-w-xs">
-                DevOps инженер, создающий надёжную и масштабируемую инфраструктуру для современных продуктов.
+                Software agency, которое превращает амбициозные идеи в технологические продукты мирового уровня.
               </p>
             </div>
             <div>
@@ -1018,7 +921,7 @@ export default function Home() {
             <div>
               <h4 className="text-[12px] font-semibold tracking-[0.15em] uppercase text-[var(--text-muted)] mb-4">Контакты</h4>
               <div className="space-y-3">
-                {CONTACTS.slice(0, 3).map((c) => (
+                {CONTACTS.map((c) => (
                   <a key={c.label} href={c.href} target={c.href.startsWith("http") ? "_blank" : undefined} rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined} className="block text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">{c.value}</a>
                 ))}
               </div>
@@ -1026,10 +929,10 @@ export default function Home() {
           </div>
           <div className="h-[1px] bg-[var(--border)]" style={{ marginBottom: "clamp(20px, 3vw, 32px)" }} />
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-[var(--text-muted)]">
-            <p><span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Максим Новиков</p>
+            <p><span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Qodev Software Agency</p>
             <p className="flex items-center gap-2">
               <span className="w-1 h-1 rounded-full bg-[var(--accent)]" />
-              Next.js + Tailwind
+              Crafted with precision
             </p>
           </div>
         </div>
