@@ -1089,12 +1089,12 @@ export default function Home() {
               <div key={step.num} className={`reveal stagger-${i + 1} md:pl-10 relative`}>
                 <div className="hidden md:block absolute left-[7px] top-7 sm:top-8 w-[9px] h-[9px] rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" aria-hidden="true" />
                 <TiltCard>
-                  <div className="card" style={{ padding: "clamp(20px, 4vw, 32px)" }}>
-                    <div className="flex items-start gap-4">
-                      <span className="font-display font-bold text-[var(--accent)] shrink-0" style={{ fontSize: "clamp(1.5rem, 3vw, 2rem)" }}>{step.num}</span>
+                  <div className="card" style={{ padding: "clamp(14px, 4vw, 32px)" }}>
+                    <div className="flex items-start gap-3 sm:gap-4">
+                      <span className="font-display font-bold text-[var(--accent)] shrink-0" style={{ fontSize: "clamp(1.25rem, 3vw, 2rem)" }}>{step.num}</span>
                       <div className="min-w-0">
-                        <h3 className="font-display text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2">{step.title}</h3>
-                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{step.desc}</p>
+                        <h3 className="font-display text-[15px] sm:text-lg font-semibold text-[var(--text-primary)] mb-1.5 sm:mb-2">{step.title}</h3>
+                        <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">{step.desc}</p>
                       </div>
                     </div>
                   </div>
@@ -1110,10 +1110,10 @@ export default function Home() {
       {/* ═══ WHY US ═══ */}
       <Section id="why">
         <SectionHeader label={t("Преимущества", "Advantages")} title={t("Почему выбирают", "Why Choose")} secondary="QoDev" />
-        <div className="grid lg:grid-cols-3" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
+        <div className="grid min-[560px]:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(12px, 3vw, 24px)" }}>
           {WHY_US.map((item, i) => (
             <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
-              <div className="card card-glow h-full" style={{ padding: "clamp(16px, 3vw, 32px)" }}>
+              <div className="card card-glow h-full" style={{ padding: "clamp(14px, 3vw, 32px)" }}>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-5" style={{ background: "rgba(0,255,106,0.08)", border: "1px solid rgba(0,255,106,0.15)" }}>
                   <span className="text-[var(--accent)]">{item.icon}</span>
                 </div>
@@ -1146,10 +1146,10 @@ export default function Home() {
           <div className="reveal" style={{ display: "flex", flexDirection: "column", gap: "clamp(16px, 3vw, 16px)" }}>
             {CONTACTS.map((link) => (
               <TiltCard key={link.label}>
-                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(16px, 3vw, 20px)", gap: "12px" }}>
+                <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined} className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(12px, 3vw, 20px)", gap: "12px" }}>
                   <div className="min-w-0">
-                    <div className="text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1.5">{link.label}</div>
-                    <div className="text-sm sm:text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300 truncate">{link.value}</div>
+                    <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] tracking-[0.15em] uppercase mb-1 sm:mb-1.5">{link.label}</div>
+                    <div className="text-[13px] sm:text-base text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300 truncate">{link.value}</div>
                   </div>
                   <ArrowRight size={18} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0" />
                 </a>
@@ -1210,9 +1210,9 @@ export default function Home() {
               </p>
             </div>
             <div className="h-[1px] bg-[var(--border)]" />
-            <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed space-y-1.5">
+            <div className="text-[9px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed space-y-1 sm:space-y-1.5">
               <p>QoDev Limited</p>
-              <p>{t(
+              <p className="break-words">{t(
                 "Юридический адрес: Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong",
                 "Registered address: Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong"
               )}</p>
