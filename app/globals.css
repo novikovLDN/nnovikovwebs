@@ -517,6 +517,16 @@ body.custom-cursor-active [role="button"] {
     padding: 4px 10px !important;
     font-size: 10px !important;
   }
+
+  /* Better table handling on small screens */
+  table {
+    font-size: 10px !important;
+  }
+
+  /* Tighter spacing for small screens */
+  .font-display {
+    letter-spacing: -0.01em;
+  }
 }
 
 /* ═══════════════════════════════════════════════════
@@ -540,5 +550,14 @@ body.custom-cursor-active [role="button"] {
   .btn-primary, .btn-secondary {
     padding: 11px 14px !important;
     font-size: 12px !important;
+  }
+
+  table {
+    font-size: 9px !important;
+  }
+
+  .tabular-nums {
+    font-size: inherit;
+    word-break: break-all;
   }
 }
