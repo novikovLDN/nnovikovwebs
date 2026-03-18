@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, ArrowUpRight, Cloud, RefreshCw, Settings, BarChart3, FileCode, ShieldCheck, Github, Send, Linkedin, Mail, ChevronDown, Menu, X, Quote, Award } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Cloud, RefreshCw, Settings, BarChart3, FileCode, ShieldCheck, Github, Send, Linkedin, Mail, ChevronDown, Menu, X, Quote, Award, Shield } from "lucide-react";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -962,6 +962,22 @@ export default function Home() {
           </div>
         </div>
       </Section>
+
+      {/* ═══ ATLAS SECURE ═══ */}
+      <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 40px) clamp(20px, 5vw, 64px)" }}>
+        <a href="/atlas" className="card card-glow flex items-center justify-between group" style={{ padding: "clamp(20px, 4vw, 28px)", borderColor: "var(--border-accent)" }}>
+          <div className="flex items-center gap-4 min-w-0">
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(0, 255, 106, 0.1)", border: "1px solid rgba(0, 255, 106, 0.2)" }}>
+              <Shield size={20} className="text-[var(--accent)]" />
+            </div>
+            <div className="min-w-0">
+              <div className="font-display font-semibold text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors duration-300" style={{ fontSize: "clamp(0.95rem, 2vw, 1.125rem)" }}>Atlas Secure — Инструкция</div>
+              <div className="text-[12px] text-[var(--text-muted)] mt-0.5">Настройка VPN на роутер, ПК, iOS, Android, macOS, Smart TV</div>
+            </div>
+          </div>
+          <ArrowRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 transition-all duration-300 shrink-0 ml-4" />
+        </a>
+      </div>
 
       </main>
 
