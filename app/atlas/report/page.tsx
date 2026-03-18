@@ -5,7 +5,7 @@ import {
   ArrowLeft, Shield, TrendingUp, TrendingDown, Users, CreditCard,
   DollarSign, BarChart3, PieChart, Activity, ChevronDown, ChevronUp,
   Lock, Server, Code2, Wallet, AlertTriangle, CheckCircle, Target,
-  Zap, ArrowUpRight, ArrowRight, Megaphone, Share2, Globe, Send,
+  Zap, ArrowUpRight, ArrowRight, Megaphone, Share2, Globe, Send, Mail,
 } from "lucide-react";
 import { useI18n, LangSwitcher } from "../../lib/i18n";
 
@@ -314,6 +314,79 @@ function RiskBadge({ level, label }: { level: "high" | "medium" | "low"; label: 
    PAGE
    ═══════════════════════════════════════════════════ */
 
+/* ═══════════════════════════════════════════════════
+   EMAIL SUBSCRIBE
+   ═══════════════════════════════════════════════════ */
+
+function EmailSubscribe() {
+  const { t } = useI18n();
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes("@")) return;
+    setSent(true);
+    setTimeout(() => setSent(false), 4000);
+    setEmail("");
+  };
+
+  return (
+    <div className="rounded-xl sm:rounded-2xl" style={{
+      padding: "clamp(16px, 3vw, 24px)",
+      background: "var(--bg-card)",
+      border: "1px solid var(--border)",
+      marginBottom: "clamp(24px, 4vw, 36px)",
+    }}>
+      <div className="flex items-center gap-2 mb-3">
+        <Mail size={16} className="text-[var(--accent)]" />
+        <h3 className="text-[13px] sm:text-sm font-semibold text-[var(--text-primary)]">
+          {t("Получать отчёты на почту", "Receive reports by email")}
+        </h3>
+      </div>
+      <p className="text-[12px] text-[var(--text-muted)] mb-4 leading-relaxed">
+        {t(
+          "Оставьте email — будем отправлять квартальные финансовые отчёты и обновления Atlas Secure.",
+          "Leave your email — we'll send quarterly financial reports and Atlas Secure updates."
+        )}
+      </p>
+      <form onSubmit={handleSubmit} className="flex flex-col min-[480px]:flex-row gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder={t("your@email.com", "your@email.com")}
+          className="flex-1 rounded-lg text-[13px] sm:text-sm outline-none transition-all duration-300 focus:border-[var(--accent)]"
+          style={{
+            padding: "clamp(10px, 2vw, 12px) clamp(12px, 2.5vw, 16px)",
+            background: "rgba(255,255,255,0.03)",
+            border: "1px solid var(--border)",
+            color: "var(--text-primary)",
+          }}
+          required
+        />
+        <button
+          type="submit"
+          className="flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-300 shrink-0"
+          style={{
+            padding: "clamp(10px, 2vw, 12px) clamp(16px, 3vw, 24px)",
+            background: sent ? "rgba(0,255,106,0.15)" : "var(--accent)",
+            color: sent ? "var(--accent)" : "var(--bg-deep)",
+            border: sent ? "1px solid var(--border-accent)" : "none",
+            fontSize: "clamp(12px, 2vw, 14px)",
+          }}
+        >
+          {sent ? (
+            <><CheckCircle size={14} /> {t("Отправлено", "Sent")}</>
+          ) : (
+            <><Mail size={14} /> {t("Подписаться", "Subscribe")}</>
+          )}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 export default function AtlasReport() {
   const { t } = useI18n();
 
@@ -329,7 +402,7 @@ export default function AtlasReport() {
         <div className="max-w-[1000px] mx-auto flex items-center justify-between" style={{ padding: "clamp(12px, 2vw, 14px) clamp(16px, 4vw, 32px)" }}>
           <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300">
             <ArrowLeft size={16} />
-            <span className="hidden sm:inline">Qodev</span>
+            <span className="hidden sm:inline">QoDev</span>
           </a>
           <div className="flex items-center gap-2">
             <Shield size={16} className="text-[var(--accent)]" />
@@ -416,13 +489,21 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ TELEGRAM CTA ═══ */}
-        <div style={{ marginBottom: "clamp(24px, 4vw, 36px)" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)", marginBottom: "clamp(16px, 3vw, 24px)" }}>
           <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90 rounded-xl"
             style={{ padding: "clamp(12px, 2.5vw, 16px) 24px", fontSize: "clamp(13px, 2vw, 15px)", background: "var(--accent)" }}>
             <Send size={16} /> {t("Подключить Atlas Secure", "Connect Atlas Secure")}
           </a>
+          <a href="/atlas"
+            className="flex items-center justify-center gap-2 w-full font-medium transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)] rounded-xl"
+            style={{ padding: "clamp(12px, 2.5vw, 16px) 24px", fontSize: "clamp(13px, 2vw, 15px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+            <Shield size={16} /> {t("Инструкция по настройке VPN", "VPN Setup Instructions")}
+          </a>
         </div>
+
+        {/* ═══ EMAIL INPUT ═══ */}
+        <EmailSubscribe />
 
         {/* ═══ REPORT SECTIONS ═══ */}
         <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 14px)" }}>
@@ -756,7 +837,7 @@ export default function AtlasReport() {
         {/* ═══ LEGAL FOOTER ═══ */}
         <div className="text-center" style={{ marginTop: "clamp(32px, 5vw, 48px)", paddingTop: "clamp(16px, 3vw, 24px)", borderTop: "1px solid var(--border)" }}>
           <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed">
-            <span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Qodev Limited &middot; Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong
+            <span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} QoDev Limited &middot; Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong
           </p>
         </div>
       </main>

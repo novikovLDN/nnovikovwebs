@@ -524,7 +524,7 @@ export default function AtlasPage() {
         {/* ═══ LEGAL FOOTER ═══ */}
         <div className="text-center" style={{ marginTop: "clamp(32px, 5vw, 48px)", paddingTop: "clamp(16px, 3vw, 24px)", borderTop: "1px solid var(--border)" }}>
           <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed">
-            <span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Qodev Limited &middot; Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong
+            <span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} QoDev Limited &middot; Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong
           </p>
         </div>
       </main>
