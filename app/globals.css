@@ -446,6 +446,14 @@ body.custom-cursor-active [role="button"] {
   }
 }
 
+/* ── Mobile menu: button always clickable above overlay ── */
+@media (max-width: 1024px) {
+  .mobile-menu-link {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
 /* ═══════════════════════════════════════════════════
    SMALL MOBILE — max-width: 480px
    ═══════════════════════════════════════════════════ */
