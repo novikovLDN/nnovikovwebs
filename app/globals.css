@@ -160,6 +160,21 @@ body.custom-cursor-active [role="button"] {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Marquee ── */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 30s linear infinite;
+  width: max-content;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 /* ── Scroll reveal ── */
 .reveal {
   opacity: 0;
