@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   ArrowLeft, Shield, TrendingUp, TrendingDown, Users, CreditCard,
   DollarSign, BarChart3, PieChart, Activity, ChevronDown, ChevronUp,
@@ -75,13 +75,13 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
         const pct = (d.value / maxValue) * 100;
         return (
           <div key={d.label}>
-            <div className="flex items-baseline justify-between mb-1.5">
-              <span className="text-[13px] text-[var(--text-secondary)] font-medium">{d.label}</span>
-              <span className="text-[13px] font-bold text-[var(--text-primary)] tabular-nums">{d.value.toLocaleString("ru-RU")} ₽</span>
+            <div className="flex items-baseline justify-between mb-1 sm:mb-1.5 gap-2">
+              <span className="text-[11px] sm:text-[13px] text-[var(--text-secondary)] font-medium truncate">{d.label}</span>
+              <span className="text-[11px] sm:text-[13px] font-bold text-[var(--text-primary)] tabular-nums whitespace-nowrap">{d.value.toLocaleString("ru-RU")} ₽</span>
             </div>
-            <div className="h-8 sm:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
+            <div className="h-7 sm:h-8 md:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
               <div
-                className="h-full rounded-lg flex items-center justify-end pr-3"
+                className="h-full rounded-lg flex items-center justify-end pr-2 sm:pr-3"
                 style={{
                   width: anim.visible ? `${pct}%` : "0%",
                   background: `linear-gradient(90deg, rgba(0,255,106,${0.15 + i * 0.05}), rgba(0,255,106,${0.3 + i * 0.08}))`,
@@ -89,7 +89,7 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
                   transition: `width 1.2s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.15}s`,
                 }}
               >
-                <span className="text-[11px] font-bold text-[var(--accent)] tabular-nums whitespace-nowrap">{d.subLabel}</span>
+                <span className="text-[10px] sm:text-[11px] font-bold text-[var(--accent)] tabular-nums whitespace-nowrap">{d.subLabel}</span>
               </div>
             </div>
           </div>
@@ -103,12 +103,26 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
    ANIMATED DONUT CHART
    ═══════════════════════════════════════════════════ */
 
-function DonutChart({ segments, size = 200 }: { segments: { label: string; value: number; color: string }[]; size?: number }) {
+function DonutChart({ segments }: { segments: { label: string; value: number; color: string }[] }) {
   const anim = useAnimateOnView();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(190);
   const total = segments.reduce((s, d) => s + d.value, 0);
-  const r = (size - 32) / 2;
+
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      setSize(w < 380 ? 140 : w < 480 ? 160 : w < 768 ? 175 : 190);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const r = (size - 28) / 2;
   const cx = size / 2;
   const cy = size / 2;
+  const sw = size < 160 ? 12 : 16;
   const circumference = 2 * Math.PI * r;
 
   let offset = 0;
@@ -122,9 +136,9 @@ function DonutChart({ segments, size = 200 }: { segments: { label: string; value
   });
 
   return (
-    <div ref={anim.ref} className="flex flex-col items-center" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
+    <div ref={anim.ref} className="flex flex-col items-center" style={{ gap: "clamp(12px, 3vw, 24px)" }}>
       <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="block">
+        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block w-full h-full">
           {arcs.map((arc, i) => (
             <circle
               key={arc.label}
@@ -133,7 +147,7 @@ function DonutChart({ segments, size = 200 }: { segments: { label: string; value
               r={r}
               fill="none"
               stroke={arc.color}
-              strokeWidth={16}
+              strokeWidth={sw}
               strokeLinecap="round"
               strokeDasharray={anim.visible ? arc.dasharray : `0 ${circumference}`}
               strokeDashoffset={arc.dashoffset}
@@ -142,15 +156,15 @@ function DonutChart({ segments, size = 200 }: { segments: { label: string; value
           ))}
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="font-display font-bold text-[var(--text-primary)]" style={{ fontSize: "clamp(1.25rem, 3vw, 1.5rem)" }}>{total.toLocaleString("ru-RU")}</span>
-          <span className="text-[10px] text-[var(--text-muted)] tracking-wider uppercase">Всего</span>
+          <span className="font-display font-bold text-[var(--text-primary)]" style={{ fontSize: "clamp(1rem, 3vw, 1.5rem)" }}>{total.toLocaleString("ru-RU")}</span>
+          <span className="text-[9px] sm:text-[10px] text-[var(--text-muted)] tracking-wider uppercase">Всего</span>
         </div>
       </div>
-      <div className="flex flex-wrap justify-center" style={{ gap: "clamp(8px, 2vw, 16px)" }}>
+      <div className="flex flex-wrap justify-center" style={{ gap: "clamp(6px, 2vw, 16px)" }}>
         {arcs.map((arc) => (
-          <div key={arc.label} className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full" style={{ background: arc.color }} />
-            <span className="text-[11px] text-[var(--text-secondary)]">{arc.label} <span className="text-[var(--text-muted)]">{Math.round(arc.pct * 100)}%</span></span>
+          <div key={arc.label} className="flex items-center gap-1.5 sm:gap-2">
+            <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shrink-0" style={{ background: arc.color }} />
+            <span className="text-[10px] sm:text-[11px] text-[var(--text-secondary)] whitespace-nowrap">{arc.label} <span className="text-[var(--text-muted)]">{Math.round(arc.pct * 100)}%</span></span>
           </div>
         ))}
       </div>
@@ -172,8 +186,8 @@ function ReportSection({ id, icon, title, badge, children, defaultOpen = false }
       background: "var(--bg-card)",
       border: open ? "1px solid var(--border-accent)" : "1px solid var(--border)",
     }}>
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-3 sm:gap-4 text-left" style={{ padding: "clamp(16px, 3vw, 24px)" }}>
-        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-2.5 sm:gap-4 text-left" style={{ padding: "clamp(12px, 3vw, 24px)" }}>
+        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
           {icon}
         </div>
         <div className="flex-1 min-w-0">
@@ -207,14 +221,14 @@ function KpiCard({ label, value, sub, icon, accent = false }: {
   label: string; value: string; sub?: string; icon: React.ReactNode; accent?: boolean;
 }) {
   return (
-    <div className="rounded-xl p-4 sm:p-5 transition-all duration-300 hover:border-[var(--border-accent)] group"
-      style={{ background: accent ? "rgba(0,255,106,0.04)" : "var(--bg-card)", border: `1px solid ${accent ? "var(--border-accent)" : "var(--border)"}` }}>
-      <div className="flex items-start justify-between mb-3">
-        <span className="text-[11px] font-medium tracking-wider uppercase text-[var(--text-muted)]">{label}</span>
-        <span className="text-[var(--accent)] opacity-60 group-hover:opacity-100 transition-opacity">{icon}</span>
+    <div className="rounded-lg sm:rounded-xl transition-all duration-300 hover:border-[var(--border-accent)] group"
+      style={{ padding: "clamp(10px, 2.5vw, 20px)", background: accent ? "rgba(0,255,106,0.04)" : "var(--bg-card)", border: `1px solid ${accent ? "var(--border-accent)" : "var(--border)"}` }}>
+      <div className="flex items-start justify-between mb-2 sm:mb-3">
+        <span className="text-[9px] sm:text-[11px] font-medium tracking-wider uppercase text-[var(--text-muted)] leading-tight">{label}</span>
+        <span className="text-[var(--accent)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0">{icon}</span>
       </div>
-      <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(1.1rem, 3vw, 1.5rem)" }}>{value}</div>
-      {sub && <div className="text-[11px] text-[var(--text-muted)] mt-1">{sub}</div>}
+      <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.85rem, 2.5vw, 1.5rem)", wordBreak: "break-word" }}>{value}</div>
+      {sub && <div className="text-[9px] sm:text-[11px] text-[var(--text-muted)] mt-0.5 sm:mt-1">{sub}</div>}
     </div>
   );
 }
@@ -227,12 +241,12 @@ function DataTable({ headers, rows, highlightLast = false }: {
   headers: string[]; rows: (string | number)[][]; highlightLast?: boolean;
 }) {
   return (
-    <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid var(--border)" }}>
-      <table className="w-full text-[12px] sm:text-[13px]" style={{ minWidth: "500px" }}>
+    <div className="overflow-x-auto rounded-xl -mx-1 px-1" style={{ border: "1px solid var(--border)", WebkitOverflowScrolling: "touch" }}>
+      <table className="w-full text-[11px] sm:text-[12px] md:text-[13px]" style={{ minWidth: "420px" }}>
         <thead>
           <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border)" }}>
             {headers.map((h) => (
-              <th key={h} className="text-left font-semibold text-[var(--text-muted)] uppercase tracking-wider" style={{ padding: "clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px)", fontSize: "10px" }}>{h}</th>
+              <th key={h} className="text-left font-semibold text-[var(--text-muted)] uppercase tracking-wider whitespace-nowrap" style={{ padding: "clamp(8px, 1.5vw, 14px) clamp(8px, 1.5vw, 16px)", fontSize: "clamp(9px, 1.5vw, 10px)" }}>{h}</th>
             ))}
           </tr>
         </thead>
@@ -243,8 +257,8 @@ function DataTable({ headers, rows, highlightLast = false }: {
               background: highlightLast && ri === rows.length - 1 ? "rgba(0,255,106,0.04)" : "transparent",
             }}>
               {row.map((cell, ci) => (
-                <td key={ci} className={`${highlightLast && ri === rows.length - 1 ? "font-bold text-[var(--accent)]" : ci === 0 ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"} tabular-nums`}
-                  style={{ padding: "clamp(10px, 2vw, 14px) clamp(12px, 2vw, 16px)" }}>
+                <td key={ci} className={`${highlightLast && ri === rows.length - 1 ? "font-bold text-[var(--accent)]" : ci === 0 ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"} tabular-nums whitespace-nowrap`}
+                  style={{ padding: "clamp(8px, 1.5vw, 14px) clamp(8px, 1.5vw, 16px)" }}>
                   {typeof cell === "number" ? cell.toLocaleString("ru-RU") : cell}
                 </td>
               ))}
@@ -264,8 +278,8 @@ function MiniBar({ label, value, maxVal, color = "var(--accent)" }: { label: str
   const anim = useAnimateOnView();
   const pct = (value / maxVal) * 100;
   return (
-    <div ref={anim.ref} className="flex items-center gap-3">
-      <span className="text-[12px] text-[var(--text-secondary)] w-24 shrink-0 truncate">{label}</span>
+    <div ref={anim.ref} className="flex items-center gap-2 sm:gap-3">
+      <span className="text-[11px] sm:text-[12px] text-[var(--text-secondary)] w-16 sm:w-24 shrink-0 truncate">{label}</span>
       <div className="flex-1 h-2 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}>
         <div className="h-full rounded-full" style={{
           width: anim.visible ? `${pct}%` : "0%",
@@ -273,7 +287,7 @@ function MiniBar({ label, value, maxVal, color = "var(--accent)" }: { label: str
           transition: "width 1s cubic-bezier(0.22, 1, 0.36, 1)",
         }} />
       </div>
-      <span className="text-[12px] text-[var(--text-muted)] tabular-nums w-10 text-right">{Math.round(pct)}%</span>
+      <span className="text-[11px] sm:text-[12px] text-[var(--text-muted)] tabular-nums w-8 sm:w-10 text-right">{Math.round(pct)}%</span>
     </div>
   );
 }
@@ -346,11 +360,11 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ TOP KPI STRIP ═══ */}
-        <div ref={revenue.ref} className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "clamp(8px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
+        <div ref={revenue.ref} className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
           <div className="rounded-xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(0,255,106,0.08), rgba(0,255,106,0.02))", border: "1px solid var(--border-accent)" }}>
-            <div style={{ padding: "clamp(14px, 3vw, 20px)" }}>
+            <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
               <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-2">Выручка</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)" }}>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {revenue.value.toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-[10px] text-[var(--text-muted)] mt-1">Gross Revenue</div>
@@ -359,9 +373,9 @@ export default function AtlasReport() {
           </div>
 
           <div ref={netRevenue.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(14px, 3vw, 20px)" }}>
+            <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
               <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Чистая выручка</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)" }}>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {netRevenue.value.toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-[10px] text-[var(--text-muted)] mt-1">EBITDA · 90.4%</div>
@@ -370,9 +384,9 @@ export default function AtlasReport() {
           </div>
 
           <div ref={opex.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(14px, 3vw, 20px)" }}>
+            <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
               <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Опер. расходы</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)" }}>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {opex.value.toLocaleString("ru-RU")} ₽
               </div>
               <div className="text-[10px] text-[var(--text-muted)] mt-1">OpEx · 9.6%</div>
@@ -381,7 +395,7 @@ export default function AtlasReport() {
           </div>
 
           <div ref={growth.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(14px, 3vw, 20px)" }}>
+            <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
               <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Динамика М/М</div>
               <div className="font-display font-bold tabular-nums flex items-center gap-1.5" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)", color: "var(--accent)" }}>
                 <TrendingUp size={16} />+{growth.value}%
@@ -393,7 +407,7 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ QUICK STATS ═══ */}
-        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(8px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
+        <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
           <KpiCard label="Подписок" value="9 183" sub="Paid subscribers" icon={<Users size={16} />} />
           <KpiCard label="Ср. чек" value="423,50 ₽" sub="AOV" icon={<CreditCard size={16} />} />
           <KpiCard label="MRR" value="1 297 276 ₽" sub="Monthly Recurring" icon={<Activity size={16} />} accent />
@@ -459,9 +473,8 @@ export default function AtlasReport() {
 
           {/* 03 — PAYMENT METHODS */}
           <ReportSection id="03" icon={<Wallet size={20} className="text-[var(--accent)]" />} title="Платёжные методы" badge="Payments">
-            <div className="grid sm:grid-cols-[auto_1fr] items-start" style={{ gap: "clamp(24px, 4vw, 40px)" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] items-start" style={{ gap: "clamp(20px, 4vw, 40px)" }}>
               <DonutChart
-                size={190}
                 segments={[
                   { label: "Карта", value: 40, color: "#00ff6a" },
                   { label: "СБП", value: 30, color: "#00ccff" },
@@ -486,7 +499,7 @@ export default function AtlasReport() {
 
           {/* 04 — COHORT ANALYSIS */}
           <ReportSection id="04" icon={<Users size={20} className="text-[var(--accent)]" />} title="Когортный анализ" badge="Retention">
-            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(8px, 2vw, 12px)" }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
               <KpiCard label="Новые" value="5 510" sub="60% транзакций" icon={<TrendingUp size={14} />} accent />
               <KpiCard label="Продления" value="3 673" sub="40% retention" icon={<Users size={14} />} />
               <KpiCard label="Выручка (новые)" value="2 335 097 ₽" sub="60% от общей" icon={<DollarSign size={14} />} />
@@ -626,7 +639,7 @@ export default function AtlasReport() {
             <div className="h-[1px]" style={{ background: "var(--border)" }} />
 
             <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Прогноз на Q2 2025</h4>
-            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(8px, 2vw, 12px)" }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
               <KpiCard label="Выручка Q2" value="4,3–4,6 млн ₽" sub="+10–18% к Q1" icon={<TrendingUp size={14} />} accent />
               <KpiCard label="База подписок" value="10 500+" sub="Целевая за квартал" icon={<Users size={14} />} />
               <KpiCard label="Целевая маржа" value="91–92%" sub="Оптимизация инфры" icon={<BarChart3 size={14} />} />
