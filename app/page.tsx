@@ -640,15 +640,15 @@ function Nav() {
             <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
           </a>
 
-          <div className="hidden lg:flex items-center gap-1 xl:gap-2">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3 2xl:gap-4">
             {NAV.map((item) => (
-              <a key={item.href} href={item.href} className={`px-3 xl:px-4 2xl:px-5 py-2 text-[13px] xl:text-[14px] transition-colors duration-300 tracking-wide relative whitespace-nowrap ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              <a key={item.href} href={item.href} className={`px-3 xl:px-4 2xl:px-5 py-2 text-[13px] xl:text-[14px] 2xl:text-[15px] transition-colors duration-300 tracking-wide relative whitespace-nowrap ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                 {item.label}
                 {active === item.href.slice(1) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--accent)]" />}
               </a>
             ))}
-            <LangSwitcher className="ml-2 xl:ml-3" />
-            <a href="#contact" className="ml-3 xl:ml-4 btn-primary shrink-0" style={{ padding: "12px 28px", fontSize: "13px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
+            <LangSwitcher className="ml-3 xl:ml-4" />
+            <a href="#contact" className="ml-4 xl:ml-5 btn-primary shrink-0" style={{ padding: "12px 32px", fontSize: "14px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
@@ -929,7 +929,7 @@ export default function Home() {
 
       {/* ═══ HERO ═══ */}
       <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 10vw, 160px) clamp(20px, 5vw, 64px) clamp(80px, 10vw, 160px)" }}>
-        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
+        <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 xl:gap-24 items-center">
           <div>
             <div className="reveal inline-flex items-center gap-2.5 rounded-full" style={{ marginBottom: "clamp(24px, 4vw, 32px)", padding: "8px 18px 8px 12px", background: "rgba(0,255,106,0.06)", border: "1px solid rgba(0,255,106,0.15)" }}>
               <div className="w-2 h-2 rounded-full bg-[var(--accent)] shadow-[0_0_12px_var(--accent-glow-strong)]" style={{ animation: "pulse-glow 3s ease-in-out infinite" }} />
@@ -940,14 +940,14 @@ export default function Home() {
               <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
             </h1>
 
-            <p className="reveal text-[var(--text-secondary)] max-w-xl" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(1rem, 2.5vw, 1.35rem)", lineHeight: 1.6 }}>
+            <p className="reveal text-[var(--text-secondary)] max-w-2xl" style={{ marginTop: "clamp(16px, 3vw, 24px)", fontSize: "clamp(1rem, 2.5vw, 1.35rem)", lineHeight: 1.6 }}>
               {t(
                 "Превращаем амбициозные идеи в высокотехнологичные цифровые продукты. Полный цикл разработки — от стратегии до масштабирования.",
                 "We turn ambitious ideas into cutting-edge digital products. Full-cycle development — from strategy to scaling."
               )}
             </p>
 
-            <div className="reveal text-[var(--text-muted)] max-w-xl" style={{ marginTop: "clamp(12px, 2vw, 16px)", fontSize: "clamp(0.875rem, 2vw, 1.05rem)", minHeight: "1.8em" }}>
+            <div className="reveal text-[var(--text-muted)] max-w-2xl" style={{ marginTop: "clamp(12px, 2vw, 16px)", fontSize: "clamp(0.875rem, 2vw, 1.05rem)", minHeight: "1.8em" }}>
               <span className="text-[var(--text-secondary)]">{typed}</span>
               <span className="inline-block w-[2px] h-[1.1em] bg-[var(--accent)] ml-1 align-middle" style={{ animation: "blink 1s step-end infinite" }} />
             </div>
@@ -960,7 +960,7 @@ export default function Home() {
 
           {/* Decoration */}
           <div className="hidden lg:block relative" aria-hidden="true">
-            <div className="w-72 xl:w-80 2xl:w-96 h-72 xl:h-80 2xl:h-96 relative" style={{ animation: "float 6s ease-in-out infinite" }}>
+            <div className="w-80 xl:w-96 2xl:w-[28rem] h-80 xl:h-96 2xl:h-[28rem] relative" style={{ animation: "float 6s ease-in-out infinite" }}>
               <div className="absolute inset-0 rounded-full border border-[var(--border)]" style={{ animation: "pulse-glow 4s ease-in-out infinite" }} />
               <div className="absolute inset-4 rounded-full border border-[var(--border)] opacity-50" />
               <div className="absolute inset-10 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
