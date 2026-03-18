@@ -197,7 +197,7 @@ export default function AtlasPage() {
     <div style={{ background: "var(--bg-deep)", minHeight: "100vh" }}>
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.6)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(16px, 4vw, 48px)" }}>
+        <div className="w-full flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(24px, 5vw, 64px)" }}>
           <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 shrink-0">
             <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span className="hidden sm:inline">{t("На главную", "Home")}</span>
@@ -211,11 +211,11 @@ export default function AtlasPage() {
       </header>
 
       {/* Content */}
-      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(16px, 4vw, 48px) clamp(48px, 8vw, 80px)" }}>
+      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(24px, 5vw, 64px) clamp(48px, 8vw, 80px)" }}>
 
         {/* Title */}
-        <div style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
-          <div className="flex items-center gap-2" style={{ marginBottom: "clamp(10px, 2vw, 16px)" }}>
+        <div className="text-center" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
+          <div className="flex items-center justify-center gap-2" style={{ marginBottom: "clamp(10px, 2vw, 16px)" }}>
             <div className="w-2 h-2 rounded-full bg-[var(--accent)]" style={{ boxShadow: "0 0 12px rgba(0,255,106,0.35)" }} />
             <span className="text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] uppercase text-[var(--accent)]">{t("Инструкции", "Instructions")}</span>
           </div>

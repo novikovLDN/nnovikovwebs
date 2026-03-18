@@ -960,7 +960,7 @@ export default function Home() {
 
           {/* Decoration */}
           <div className="hidden lg:block relative" aria-hidden="true">
-            <div className="w-80 xl:w-96 2xl:w-[28rem] h-80 xl:h-96 2xl:h-[28rem] relative" style={{ animation: "float 6s ease-in-out infinite" }}>
+            <div className="w-72 xl:w-80 2xl:w-96 h-72 xl:h-80 2xl:h-96 relative" style={{ animation: "float 6s ease-in-out infinite" }}>
               <div className="absolute inset-0 rounded-full border border-[var(--border)]" style={{ animation: "pulse-glow 4s ease-in-out infinite" }} />
               <div className="absolute inset-4 rounded-full border border-[var(--border)] opacity-50" />
               <div className="absolute inset-10 rounded-full bg-[var(--bg-elevated)] border border-[var(--border)] flex items-center justify-center">
