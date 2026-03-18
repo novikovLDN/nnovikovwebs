@@ -71,18 +71,18 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
   const anim = useAnimateOnView();
 
   return (
-    <div ref={anim.ref} style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 16px)" }}>
+    <div ref={anim.ref} style={{ display: "flex", flexDirection: "column", gap: "clamp(12px, 2vw, 16px)" }}>
       {data.map((d, i) => {
         const pct = (d.value / maxValue) * 100;
         return (
           <div key={d.label}>
             <div className="flex items-baseline justify-between mb-1 sm:mb-1.5 gap-2">
-              <span className="text-[10px] sm:text-[13px] text-[var(--text-secondary)] font-medium truncate min-w-0">{d.label}</span>
-              <span className="text-[10px] sm:text-[13px] font-bold text-[var(--text-primary)] tabular-nums whitespace-nowrap shrink-0">{d.value.toLocaleString("ru-RU")} ₽</span>
+              <span className="text-[11px] sm:text-[13px] text-[var(--text-secondary)] font-medium truncate min-w-0">{d.label}</span>
+              <span className="text-[11px] sm:text-[13px] font-bold text-[var(--text-primary)] tabular-nums whitespace-nowrap shrink-0">{d.value.toLocaleString("ru-RU")} ₽</span>
             </div>
-            <div className="h-6 sm:h-8 md:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
+            <div className="h-7 sm:h-8 md:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
               <div
-                className="h-full rounded-lg flex items-center justify-end pr-1.5 sm:pr-3"
+                className="h-full rounded-lg flex items-center justify-end pr-2 sm:pr-3"
                 style={{
                   width: anim.visible ? `${pct}%` : "0%",
                   background: `linear-gradient(90deg, rgba(0,255,106,${0.15 + i * 0.05}), rgba(0,255,106,${0.3 + i * 0.08}))`,
@@ -186,8 +186,8 @@ function ReportSection({ id, icon, title, badge, children, defaultOpen = false }
       background: "var(--bg-card)",
       border: open ? "1px solid var(--border-accent)" : "1px solid var(--border)",
     }}>
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-2 sm:gap-4 text-left" style={{ padding: "clamp(10px, 3vw, 24px)" }}>
-        <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-3 sm:gap-4 text-left" style={{ padding: "clamp(14px, 3vw, 24px)" }}>
+        <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center shrink-0" style={{ background: "rgba(0,255,106,0.06)", border: "1px solid var(--border)" }}>
           {icon}
         </div>
         <div className="flex-1 min-w-0">
@@ -221,14 +221,14 @@ function KpiCard({ label, value, sub, icon, accent = false }: {
   label: string; value: string; sub?: string; icon: React.ReactNode; accent?: boolean;
 }) {
   return (
-    <div className="rounded-lg sm:rounded-xl transition-all duration-300 hover:border-[var(--border-accent)] group overflow-hidden"
-      style={{ padding: "clamp(8px, 2.5vw, 20px)", background: accent ? "rgba(0,255,106,0.04)" : "var(--bg-card)", border: `1px solid ${accent ? "var(--border-accent)" : "var(--border)"}` }}>
-      <div className="flex items-start justify-between mb-1.5 sm:mb-3 gap-1">
-        <span className="text-[8px] sm:text-[11px] font-medium tracking-wider uppercase text-[var(--text-muted)] leading-tight min-w-0">{label}</span>
-        <span className="text-[var(--accent)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0 hidden min-[380px]:block">{icon}</span>
+    <div className="rounded-xl transition-all duration-300 hover:border-[var(--border-accent)] group overflow-hidden"
+      style={{ padding: "clamp(10px, 2.5vw, 20px)", background: accent ? "rgba(0,255,106,0.04)" : "var(--bg-card)", border: `1px solid ${accent ? "var(--border-accent)" : "var(--border)"}` }}>
+      <div className="flex items-start justify-between mb-2 sm:mb-3 gap-1">
+        <span className="text-[9px] min-[480px]:text-[10px] sm:text-[11px] font-medium tracking-wider uppercase text-[var(--text-muted)] leading-tight min-w-0">{label}</span>
+        <span className="text-[var(--accent)] opacity-60 group-hover:opacity-100 transition-opacity shrink-0 hidden min-[420px]:block">{icon}</span>
       </div>
-      <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.75rem, 2.5vw, 1.5rem)", wordBreak: "break-word", overflowWrap: "anywhere" }}>{value}</div>
-      {sub && <div className="text-[8px] sm:text-[11px] text-[var(--text-muted)] mt-0.5 sm:mt-1 truncate">{sub}</div>}
+      <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.5rem)", wordBreak: "break-word", overflowWrap: "anywhere" }}>{value}</div>
+      {sub && <div className="text-[9px] min-[480px]:text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-0.5 sm:mt-1 truncate">{sub}</div>}
     </div>
   );
 }
@@ -241,33 +241,31 @@ function DataTable({ headers, rows, highlightLast = false }: {
   headers: string[]; rows: (string | number)[][]; highlightLast?: boolean;
 }) {
   return (
-    <div className="-mx-2 sm:mx-0">
-      <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid var(--border)", WebkitOverflowScrolling: "touch" }}>
-        <table className="w-full text-[10px] sm:text-[12px] md:text-[13px]" style={{ minWidth: "280px" }}>
-          <thead>
-            <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border)" }}>
-              {headers.map((h) => (
-                <th key={h} className="text-left font-semibold text-[var(--text-muted)] uppercase tracking-wider whitespace-nowrap" style={{ padding: "clamp(6px, 1.5vw, 14px) clamp(6px, 1.5vw, 16px)", fontSize: "clamp(8px, 1.5vw, 10px)" }}>{h}</th>
+    <div className="overflow-x-auto rounded-xl" style={{ border: "1px solid var(--border)", WebkitOverflowScrolling: "touch" }}>
+      <table className="w-full text-[11px] sm:text-[12px] md:text-[13px]" style={{ minWidth: "320px" }}>
+        <thead>
+          <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border)" }}>
+            {headers.map((h) => (
+              <th key={h} className="text-left font-semibold text-[var(--text-muted)] uppercase tracking-wider whitespace-nowrap" style={{ padding: "clamp(8px, 1.5vw, 14px) clamp(8px, 1.5vw, 16px)", fontSize: "clamp(8px, 1.5vw, 10px)" }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, ri) => (
+            <tr key={ri} style={{
+              borderBottom: ri < rows.length - 1 ? "1px solid var(--border)" : "none",
+              background: highlightLast && ri === rows.length - 1 ? "rgba(0,255,106,0.04)" : "transparent",
+            }}>
+              {row.map((cell, ci) => (
+                <td key={ci} className={`${highlightLast && ri === rows.length - 1 ? "font-bold text-[var(--accent)]" : ci === 0 ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"} tabular-nums whitespace-nowrap`}
+                  style={{ padding: "clamp(8px, 1.5vw, 14px) clamp(8px, 1.5vw, 16px)" }}>
+                  {typeof cell === "number" ? cell.toLocaleString("ru-RU") : cell}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, ri) => (
-              <tr key={ri} style={{
-                borderBottom: ri < rows.length - 1 ? "1px solid var(--border)" : "none",
-                background: highlightLast && ri === rows.length - 1 ? "rgba(0,255,106,0.04)" : "transparent",
-              }}>
-                {row.map((cell, ci) => (
-                  <td key={ci} className={`${highlightLast && ri === rows.length - 1 ? "font-bold text-[var(--accent)]" : ci === 0 ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"} tabular-nums whitespace-nowrap`}
-                    style={{ padding: "clamp(6px, 1.5vw, 14px) clamp(6px, 1.5vw, 16px)" }}>
-                    {typeof cell === "number" ? cell.toLocaleString("ru-RU") : cell}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
@@ -280,16 +278,16 @@ function MiniBar({ label, value, maxVal, color = "var(--accent)" }: { label: str
   const anim = useAnimateOnView();
   const pct = (value / maxVal) * 100;
   return (
-    <div ref={anim.ref} className="flex items-center gap-1.5 sm:gap-3">
-      <span className="text-[10px] sm:text-[12px] text-[var(--text-secondary)] w-14 sm:w-24 shrink-0 truncate">{label}</span>
-      <div className="flex-1 h-1.5 sm:h-2 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}>
+    <div ref={anim.ref} className="flex items-center gap-2 sm:gap-3">
+      <span className="text-[11px] sm:text-[12px] text-[var(--text-secondary)] w-16 sm:w-24 shrink-0 truncate">{label}</span>
+      <div className="flex-1 h-2 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}>
         <div className="h-full rounded-full" style={{
           width: anim.visible ? `${pct}%` : "0%",
           background: color,
           transition: "width 1s cubic-bezier(0.22, 1, 0.36, 1)",
         }} />
       </div>
-      <span className="text-[10px] sm:text-[12px] text-[var(--text-muted)] tabular-nums w-7 sm:w-10 text-right">{Math.round(pct)}%</span>
+      <span className="text-[11px] sm:text-[12px] text-[var(--text-muted)] tabular-nums w-8 sm:w-10 text-right">{Math.round(pct)}%</span>
     </div>
   );
 }
@@ -401,15 +399,15 @@ export default function AtlasReport() {
     <div style={{ background: "var(--bg-deep)", minHeight: "100vh" }}>
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl" style={{ background: "rgba(8,8,8,0.7)", borderBottom: "1px solid var(--border)" }}>
-        <div className="max-w-[1000px] mx-auto flex items-center justify-between gap-2" style={{ padding: "clamp(10px, 2vw, 14px) clamp(12px, 4vw, 32px)" }}>
-          <a href="/" className="flex items-center gap-1.5 text-[12px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 shrink-0">
-            <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
-            <span className="hidden sm:inline">QoDev</span>
+        <div className="max-w-[1000px] mx-auto flex items-center justify-between gap-3 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 18px) clamp(16px, 4vw, 40px)" }}>
+          <a href="/" className="flex items-center gap-2 text-[13px] sm:text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors duration-300 shrink-0">
+            <ArrowLeft size={16} />
+            <span className="hidden min-[480px]:inline">QoDev</span>
           </a>
-          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-            <Shield size={14} className="text-[var(--accent)] shrink-0 sm:w-4 sm:h-4" />
-            <span className="font-display font-bold text-[var(--text-primary)] text-[11px] sm:text-sm truncate">Atlas Secure</span>
-            <span className="text-[8px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0" style={{ background: "rgba(0,255,106,0.1)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.15)" }}>Q1</span>
+          <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <Shield size={16} className="text-[var(--accent)] shrink-0" />
+            <span className="font-display font-bold text-[var(--text-primary)] text-[13px] sm:text-sm truncate">Atlas Secure</span>
+            <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0" style={{ background: "rgba(0,255,106,0.1)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.15)" }}>Q1 2025</span>
           </div>
           <LangSwitcher />
         </div>
@@ -436,49 +434,49 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ TOP KPI STRIP ═══ */}
-        <div ref={revenue.ref} className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(4px, 1.5vw, 12px)", marginBottom: "clamp(20px, 4vw, 36px)" }}>
-          <div className="rounded-lg sm:rounded-xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(0,255,106,0.08), rgba(0,255,106,0.02))", border: "1px solid var(--border-accent)" }}>
-            <div style={{ padding: "clamp(8px, 2.5vw, 20px)" }}>
-              <div className="text-[8px] sm:text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-1 sm:mb-2">{t("Выручка", "Revenue")}</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.7rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
+        <div ref={revenue.ref} className="grid grid-cols-2 md:grid-cols-4" style={{ gap: "clamp(6px, 1.5vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
+          <div className="rounded-xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(0,255,106,0.08), rgba(0,255,106,0.02))", border: "1px solid var(--border-accent)" }}>
+            <div style={{ padding: "clamp(12px, 2.5vw, 20px)" }}>
+              <div className="text-[9px] min-[480px]:text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-1.5 sm:mb-2">{t("Выручка", "Revenue")}</div>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
                 {revenue.value.toLocaleString("ru-RU")} ₽
               </div>
-              <div className="text-[8px] sm:text-[10px] text-[var(--text-muted)] mt-0.5 sm:mt-1">Gross Revenue</div>
+              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">Gross Revenue</div>
             </div>
-            <div className="h-[2px] sm:h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), #00ccff)" }} />
+            <div className="h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), #00ccff)" }} />
           </div>
 
-          <div ref={netRevenue.ref} className="rounded-lg sm:rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(8px, 2.5vw, 20px)" }}>
-              <div className="text-[8px] sm:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1 sm:mb-2">{t("Чистая выручка", "Net Revenue")}</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.7rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
+          <div ref={netRevenue.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+            <div style={{ padding: "clamp(12px, 2.5vw, 20px)" }}>
+              <div className="text-[9px] min-[480px]:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1.5 sm:mb-2">{t("Чистая выручка", "Net Revenue")}</div>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
                 {netRevenue.value.toLocaleString("ru-RU")} ₽
               </div>
-              <div className="text-[8px] sm:text-[10px] text-[var(--text-muted)] mt-0.5 sm:mt-1">EBITDA · 85.0%</div>
+              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">EBITDA · 85.0%</div>
             </div>
-            <div className="h-[2px] sm:h-[3px]" style={{ background: "linear-gradient(90deg, #00ccff, rgba(0,204,255,0.3))" }} />
+            <div className="h-[3px]" style={{ background: "linear-gradient(90deg, #00ccff, rgba(0,204,255,0.3))" }} />
           </div>
 
-          <div ref={opex.ref} className="rounded-lg sm:rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(8px, 2.5vw, 20px)" }}>
-              <div className="text-[8px] sm:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1 sm:mb-2">{t("Опер. расходы", "Op. Expenses")}</div>
-              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.7rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
+          <div ref={opex.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+            <div style={{ padding: "clamp(12px, 2.5vw, 20px)" }}>
+              <div className="text-[9px] min-[480px]:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1.5 sm:mb-2">{t("Опер. расходы", "Op. Expenses")}</div>
+              <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)", overflowWrap: "anywhere" }}>
                 {opex.value.toLocaleString("ru-RU")} ₽
               </div>
-              <div className="text-[8px] sm:text-[10px] text-[var(--text-muted)] mt-0.5 sm:mt-1">OpEx · 15.0%</div>
+              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">OpEx · 15.0%</div>
             </div>
-            <div className="h-[2px] sm:h-[3px]" style={{ background: "linear-gradient(90deg, rgba(255,180,0,0.5), rgba(255,180,0,0.15))" }} />
+            <div className="h-[3px]" style={{ background: "linear-gradient(90deg, rgba(255,180,0,0.5), rgba(255,180,0,0.15))" }} />
           </div>
 
-          <div ref={growth.ref} className="rounded-lg sm:rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
-            <div style={{ padding: "clamp(8px, 2.5vw, 20px)" }}>
-              <div className="text-[8px] sm:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1 sm:mb-2">{t("Динамика М/М", "M/M Growth")}</div>
-              <div className="font-display font-bold tabular-nums flex items-center gap-1" style={{ fontSize: "clamp(0.85rem, 3vw, 1.35rem)", color: "var(--accent)" }}>
-                <TrendingUp size={14} className="sm:w-4 sm:h-4" />+{growth.value}%
+          <div ref={growth.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
+            <div style={{ padding: "clamp(12px, 2.5vw, 20px)" }}>
+              <div className="text-[9px] min-[480px]:text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-1.5 sm:mb-2">{t("Динамика М/М", "M/M Growth")}</div>
+              <div className="font-display font-bold tabular-nums flex items-center gap-1.5" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)", color: "var(--accent)" }}>
+                <TrendingUp size={16} />+{growth.value}%
               </div>
-              <div className="text-[8px] sm:text-[10px] text-[var(--text-muted)] mt-0.5 sm:mt-1">{t("Март vs Январь", "March vs January")}</div>
+              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">{t("Март vs Январь", "March vs January")}</div>
             </div>
-            <div className="h-[2px] sm:h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), rgba(0,255,106,0.15))" }} />
+            <div className="h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), rgba(0,255,106,0.15))" }} />
           </div>
         </div>
 
@@ -491,16 +489,16 @@ export default function AtlasReport() {
         </div>
 
         {/* ═══ TELEGRAM CTA ═══ */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(6px, 1.5vw, 12px)", marginBottom: "clamp(12px, 3vw, 24px)" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)", marginBottom: "clamp(16px, 3vw, 24px)" }}>
           <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90 rounded-lg sm:rounded-xl"
-            style={{ padding: "clamp(10px, 2.5vw, 16px) clamp(16px, 3vw, 24px)", fontSize: "clamp(12px, 2vw, 15px)", background: "var(--accent)" }}>
-            <Send size={14} className="sm:w-4 sm:h-4" /> {t("Подключить Atlas Secure", "Connect Atlas Secure")}
+            className="flex items-center justify-center gap-2 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90 rounded-xl"
+            style={{ padding: "clamp(13px, 2.5vw, 16px) 24px", fontSize: "clamp(13px, 2vw, 15px)", background: "var(--accent)" }}>
+            <Send size={16} /> {t("Подключить Atlas Secure", "Connect Atlas Secure")}
           </a>
           <a href="/atlas"
-            className="flex items-center justify-center gap-2 w-full font-medium transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)] rounded-lg sm:rounded-xl"
-            style={{ padding: "clamp(10px, 2.5vw, 16px) clamp(16px, 3vw, 24px)", fontSize: "clamp(12px, 2vw, 15px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
-            <Shield size={14} className="sm:w-4 sm:h-4" /> {t("Инструкция VPN", "VPN Setup")}
+            className="flex items-center justify-center gap-2 w-full font-medium transition-all duration-300 hover:border-[var(--border-accent)] hover:text-[var(--accent)] rounded-xl"
+            style={{ padding: "clamp(13px, 2.5vw, 16px) 24px", fontSize: "clamp(13px, 2vw, 15px)", background: "var(--bg-card)", border: "1px solid var(--border)", color: "var(--text-primary)" }}>
+            <Shield size={16} /> {t("Инструкция по настройке VPN", "VPN Setup Instructions")}
           </a>
         </div>
 
@@ -813,11 +811,11 @@ export default function AtlasReport() {
                 { risk: t("Высокий Churn Rate", "High Churn Rate"), level: "medium" as const, label: t("Средний", "Medium"), action: t("Стимулирование долгосрочных планов, реферальная программа", "Incentivising long-term plans, referral programme") },
                 { risk: t("Инфраструктурные сбои VPS", "VPS infrastructure failures"), level: "low" as const, label: t("Низкий", "Low"), action: t("Multi-server архитектура, Netcup + резерв (failover)", "Multi-server architecture, Netcup + backup (failover)") },
               ].map((r) => (
-                <div key={r.risk} className="rounded-lg sm:rounded-xl flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-4" style={{ padding: "clamp(10px, 2vw, 16px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
+                <div key={r.risk} className="rounded-xl flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 16px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
                   <RiskBadge level={r.level} label={r.label} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-[12px] sm:text-[13px] font-semibold text-[var(--text-primary)]">{r.risk}</div>
-                    <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] mt-0.5">{r.action}</div>
+                    <div className="text-[13px] font-semibold text-[var(--text-primary)]">{r.risk}</div>
+                    <div className="text-[11px] text-[var(--text-muted)] mt-0.5">{r.action}</div>
                   </div>
                 </div>
               ))}
