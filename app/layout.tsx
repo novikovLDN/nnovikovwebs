@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { I18nProvider } from "./lib/i18n";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -37,10 +38,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Qodev" }],
   creator: "Qodev",
   publisher: "Qodev",
-  metadataBase: new URL("https://qodev.com"),
+  metadataBase: new URL("https://godev.dev"),
   alternates: {
     canonical: "/",
-    languages: { "ru-RU": "/" },
+    languages: { "ru-RU": "/", "en-US": "/" },
   },
   openGraph: {
     title: "Qodev — Software Agency | Разработка цифровых продуктов",
@@ -77,7 +78,7 @@ const jsonLd = {
   name: "Qodev",
   description:
     "Software agency полного цикла. Веб-разработка, мобильные приложения, UI/UX дизайн, DevOps и облачная инфраструктура.",
-  url: "https://qodev.com",
+  url: "https://godev.dev",
   sameAs: [
     "https://t.me/qodev_agency",
   ],
@@ -124,7 +125,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <I18nProvider>{children}</I18nProvider>
+      </body>
     </html>
   );
 }

@@ -5,8 +5,9 @@ import {
   ArrowLeft, Shield, TrendingUp, TrendingDown, Users, CreditCard,
   DollarSign, BarChart3, PieChart, Activity, ChevronDown, ChevronUp,
   Lock, Server, Code2, Wallet, AlertTriangle, CheckCircle, Target,
-  Zap, ArrowUpRight, ArrowRight, Megaphone, Share2, Globe,
+  Zap, ArrowUpRight, ArrowRight, Megaphone, Share2, Globe, Send,
 } from "lucide-react";
+import { useI18n, LangSwitcher } from "../../lib/i18n";
 
 /* ═══════════════════════════════════════════════════
    HOOKS
@@ -103,9 +104,8 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
    ANIMATED DONUT CHART
    ═══════════════════════════════════════════════════ */
 
-function DonutChart({ segments }: { segments: { label: string; value: number; color: string }[] }) {
+function DonutChart({ segments, totalLabel }: { segments: { label: string; value: number; color: string }[]; totalLabel: string }) {
   const anim = useAnimateOnView();
-  const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(190);
   const total = segments.reduce((s, d) => s + d.value, 0);
 
@@ -157,7 +157,7 @@ function DonutChart({ segments }: { segments: { label: string; value: number; co
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-display font-bold text-[var(--text-primary)]" style={{ fontSize: "clamp(1rem, 3vw, 1.5rem)" }}>{total.toLocaleString("ru-RU")}</span>
-          <span className="text-[9px] sm:text-[10px] text-[var(--text-muted)] tracking-wider uppercase">Всего</span>
+          <span className="text-[9px] sm:text-[10px] text-[var(--text-muted)] tracking-wider uppercase">{totalLabel}</span>
         </div>
       </div>
       <div className="flex flex-wrap justify-center" style={{ gap: "clamp(6px, 2vw, 16px)" }}>
@@ -242,7 +242,7 @@ function DataTable({ headers, rows, highlightLast = false }: {
 }) {
   return (
     <div className="overflow-x-auto rounded-xl -mx-1 px-1" style={{ border: "1px solid var(--border)", WebkitOverflowScrolling: "touch" }}>
-      <table className="w-full text-[11px] sm:text-[12px] md:text-[13px]" style={{ minWidth: "420px" }}>
+      <table className="w-full text-[11px] sm:text-[12px] md:text-[13px]" style={{ minWidth: "320px" }}>
         <thead>
           <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid var(--border)" }}>
             {headers.map((h) => (
@@ -296,16 +296,16 @@ function MiniBar({ label, value, maxVal, color = "var(--accent)" }: { label: str
    RISK BADGE
    ═══════════════════════════════════════════════════ */
 
-function RiskBadge({ level }: { level: "high" | "medium" | "low" }) {
+function RiskBadge({ level, label }: { level: "high" | "medium" | "low"; label: string }) {
   const map = {
-    high: { bg: "rgba(255,80,80,0.12)", color: "#ff5050", border: "rgba(255,80,80,0.25)", text: "Высокий" },
-    medium: { bg: "rgba(255,180,0,0.12)", color: "#ffb400", border: "rgba(255,180,0,0.25)", text: "Средний" },
-    low: { bg: "rgba(0,255,106,0.08)", color: "var(--accent)", border: "rgba(0,255,106,0.15)", text: "Низкий" },
+    high: { bg: "rgba(255,80,80,0.12)", color: "#ff5050", border: "rgba(255,80,80,0.25)" },
+    medium: { bg: "rgba(255,180,0,0.12)", color: "#ffb400", border: "rgba(255,180,0,0.25)" },
+    low: { bg: "rgba(0,255,106,0.08)", color: "var(--accent)", border: "rgba(0,255,106,0.15)" },
   };
   const s = map[level];
   return (
     <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider" style={{ background: s.bg, color: s.color, border: `1px solid ${s.border}` }}>
-      {s.text}
+      {label}
     </span>
   );
 }
@@ -315,7 +315,8 @@ function RiskBadge({ level }: { level: "high" | "medium" | "low" }) {
    ═══════════════════════════════════════════════════ */
 
 export default function AtlasReport() {
-  /* Top KPI counters */
+  const { t } = useI18n();
+
   const revenue = useCountUp(3891829, 2500);
   const netRevenue = useCountUp(3306829, 2500);
   const opex = useCountUp(585000, 2200);
@@ -335,7 +336,7 @@ export default function AtlasReport() {
             <span className="font-display font-bold text-[var(--text-primary)] text-[13px] sm:text-sm">Atlas Secure</span>
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider ml-1" style={{ background: "rgba(0,255,106,0.1)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.15)" }}>Q1 2025</span>
           </div>
-          <div className="hidden sm:block" style={{ width: "72px" }} />
+          <LangSwitcher />
         </div>
       </header>
 
@@ -351,11 +352,11 @@ export default function AtlasReport() {
             Atlas Secure VPN
           </h1>
           <p className="text-[var(--text-secondary)]" style={{ fontSize: "clamp(0.825rem, 2vw, 1rem)", marginTop: "clamp(8px, 1.5vw, 12px)" }}>
-            Финансовый отчёт за I квартал 2025 · 1 января — 31 марта
+            {t("Финансовый отчёт за I квартал 2025 · 1 января — 31 марта", "Financial Report Q1 2025 · January 1 — March 31")}
           </p>
           <div className="flex items-center gap-2 mt-3">
             <Lock size={12} className="text-[var(--text-muted)]" />
-            <span className="text-[10px] text-[var(--text-muted)] tracking-wider uppercase">Конфиденциально · Подготовлено командой Atlas Secure</span>
+            <span className="text-[10px] text-[var(--text-muted)] tracking-wider uppercase">{t("Конфиденциально · Подготовлено командой Atlas Secure", "Confidential · Prepared by the Atlas Secure team")}</span>
           </div>
         </div>
 
@@ -363,7 +364,7 @@ export default function AtlasReport() {
         <div ref={revenue.ref} className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
           <div className="rounded-xl overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(0,255,106,0.08), rgba(0,255,106,0.02))", border: "1px solid var(--border-accent)" }}>
             <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
-              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-2">Выручка</div>
+              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--accent)] mb-2">{t("Выручка", "Revenue")}</div>
               <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {revenue.value.toLocaleString("ru-RU")} ₽
               </div>
@@ -374,7 +375,7 @@ export default function AtlasReport() {
 
           <div ref={netRevenue.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
             <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
-              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Чистая выручка</div>
+              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">{t("Чистая выручка", "Net Revenue")}</div>
               <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {netRevenue.value.toLocaleString("ru-RU")} ₽
               </div>
@@ -385,7 +386,7 @@ export default function AtlasReport() {
 
           <div ref={opex.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
             <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
-              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Опер. расходы</div>
+              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">{t("Опер. расходы", "Op. Expenses")}</div>
               <div className="font-display font-bold text-[var(--text-primary)] tabular-nums" style={{ fontSize: "clamp(0.8rem, 2.5vw, 1.35rem)" }}>
                 {opex.value.toLocaleString("ru-RU")} ₽
               </div>
@@ -396,11 +397,11 @@ export default function AtlasReport() {
 
           <div ref={growth.ref} className="rounded-xl overflow-hidden" style={{ background: "var(--bg-card)", border: "1px solid var(--border)" }}>
             <div style={{ padding: "clamp(10px, 2.5vw, 20px)" }}>
-              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">Динамика М/М</div>
+              <div className="text-[10px] font-semibold tracking-wider uppercase text-[var(--text-muted)] mb-2">{t("Динамика М/М", "M/M Growth")}</div>
               <div className="font-display font-bold tabular-nums flex items-center gap-1.5" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)", color: "var(--accent)" }}>
                 <TrendingUp size={16} />+{growth.value}%
               </div>
-              <div className="text-[10px] text-[var(--text-muted)] mt-1">Март vs Январь</div>
+              <div className="text-[10px] text-[var(--text-muted)] mt-1">{t("Март vs Январь", "March vs January")}</div>
             </div>
             <div className="h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), rgba(0,255,106,0.15))" }} />
           </div>
@@ -408,89 +409,112 @@ export default function AtlasReport() {
 
         {/* ═══ QUICK STATS ═══ */}
         <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)", marginBottom: "clamp(24px, 4vw, 36px)" }}>
-          <KpiCard label="Подписок" value="9 183" sub="Paid subscribers" icon={<Users size={16} />} />
-          <KpiCard label="Ср. чек" value="423,50 ₽" sub="AOV" icon={<CreditCard size={16} />} />
+          <KpiCard label={t("Подписок", "Subscriptions")} value="9 183" sub="Paid subscribers" icon={<Users size={16} />} />
+          <KpiCard label={t("Ср. чек", "Avg. Check")} value="423,50 ₽" sub="AOV" icon={<CreditCard size={16} />} />
           <KpiCard label="MRR" value="1 297 276 ₽" sub="Monthly Recurring" icon={<Activity size={16} />} accent />
-          <KpiCard label="ARR прогноз" value="15,6 млн ₽" sub="Annual Recurring" icon={<Target size={16} />} />
+          <KpiCard label={t("ARR прогноз", "ARR Forecast")} value={t("15,6 млн ₽", "15.6M ₽")} sub="Annual Recurring" icon={<Target size={16} />} />
+        </div>
+
+        {/* ═══ TELEGRAM CTA ═══ */}
+        <div style={{ marginBottom: "clamp(24px, 4vw, 36px)" }}>
+          <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90 rounded-xl"
+            style={{ padding: "clamp(12px, 2.5vw, 16px) 24px", fontSize: "clamp(13px, 2vw, 15px)", background: "var(--accent)" }}>
+            <Send size={16} /> {t("Подключить Atlas Secure", "Connect Atlas Secure")}
+          </a>
         </div>
 
         {/* ═══ REPORT SECTIONS ═══ */}
         <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 14px)" }}>
 
           {/* 01 — EXECUTIVE SUMMARY */}
-          <ReportSection id="01" icon={<BarChart3 size={20} className="text-[var(--accent)]" />} title="Executive Summary" badge="Ключевое" defaultOpen>
+          <ReportSection id="01" icon={<BarChart3 size={20} className="text-[var(--accent)]" />} title="Executive Summary" badge={t("Ключевое", "Key")} defaultOpen>
             <div className="grid sm:grid-cols-2" style={{ gap: "clamp(16px, 3vw, 24px)" }}>
               <div>
-                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Ключевые результаты</h4>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">{t("Ключевые результаты", "Key Results")}</h4>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
-                  За I квартал 2025 года Atlas Secure VPN продемонстрировал устойчивый рост пользовательской базы и выручки.
-                  Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">85,0%</strong>. Маркетинговые инвестиции <strong className="text-[var(--text-primary)]">210 000 ₽</strong> обеспечили рост органического трафика на 47%.
+                  {t(
+                    <>За I квартал 2025 года Atlas Secure VPN продемонстрировал устойчивый рост пользовательской базы и выручки. Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">85,0%</strong>. Маркетинговые инвестиции <strong className="text-[var(--text-primary)]">210 000 ₽</strong> обеспечили рост органического трафика на 47%.</>,
+                    <>In Q1 2025, Atlas Secure VPN demonstrated steady growth in user base and revenue. Total revenue was <strong className="text-[var(--text-primary)]">3,891,829 ₽</strong> with an operating margin of <strong className="text-[var(--text-primary)]">85.0%</strong>. Marketing investments of <strong className="text-[var(--text-primary)]">210,000 ₽</strong> drove a 47% increase in organic traffic.</>
+                  )}
                 </p>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-3">
-                  <strong className="text-[var(--text-primary)]">60%</strong> транзакций — новые пользователи, <strong className="text-[var(--text-primary)]">40%</strong> — продления.
-                  Высокий уровень органического роста и удержания клиентов.
+                  {t(
+                    <><strong className="text-[var(--text-primary)]">60%</strong> транзакций — новые пользователи, <strong className="text-[var(--text-primary)]">40%</strong> — продления. Высокий уровень органического роста и удержания клиентов.</>,
+                    <><strong className="text-[var(--text-primary)]">60%</strong> of transactions are new users, <strong className="text-[var(--text-primary)]">40%</strong> are renewals. High organic growth and customer retention.</>
+                  )}
                 </p>
               </div>
               <div>
-                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Стратегический контекст</h4>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">{t("Стратегический контекст", "Strategic Context")}</h4>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
-                  Продукт функционирует на фоне ужесточения регуляторной среды (РКН/ТСПУ). Технический стек на базе <strong className="text-[var(--text-primary)]">VLESS + XTLS-Reality</strong> обеспечивает устойчивую обходимость блокировок.
+                  {t(
+                    <>Продукт функционирует на фоне ужесточения регуляторной среды (РКН/ТСПУ). Технический стек на базе <strong className="text-[var(--text-primary)]">VLESS + XTLS-Reality</strong> обеспечивает устойчивую обходимость блокировок.</>,
+                    <>The product operates amid a tightening regulatory environment. The technical stack based on <strong className="text-[var(--text-primary)]">VLESS + XTLS-Reality</strong> ensures reliable circumvention of blocks.</>
+                  )}
                 </p>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-3">
-                  Диверсификация платёжных методов (карта, СБП, SberPay, крипто) снижает операционные риски и повышает конверсию.
+                  {t(
+                    "Диверсификация платёжных методов (карта, СБП, SberPay, крипто) снижает операционные риски и повышает конверсию.",
+                    "Diversification of payment methods (card, instant bank transfer, SberPay, crypto) reduces operational risks and improves conversion."
+                  )}
                 </p>
               </div>
             </div>
           </ReportSection>
 
           {/* 02 — REVENUE ANALYSIS */}
-          <ReportSection id="02" icon={<DollarSign size={20} className="text-[var(--accent)]" />} title="Анализ выручки" badge="Revenue">
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Выручка по месяцам</h4>
+          <ReportSection id="02" icon={<DollarSign size={20} className="text-[var(--accent)]" />} title={t("Анализ выручки", "Revenue Analysis")} badge="Revenue">
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Выручка по месяцам", "Revenue by Month")}</h4>
             <BarChart
               maxValue={1400000}
               data={[
-                { label: "Январь 2025", value: 1224235, subLabel: "31.5%" },
-                { label: "Февраль 2025", value: 1279893, subLabel: "32.9%" },
-                { label: "Март 2025", value: 1387701, subLabel: "35.6%" },
+                { label: t("Январь 2025", "January 2025"), value: 1224235, subLabel: "31.5%" },
+                { label: t("Февраль 2025", "February 2025"), value: 1279893, subLabel: "32.9%" },
+                { label: t("Март 2025", "March 2025"), value: 1387701, subLabel: "35.6%" },
               ]}
             />
 
             <div className="h-[1px]" style={{ background: "var(--border)" }} />
 
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Структура по тарифам</h4>
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Структура по тарифам", "Plan Structure")}</h4>
             <DataTable
-              headers={["Тариф", "Доля", "Подписок", "Ср. чек", "Выручка"]}
+              headers={[t("Тариф", "Plan"), t("Доля", "Share"), t("Подписок", "Subs"), t("Ср. чек", "Avg."), t("Выручка", "Revenue")]}
               rows={[
-                ["1 месяц", "40%", "3 673", "199 ₽", "730 927 ₽"],
-                ["3 месяца", "35%", "3 214", "449 ₽", "1 443 086 ₽"],
-                ["6 месяцев", "15%", "1 377", "799 ₽", "1 099 623 ₽"],
-                ["12 месяцев", "10%", "918", "1 299 ₽", "618 193 ₽"],
-                ["ИТОГО", "100%", "9 183", "423,50 ₽", "3 891 829 ₽"],
+                [t("1 месяц", "1 month"), "40%", "3 673", "199 ₽", "730 927 ₽"],
+                [t("3 месяца", "3 months"), "35%", "3 214", "449 ₽", "1 443 086 ₽"],
+                [t("6 месяцев", "6 months"), "15%", "1 377", "799 ₽", "1 099 623 ₽"],
+                [t("12 месяцев", "12 months"), "10%", "918", "1 299 ₽", "618 193 ₽"],
+                [t("ИТОГО", "TOTAL"), "100%", "9 183", "423,50 ₽", "3 891 829 ₽"],
               ]}
               highlightLast
             />
           </ReportSection>
 
           {/* 03 — PAYMENT METHODS */}
-          <ReportSection id="03" icon={<Wallet size={20} className="text-[var(--accent)]" />} title="Платёжные методы" badge="Payments">
+          <ReportSection id="03" icon={<Wallet size={20} className="text-[var(--accent)]" />} title={t("Платёжные методы", "Payment Methods")} badge="Payments">
             <div className="grid grid-cols-1 sm:grid-cols-[auto_1fr] items-start" style={{ gap: "clamp(20px, 4vw, 40px)" }}>
               <DonutChart
+                totalLabel={t("Всего", "Total")}
                 segments={[
-                  { label: "Карта", value: 40, color: "#00ff6a" },
-                  { label: "СБП", value: 30, color: "#00ccff" },
-                  { label: "Крипто", value: 15, color: "#ffb400" },
+                  { label: t("Карта", "Card"), value: 40, color: "#00ff6a" },
+                  { label: t("СБП", "SBP"), value: 30, color: "#00ccff" },
+                  { label: t("Крипто", "Crypto"), value: 15, color: "#ffb400" },
                   { label: "SberPay", value: 15, color: "#9966ff" },
                 ]}
               />
               <div style={{ display: "flex", flexDirection: "column", gap: "clamp(10px, 2vw, 14px)" }}>
-                <MiniBar label="Карта" value={40} maxVal={100} color="#00ff6a" />
-                <MiniBar label="СБП" value={30} maxVal={100} color="#00ccff" />
-                <MiniBar label="Крипто" value={15} maxVal={100} color="#ffb400" />
+                <MiniBar label={t("Карта", "Card")} value={40} maxVal={100} color="#00ff6a" />
+                <MiniBar label={t("СБП", "SBP")} value={30} maxVal={100} color="#00ccff" />
+                <MiniBar label={t("Крипто", "Crypto")} value={15} maxVal={100} color="#ffb400" />
                 <MiniBar label="SberPay" value={15} maxVal={100} color="#9966ff" />
 
                 <div className="rounded-xl mt-2" style={{ padding: "clamp(12px, 2vw, 16px)", background: "rgba(255,180,0,0.04)", border: "1px solid rgba(255,180,0,0.15)" }}>
                   <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">
-                    <strong style={{ color: "#ffb400" }}>15% крипто-платежей</strong> — значительно выше среднего по рынку (3–5%). Сигнализирует о технически грамотной аудитории.
+                    {t(
+                      <><strong style={{ color: "#ffb400" }}>15% крипто-платежей</strong> — значительно выше среднего по рынку (3–5%). Сигнализирует о технически грамотной аудитории.</>,
+                      <><strong style={{ color: "#ffb400" }}>15% crypto payments</strong> — significantly above the market average (3–5%). Indicates a technically savvy audience.</>
+                    )}
                   </p>
                 </div>
               </div>
@@ -498,42 +522,42 @@ export default function AtlasReport() {
           </ReportSection>
 
           {/* 04 — COHORT ANALYSIS */}
-          <ReportSection id="04" icon={<Users size={20} className="text-[var(--accent)]" />} title="Когортный анализ" badge="Retention">
+          <ReportSection id="04" icon={<Users size={20} className="text-[var(--accent)]" />} title={t("Когортный анализ", "Cohort Analysis")} badge="Retention">
             <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
-              <KpiCard label="Новые" value="5 510" sub="60% транзакций" icon={<TrendingUp size={14} />} accent />
-              <KpiCard label="Продления" value="3 673" sub="40% retention" icon={<Users size={14} />} />
-              <KpiCard label="Выручка (новые)" value="2 335 097 ₽" sub="60% от общей" icon={<DollarSign size={14} />} />
-              <KpiCard label="Выручка (рекурр)" value="1 556 732 ₽" sub="40% рекуррентная" icon={<Activity size={14} />} />
+              <KpiCard label={t("Новые", "New")} value="5 510" sub={t("60% транзакций", "60% of transactions")} icon={<TrendingUp size={14} />} accent />
+              <KpiCard label={t("Продления", "Renewals")} value="3 673" sub="40% retention" icon={<Users size={14} />} />
+              <KpiCard label={t("Выручка (новые)", "Revenue (new)")} value="2 335 097 ₽" sub={t("60% от общей", "60% of total")} icon={<DollarSign size={14} />} />
+              <KpiCard label={t("Выручка (рекурр)", "Revenue (recurring)")} value="1 556 732 ₽" sub={t("40% рекуррентная", "40% recurring")} icon={<Activity size={14} />} />
             </div>
 
             <div className="grid sm:grid-cols-3" style={{ gap: "clamp(10px, 2vw, 16px)" }}>
               <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 20px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
                 <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-2">Acquisition Rate</h5>
-                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">5 510 новых подписчиков за квартал формируют будущую когорту для продлений.</p>
+                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">{t("5 510 новых подписчиков за квартал формируют будущую когорту для продлений.", "5,510 new subscribers per quarter form the future cohort for renewals.")}</p>
               </div>
               <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 20px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
                 <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-2">Retention Rate</h5>
-                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">40% продлений при базе &lt; 4 кварталов — сильный показатель. Benchmark SaaS: 30–40%.</p>
+                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">{t("40% продлений при базе < 4 кварталов — сильный показатель. Benchmark SaaS: 30–40%.", "40% renewals with a base < 4 quarters — a strong indicator. SaaS benchmark: 30–40%.")}</p>
               </div>
               <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 20px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-2">LTV потенциал</h5>
-                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">LTV ≈ 423,50 × 1,67 ≈ <strong className="text-[var(--text-primary)]">707 ₽</strong> / пользователь при 1-мес. циклах.</p>
+                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-2">{t("LTV потенциал", "LTV Potential")}</h5>
+                <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">{t(<>LTV ≈ 423,50 × 1,67 ≈ <strong className="text-[var(--text-primary)]">707 ₽</strong> / пользователь при 1-мес. циклах.</>, <>LTV ≈ 423.50 × 1.67 ≈ <strong className="text-[var(--text-primary)]">707 ₽</strong> / user at 1-month cycles.</>)}</p>
               </div>
             </div>
           </ReportSection>
 
           {/* 05 — P&L */}
-          <ReportSection id="05" icon={<BarChart3 size={20} className="text-[var(--accent)]" />} title="Отчёт о прибылях и убытках" badge="P&L">
+          <ReportSection id="05" icon={<BarChart3 size={20} className="text-[var(--accent)]" />} title={t("Отчёт о прибылях и убытках", "Profit & Loss Statement")} badge="P&L">
             <DataTable
-              headers={["Статья", "За квартал", "В месяц (avg)"]}
+              headers={[t("Статья", "Item"), t("За квартал", "Per Quarter"), t("В месяц (avg)", "Per Month (avg)")]}
               rows={[
-                ["Валовая выручка", "3 891 829 ₽", "1 297 276 ₽"],
-                ["Серверы (VPS, трафик)", "(180 000 ₽)", "(60 000 ₽)"],
-                ["Разработка и поддержка", "(90 000 ₽)", "(30 000 ₽)"],
-                ["Маркетинг и реклама", "(210 000 ₽)", "(70 000 ₽)"],
-                ["Платёжные комиссии (~1.1%)", "(42 810 ₽)", "(14 270 ₽)"],
-                ["Прочие опер. расходы", "(62 190 ₽)", "(20 730 ₽)"],
-                ["Итого OpEx", "(585 000 ₽)", "(195 000 ₽)"],
+                [t("Валовая выручка", "Gross Revenue"), "3 891 829 ₽", "1 297 276 ₽"],
+                [t("Серверы (VPS, трафик)", "Servers (VPS, traffic)"), "(180 000 ₽)", "(60 000 ₽)"],
+                [t("Разработка и поддержка", "Development & support"), "(90 000 ₽)", "(30 000 ₽)"],
+                [t("Маркетинг и реклама", "Marketing & advertising"), "(210 000 ₽)", "(70 000 ₽)"],
+                [t("Платёжные комиссии (~1.1%)", "Payment fees (~1.1%)"), "(42 810 ₽)", "(14 270 ₽)"],
+                [t("Прочие опер. расходы", "Other op. expenses"), "(62 190 ₽)", "(20 730 ₽)"],
+                [t("Итого OpEx", "Total OpEx"), "(585 000 ₽)", "(195 000 ₽)"],
                 ["EBITDA", "3 306 829 ₽", "1 102 276 ₽"],
               ]}
               highlightLast
@@ -546,36 +570,36 @@ export default function AtlasReport() {
                   <span className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)]">EBITDA Margin</span>
                 </div>
                 <div className="font-display font-bold text-[var(--accent)]" style={{ fontSize: "clamp(1.5rem, 4vw, 2rem)" }}>85,0%</div>
-                <p className="text-[11px] text-[var(--text-muted)] mt-1">Высокий для SaaS с маркет. инвестициями</p>
+                <p className="text-[11px] text-[var(--text-muted)] mt-1">{t("Высокий для SaaS с маркет. инвестициями", "High for SaaS with marketing investments")}</p>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--text-muted)]">Структура расходов</h5>
-                <MiniBar label="Маркетинг" value={210000} maxVal={585000} color="#ff6b9d" />
-                <MiniBar label="Серверы" value={180000} maxVal={585000} color="#00ccff" />
-                <MiniBar label="Разработка" value={90000} maxVal={585000} color="var(--accent)" />
-                <MiniBar label="Комиссии" value={42810} maxVal={585000} color="#ffb400" />
-                <MiniBar label="Прочие" value={62190} maxVal={585000} color="#9966ff" />
+                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--text-muted)]">{t("Структура расходов", "Expense Structure")}</h5>
+                <MiniBar label={t("Маркетинг", "Marketing")} value={210000} maxVal={585000} color="#ff6b9d" />
+                <MiniBar label={t("Серверы", "Servers")} value={180000} maxVal={585000} color="#00ccff" />
+                <MiniBar label={t("Разработка", "Development")} value={90000} maxVal={585000} color="var(--accent)" />
+                <MiniBar label={t("Комиссии", "Fees")} value={42810} maxVal={585000} color="#ffb400" />
+                <MiniBar label={t("Прочие", "Other")} value={62190} maxVal={585000} color="#9966ff" />
               </div>
             </div>
           </ReportSection>
 
           {/* 06 — KPI & METRICS */}
-          <ReportSection id="06" icon={<Activity size={20} className="text-[var(--accent)]" />} title="Ключевые метрики" badge="KPI">
+          <ReportSection id="06" icon={<Activity size={20} className="text-[var(--accent)]" />} title={t("Ключевые метрики", "Key Metrics")} badge="KPI">
             <DataTable
-              headers={["Метрика", "Значение Q1", "Интерпретация"]}
+              headers={[t("Метрика", "Metric"), t("Значение Q1", "Q1 Value"), t("Интерпретация", "Interpretation")]}
               rows={[
-                ["MRR", "1 297 276 ₽", "Устойчивый базис"],
-                ["ARR", "15 567 316 ₽", "Прогноз на 12 мес"],
-                ["AOV", "423,50 ₽", "Выше 1-мес. тарифа"],
-                ["CAC", "~106 ₽", "OpEx / новых юзеров"],
-                ["LTV", "~707 ₽", "При retention 40%"],
-                ["LTV / CAC", "6,7×", "Отлично (>3× норма)"],
-                ["Churn Rate", "~60% / квартал", "Целевое снижение — Q2"],
-                ["Gross Margin", "85,0%", "Высокий для SaaS"],
-                ["Revenue Growth (М/М)", "+13,4%", "Положительный тренд"],
-                ["Транзакций/день", "~102", "9 183 / 90 дней"],
-                ["Доля крипто", "15%", "3–5× выше рынка"],
-                ["Долгосрочные планы", "25%", "Снижает churn"],
+                ["MRR", "1 297 276 ₽", t("Устойчивый базис", "Stable basis")],
+                ["ARR", "15 567 316 ₽", t("Прогноз на 12 мес", "12-month forecast")],
+                ["AOV", "423,50 ₽", t("Выше 1-мес. тарифа", "Above 1-month plan")],
+                ["CAC", "~106 ₽", t("OpEx / новых юзеров", "OpEx / new users")],
+                ["LTV", "~707 ₽", t("При retention 40%", "At 40% retention")],
+                ["LTV / CAC", "6,7×", t("Отлично (>3× норма)", "Excellent (>3× norm)")],
+                ["Churn Rate", t("~60% / квартал", "~60% / quarter"), t("Целевое снижение — Q2", "Target reduction — Q2")],
+                ["Gross Margin", "85,0%", t("Высокий для SaaS", "High for SaaS")],
+                [t("Revenue Growth (М/М)", "Revenue Growth (M/M)"), "+13,4%", t("Положительный тренд", "Positive trend")],
+                [t("Транзакций/день", "Transactions/day"), "~102", t("9 183 / 90 дней", "9,183 / 90 days")],
+                [t("Доля крипто", "Crypto share"), "15%", t("3–5× выше рынка", "3–5× above market")],
+                [t("Долгосрочные планы", "Long-term plans"), "25%", t("Снижает churn", "Reduces churn")],
               ]}
             />
           </ReportSection>
@@ -584,13 +608,13 @@ export default function AtlasReport() {
           <ReportSection id="07" icon={<Zap size={20} className="text-[var(--accent)]" />} title="Unit Economics">
             <div className="grid sm:grid-cols-2" style={{ gap: "clamp(12px, 2vw, 16px)" }}>
               <div className="rounded-xl" style={{ padding: "clamp(16px, 3vw, 24px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-4">Экономика привлечения</h5>
+                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-4">{t("Экономика привлечения", "Acquisition Economics")}</h5>
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {[
-                    ["Расходы / квартал", "585 000 ₽"],
-                    ["Новых пользователей", "5 510"],
+                    [t("Расходы / квартал", "Expenses / quarter"), "585 000 ₽"],
+                    [t("Новых пользователей", "New users"), "5 510"],
                     ["CAC", "106 ₽"],
-                    ["Payback Period", "< 1 мес"],
+                    ["Payback Period", t("< 1 мес", "< 1 month")],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between">
                       <span className="text-[12px] text-[var(--text-secondary)]">{k}</span>
@@ -600,13 +624,13 @@ export default function AtlasReport() {
                 </div>
               </div>
               <div className="rounded-xl" style={{ padding: "clamp(16px, 3vw, 24px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-4">Экономика удержания</h5>
+                <h5 className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)] mb-4">{t("Экономика удержания", "Retention Economics")}</h5>
                 <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                   {[
                     ["Retention Rate", "40%"],
-                    ["LTV (оценка)", "707 ₽"],
+                    [t("LTV (оценка)", "LTV (estimate)"), "707 ₽"],
                     ["LTV / CAC", "6,7×"],
-                    ["Рекуррентная выручка", "40%"],
+                    [t("Рекуррентная выручка", "Recurring revenue"), "40%"],
                   ].map(([k, v]) => (
                     <div key={k} className="flex items-center justify-between">
                       <span className="text-[12px] text-[var(--text-secondary)]">{k}</span>
@@ -619,58 +643,58 @@ export default function AtlasReport() {
           </ReportSection>
 
           {/* 08 — MARKETING INTEGRATIONS */}
-          <ReportSection id="08" icon={<Megaphone size={20} className="text-[var(--accent)]" />} title="Маркетинг и интеграции" badge="Marketing">
+          <ReportSection id="08" icon={<Megaphone size={20} className="text-[var(--accent)]" />} title={t("Маркетинг и интеграции", "Marketing & Integrations")} badge="Marketing">
             <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
-              <KpiCard label="Расход на маркетинг" value="210 000 ₽" sub="70 000 ₽/мес" icon={<Megaphone size={14} />} accent />
-              <KpiCard label="CPA (привлечение)" value="38 ₽" sub="Маркет. расход / юзер" icon={<Target size={14} />} />
-              <KpiCard label="ROAS" value="18,5×" sub="Возврат на рекл. расходы" icon={<TrendingUp size={14} />} />
-              <KpiCard label="Органический рост" value="+47%" sub="Q1 vs Q4 2024" icon={<Share2 size={14} />} />
+              <KpiCard label={t("Расход на маркетинг", "Marketing spend")} value="210 000 ₽" sub={t("70 000 ₽/мес", "70,000 ₽/mo")} icon={<Megaphone size={14} />} accent />
+              <KpiCard label={t("CPA (привлечение)", "CPA (acquisition)")} value="38 ₽" sub={t("Маркет. расход / юзер", "Marketing cost / user")} icon={<Target size={14} />} />
+              <KpiCard label="ROAS" value="18,5×" sub={t("Возврат на рекл. расходы", "Return on ad spend")} icon={<TrendingUp size={14} />} />
+              <KpiCard label={t("Органический рост", "Organic growth")} value="+47%" sub="Q1 vs Q4 2024" icon={<Share2 size={14} />} />
             </div>
 
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Распределение бюджета по каналам</h4>
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Распределение бюджета по каналам", "Budget Distribution by Channel")}</h4>
             <DataTable
-              headers={["Канал", "Бюджет Q1", "В мес (avg)", "Привлечено", "CPA", "Conv. Rate"]}
+              headers={[t("Канал", "Channel"), t("Бюджет Q1", "Q1 Budget"), t("В мес", "Per Mo"), t("Привлечено", "Acquired"), "CPA", "Conv."]}
               rows={[
                 ["Telegram Ads", "78 000 ₽", "26 000 ₽", "2 106", "37 ₽", "4,2%"],
-                ["Яндекс.Директ", "48 000 ₽", "16 000 ₽", "918", "52 ₽", "2,8%"],
-                ["YouTube интеграции", "36 000 ₽", "12 000 ₽", "1 432", "25 ₽", "6,1%"],
-                ["Реферальная программа", "24 000 ₽", "8 000 ₽", "826", "29 ₽", "8,3%"],
-                ["Контент и SEO", "15 000 ₽", "5 000 ₽", "156", "96 ₽", "1,2%"],
-                ["Прочие (ASO, PR)", "9 000 ₽", "3 000 ₽", "72", "125 ₽", "0,9%"],
-                ["ИТОГО", "210 000 ₽", "70 000 ₽", "5 510", "38 ₽", "3,8%"],
+                [t("Яндекс.Директ", "Yandex.Direct"), "48 000 ₽", "16 000 ₽", "918", "52 ₽", "2,8%"],
+                [t("YouTube интеграции", "YouTube integrations"), "36 000 ₽", "12 000 ₽", "1 432", "25 ₽", "6,1%"],
+                [t("Реферальная программа", "Referral programme"), "24 000 ₽", "8 000 ₽", "826", "29 ₽", "8,3%"],
+                [t("Контент и SEO", "Content & SEO"), "15 000 ₽", "5 000 ₽", "156", "96 ₽", "1,2%"],
+                [t("Прочие (ASO, PR)", "Other (ASO, PR)"), "9 000 ₽", "3 000 ₽", "72", "125 ₽", "0,9%"],
+                [t("ИТОГО", "TOTAL"), "210 000 ₽", "70 000 ₽", "5 510", "38 ₽", "3,8%"],
               ]}
               highlightLast
             />
 
             <div className="grid sm:grid-cols-2" style={{ gap: "clamp(12px, 2vw, 16px)" }}>
               <div>
-                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Эффективность каналов</h4>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">{t("Эффективность каналов", "Channel Efficiency")}</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                   <MiniBar label="Telegram" value={78000} maxVal={210000} color="#00ccff" />
-                  <MiniBar label="Яндекс" value={48000} maxVal={210000} color="#ffb400" />
+                  <MiniBar label={t("Яндекс", "Yandex")} value={48000} maxVal={210000} color="#ffb400" />
                   <MiniBar label="YouTube" value={36000} maxVal={210000} color="#ff6b9d" />
-                  <MiniBar label="Рефералы" value={24000} maxVal={210000} color="var(--accent)" />
+                  <MiniBar label={t("Рефералы", "Referrals")} value={24000} maxVal={210000} color="var(--accent)" />
                   <MiniBar label="SEO" value={15000} maxVal={210000} color="#9966ff" />
-                  <MiniBar label="Прочие" value={9000} maxVal={210000} color="rgba(255,255,255,0.3)" />
+                  <MiniBar label={t("Прочие", "Other")} value={9000} maxVal={210000} color="rgba(255,255,255,0.3)" />
                 </div>
               </div>
               <div>
-                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">Ключевые интеграции</h4>
+                <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">{t("Ключевые интеграции", "Key Integrations")}</h4>
                 <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)" }}>
                   {[
-                    { name: "Telegram Bot + Mini App", status: "Активно", desc: "Автоматизация подписок, бот поддержки, push-уведомления. Конверсия в покупку 12,4%." },
-                    { name: "Партнёрская сеть", status: "Активно", desc: "18 активных партнёров. Реферальный бонус 15% от первой оплаты. LTV рефералов на 23% выше." },
-                    { name: "App Store Optimization", status: "В работе", desc: "A/B-тесты иконок и скриншотов. Органические установки +31% за Q1." },
-                    { name: "Email-маркетинг", status: "Планируется", desc: "Автоматические цепочки для реактивации churned-юзеров. Ожидаемый возврат 8–12%." },
+                    { name: "Telegram Bot + Mini App", status: t("Активно", "Active"), desc: t("Автоматизация подписок, бот поддержки, push-уведомления. Конверсия в покупку 12,4%.", "Subscription automation, support bot, push notifications. Purchase conversion 12.4%.") },
+                    { name: t("Партнёрская сеть", "Partner Network"), status: t("Активно", "Active"), desc: t("18 активных партнёров. Реферальный бонус 15% от первой оплаты. LTV рефералов на 23% выше.", "18 active partners. Referral bonus 15% of first payment. Referral LTV 23% higher.") },
+                    { name: "App Store Optimization", status: t("В работе", "In Progress"), desc: t("A/B-тесты иконок и скриншотов. Органические установки +31% за Q1.", "A/B tests of icons and screenshots. Organic installs +31% in Q1.") },
+                    { name: t("Email-маркетинг", "Email Marketing"), status: t("Планируется", "Planned"), desc: t("Автоматические цепочки для реактивации churned-юзеров. Ожидаемый возврат 8–12%.", "Automated chains for reactivating churned users. Expected return 8–12%.") },
                   ].map((item) => (
                     <div key={item.name} className="rounded-xl" style={{ padding: "clamp(12px, 2vw, 16px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-                      <div className="flex items-center gap-2 mb-1.5">
+                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                         <span className="text-[13px] font-semibold text-[var(--text-primary)]">{item.name}</span>
                         <span className="text-[9px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider"
                           style={{
-                            background: item.status === "Активно" ? "rgba(0,255,106,0.08)" : item.status === "В работе" ? "rgba(0,204,255,0.08)" : "rgba(255,180,0,0.08)",
-                            color: item.status === "Активно" ? "var(--accent)" : item.status === "В работе" ? "#00ccff" : "#ffb400",
-                            border: `1px solid ${item.status === "Активно" ? "rgba(0,255,106,0.15)" : item.status === "В работе" ? "rgba(0,204,255,0.15)" : "rgba(255,180,0,0.15)"}`,
+                            background: item.status === t("Активно", "Active") ? "rgba(0,255,106,0.08)" : item.status === t("В работе", "In Progress") ? "rgba(0,204,255,0.08)" : "rgba(255,180,0,0.08)",
+                            color: item.status === t("Активно", "Active") ? "var(--accent)" : item.status === t("В работе", "In Progress") ? "#00ccff" : "#ffb400",
+                            border: `1px solid ${item.status === t("Активно", "Active") ? "rgba(0,255,106,0.15)" : item.status === t("В работе", "In Progress") ? "rgba(0,204,255,0.15)" : "rgba(255,180,0,0.15)"}`,
                           }}>
                           {item.status}
                         </span>
@@ -685,29 +709,29 @@ export default function AtlasReport() {
             <div className="rounded-xl" style={{ padding: "clamp(14px, 3vw, 20px)", background: "rgba(0,255,106,0.04)", border: "1px solid rgba(0,255,106,0.15)" }}>
               <div className="flex items-center gap-2 mb-2">
                 <CheckCircle size={14} className="text-[var(--accent)]" />
-                <span className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)]">ROI маркетинга</span>
+                <span className="text-[11px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("ROI маркетинга", "Marketing ROI")}</span>
               </div>
               <p className="text-[12px] text-[var(--text-secondary)] leading-relaxed">
-                Каждый рубль, вложенный в маркетинг, приносит <strong className="text-[var(--text-primary)]">18,5 ₽ выручки</strong>.
-                Наиболее эффективный канал — YouTube-интеграции (CPA 25 ₽, конверсия 6,1%).
-                Реферальная программа показывает самый высокий conv. rate (8,3%) и LTV на 23% выше среднего.
-                Рекомендация на Q2: увеличить бюджет YouTube и реферальной программы на 40%.
+                {t(
+                  <>Каждый рубль, вложенный в маркетинг, приносит <strong className="text-[var(--text-primary)]">18,5 ₽ выручки</strong>. Наиболее эффективный канал — YouTube-интеграции (CPA 25 ₽, конверсия 6,1%). Реферальная программа показывает самый высокий conv. rate (8,3%) и LTV на 23% выше среднего. Рекомендация на Q2: увеличить бюджет YouTube и реферальной программы на 40%.</>,
+                  <>Every rouble invested in marketing generates <strong className="text-[var(--text-primary)]">18.5 ₽ in revenue</strong>. The most effective channel is YouTube integrations (CPA 25 ₽, conversion 6.1%). The referral programme shows the highest conversion rate (8.3%) and LTV 23% above average. Q2 recommendation: increase YouTube and referral programme budgets by 40%.</>
+                )}
               </p>
             </div>
           </ReportSection>
 
           {/* 09 — RISKS & FORECAST */}
-          <ReportSection id="09" icon={<AlertTriangle size={20} className="text-[var(--accent)]" />} title="Риски и прогноз Q2" badge="Forecast">
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Матрица рисков</h4>
+          <ReportSection id="09" icon={<AlertTriangle size={20} className="text-[var(--accent)]" />} title={t("Риски и прогноз Q2", "Risks & Q2 Forecast")} badge="Forecast">
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Матрица рисков", "Risk Matrix")}</h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "clamp(8px, 1.5vw, 12px)" }}>
               {[
-                { risk: "Блокировка протоколов РКН/ТСПУ", level: "high" as const, action: "XTLS-Reality + ротация SNI, cascade-мост через Yandex Cloud" },
-                { risk: "Ограничения платёжных провайдеров", level: "medium" as const, action: "Диверсификация: 4 метода оплаты, крипто-буфер" },
-                { risk: "Высокий Churn Rate", level: "medium" as const, action: "Стимулирование долгосрочных планов, реферальная программа" },
-                { risk: "Инфраструктурные сбои VPS", level: "low" as const, action: "Multi-server архитектура, Netcup + резерв (failover)" },
+                { risk: t("Блокировка протоколов РКН/ТСПУ", "Protocol blocking by regulators"), level: "high" as const, label: t("Высокий", "High"), action: t("XTLS-Reality + ротация SNI, cascade-мост через Yandex Cloud", "XTLS-Reality + SNI rotation, cascade bridge via Yandex Cloud") },
+                { risk: t("Ограничения платёжных провайдеров", "Payment provider restrictions"), level: "medium" as const, label: t("Средний", "Medium"), action: t("Диверсификация: 4 метода оплаты, крипто-буфер", "Diversification: 4 payment methods, crypto buffer") },
+                { risk: t("Высокий Churn Rate", "High Churn Rate"), level: "medium" as const, label: t("Средний", "Medium"), action: t("Стимулирование долгосрочных планов, реферальная программа", "Incentivising long-term plans, referral programme") },
+                { risk: t("Инфраструктурные сбои VPS", "VPS infrastructure failures"), level: "low" as const, label: t("Низкий", "Low"), action: t("Multi-server архитектура, Netcup + резерв (failover)", "Multi-server architecture, Netcup + backup (failover)") },
               ].map((r) => (
                 <div key={r.risk} className="rounded-xl flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4" style={{ padding: "clamp(12px, 2vw, 16px)", background: "rgba(255,255,255,0.02)", border: "1px solid var(--border)" }}>
-                  <RiskBadge level={r.level} />
+                  <RiskBadge level={r.level} label={r.label} />
                   <div className="flex-1 min-w-0">
                     <div className="text-[13px] font-semibold text-[var(--text-primary)]">{r.risk}</div>
                     <div className="text-[11px] text-[var(--text-muted)] mt-0.5">{r.action}</div>
@@ -718,15 +742,22 @@ export default function AtlasReport() {
 
             <div className="h-[1px]" style={{ background: "var(--border)" }} />
 
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">Прогноз на Q2 2025</h4>
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Прогноз на Q2 2025", "Q2 2025 Forecast")}</h4>
             <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
-              <KpiCard label="Выручка Q2" value="4,3–4,6 млн ₽" sub="+10–18% к Q1" icon={<TrendingUp size={14} />} accent />
-              <KpiCard label="База подписок" value="10 500+" sub="Целевая за квартал" icon={<Users size={14} />} />
-              <KpiCard label="Целевая маржа" value="91–92%" sub="Оптимизация инфры" icon={<BarChart3 size={14} />} />
-              <KpiCard label="MRR цель" value="1,45 млн ₽" sub="Monthly Recurring" icon={<Target size={14} />} />
+              <KpiCard label={t("Выручка Q2", "Q2 Revenue")} value={t("4,3–4,6 млн ₽", "4.3–4.6M ₽")} sub={t("+10–18% к Q1", "+10–18% vs Q1")} icon={<TrendingUp size={14} />} accent />
+              <KpiCard label={t("База подписок", "Subscription base")} value="10 500+" sub={t("Целевая за квартал", "Quarter target")} icon={<Users size={14} />} />
+              <KpiCard label={t("Целевая маржа", "Target margin")} value="91–92%" sub={t("Оптимизация инфры", "Infrastructure opt.")} icon={<BarChart3 size={14} />} />
+              <KpiCard label={t("MRR цель", "MRR Target")} value={t("1,45 млн ₽", "1.45M ₽")} sub="Monthly Recurring" icon={<Target size={14} />} />
             </div>
           </ReportSection>
 
+        </div>
+
+        {/* ═══ LEGAL FOOTER ═══ */}
+        <div className="text-center" style={{ marginTop: "clamp(32px, 5vw, 48px)", paddingTop: "clamp(16px, 3vw, 24px)", borderTop: "1px solid var(--border)" }}>
+          <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] leading-relaxed">
+            <span className="text-[var(--accent)]">&copy;</span> {new Date().getFullYear()} Qodev Limited &middot; Level 15, The Hong Kong Club Building, 3A Chater Road, Central, Hong Kong
+          </p>
         </div>
       </main>
     </div>

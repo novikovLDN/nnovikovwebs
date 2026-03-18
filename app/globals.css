@@ -475,6 +475,16 @@ body.custom-cursor-active [role="button"] {
     word-break: break-word;
     overflow-wrap: break-word;
   }
+
+  /* ── Tables: prevent overflow ── */
+  table {
+    font-size: 11px !important;
+  }
+
+  /* ── Fix KPI cards text overflow ── */
+  .tabular-nums {
+    word-break: break-word;
+  }
 }
 
 /* ── Mobile menu: button always clickable above overlay ── */
