@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, ArrowUpRight, Code2, Layers, Zap, BarChart3, Palette, ShieldCheck, Send, Mail, ChevronDown, Shield, Smartphone, Globe, CheckCircle, Users, Rocket, MessageSquare, Sparkles } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Code2, Layers, Zap, BarChart3, Palette, ShieldCheck, Send, Mail, ChevronDown, Shield, Smartphone, Globe, CheckCircle, Users, Rocket, MessageSquare, Sparkles, X } from "lucide-react";
 import { useI18n, LangSwitcher } from "./lib/i18n";
 
 /* ═══════════════════════════════════════════════════
@@ -651,11 +651,11 @@ function Nav() {
             <a href="#contact" className="ml-4 xl:ml-5 btn-primary shrink-0" style={{ padding: "12px 32px", fontSize: "14px", width: "auto", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
           </div>
 
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-3 lg:hidden">
             <LangSwitcher />
-            <button onClick={() => setMobileOpen(!mobileOpen)} className="text-[var(--text-primary)] w-10 h-10 flex flex-col items-center justify-center gap-1.5 relative z-[60]" aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen}>
-              <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "rotate-45 translate-y-[4.5px]" : ""}`} />
-              <span className={`block w-5 h-[1.5px] bg-current transition-all duration-300 ${mobileOpen ? "-rotate-45 -translate-y-[1.5px]" : ""}`} />
+            <button onClick={() => setMobileOpen(true)} className="text-[var(--text-primary)] w-10 h-10 flex flex-col items-center justify-center gap-1.5 relative z-[60]" aria-label="Open menu">
+              <span className="block w-5 h-[1.5px] bg-current" />
+              <span className="block w-5 h-[1.5px] bg-current" />
             </button>
           </div>
         </div>
@@ -663,49 +663,85 @@ function Nav() {
 
       {/* Mobile fullscreen menu */}
       <div
-        className="lg:hidden fixed inset-0 z-[55]"
+        className="lg:hidden fixed inset-0 z-[100]"
         style={{
           pointerEvents: mobileOpen ? "auto" : "none",
           opacity: mobileOpen ? 1 : 0,
-          transition: "opacity 0.35s ease",
+          transition: "opacity 0.3s ease",
         }}
       >
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "rgba(8, 8, 8, 0.95)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
-          }}
-          onClick={() => setMobileOpen(false)}
-        />
-        <div className="relative flex flex-col justify-center items-center h-full px-6" style={{ paddingTop: "80px", paddingBottom: "60px" }}>
-          <div className="flex flex-col items-center w-full" style={{ gap: "4px" }}>
-            {NAV.map((item, i) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={`mobile-menu-link text-center font-display font-semibold tracking-tight ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-primary)] hover:text-[var(--accent)]"}`}
-                style={{
-                  fontSize: "clamp(1.25rem, 5vw, 1.75rem)",
-                  padding: "clamp(8px, 2vw, 14px) 24px",
-                  transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
-                  opacity: mobileOpen ? 1 : 0,
-                  transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.05}s, opacity 0.4s ease ${i * 0.05}s, color 0.3s ease`,
-                }}
-              >
-                {item.label}
-              </a>
-            ))}
+        {/* Backdrop */}
+        <div className="absolute inset-0" style={{ background: "rgba(8, 8, 8, 0.97)", backdropFilter: "blur(32px)", WebkitBackdropFilter: "blur(32px)" }} onClick={() => setMobileOpen(false)} />
+
+        {/* Menu content */}
+        <div className="relative flex flex-col h-full">
+          {/* Top bar with logo + close */}
+          <div className="flex items-center justify-between shrink-0" style={{ padding: "18px clamp(24px, 5vw, 48px)" }}>
+            <a href="#" onClick={() => setMobileOpen(false)} className="font-display text-xl font-bold tracking-tight flex items-center gap-2" aria-label="QoDev">
+              <span className="text-[var(--accent)]">Q</span><span className="text-[var(--text-primary)]">oDev</span>
+            </a>
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200 hover:bg-[rgba(255,255,255,0.08)]"
+              style={{ border: "1px solid var(--border)" }}
+              aria-label={t("Закрыть меню", "Close menu")}
+            >
+              <X size={18} className="text-[var(--text-primary)]" />
+            </button>
           </div>
-          <div style={{
-            marginTop: "clamp(20px, 4vw, 32px)",
-            transform: mobileOpen ? "translateY(0)" : "translateY(20px)",
+
+          {/* Nav links */}
+          <div className="flex-1 flex flex-col justify-center" style={{ padding: "0 clamp(32px, 8vw, 64px)" }}>
+            <div className="flex flex-col" style={{ gap: "clamp(4px, 1.5vw, 8px)" }}>
+              {NAV.map((item, i) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="group flex items-center justify-between rounded-2xl transition-all duration-200"
+                  style={{
+                    padding: "clamp(14px, 3vw, 20px) clamp(16px, 4vw, 24px)",
+                    background: active === item.href.slice(1) ? "rgba(0,255,106,0.06)" : "transparent",
+                    border: active === item.href.slice(1) ? "1px solid rgba(0,255,106,0.15)" : "1px solid transparent",
+                    transform: mobileOpen ? "translateY(0)" : "translateY(24px)",
+                    opacity: mobileOpen ? 1 : 0,
+                    transition: `transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.06}s, opacity 0.4s ease ${i * 0.06}s, background 0.2s ease, border-color 0.2s ease`,
+                  }}
+                >
+                  <span className={`font-display font-semibold tracking-tight ${active === item.href.slice(1) ? "text-[var(--accent)]" : "text-[var(--text-primary)] group-hover:text-[var(--accent)]"}`} style={{ fontSize: "clamp(1.25rem, 5vw, 1.75rem)" }}>
+                    {item.label}
+                  </span>
+                  <ArrowRight size={16} className={`transition-all duration-200 ${active === item.href.slice(1) ? "text-[var(--accent)] opacity-100" : "text-[var(--text-muted)] opacity-0 group-hover:opacity-100 group-hover:translate-x-1"}`} />
+                </a>
+              ))}
+            </div>
+
+            {/* CTA button */}
+            <div style={{
+              marginTop: "clamp(24px, 5vw, 40px)",
+              transform: mobileOpen ? "translateY(0)" : "translateY(24px)",
+              opacity: mobileOpen ? 1 : 0,
+              transition: `transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.06}s, opacity 0.4s ease ${NAV.length * 0.06}s`,
+            }}>
+              <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary flex items-center justify-center gap-2 w-full" style={{ padding: "16px 32px", borderRadius: "16px", fontSize: "clamp(0.9rem, 3vw, 1rem)" }}>
+                {t("Обсудить проект", "Start a Project")} <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+
+          {/* Bottom contacts */}
+          <div className="shrink-0" style={{
+            padding: "clamp(16px, 3vw, 24px) clamp(32px, 8vw, 64px)",
+            borderTop: "1px solid var(--border)",
+            transform: mobileOpen ? "translateY(0)" : "translateY(16px)",
             opacity: mobileOpen ? 1 : 0,
-            transition: `transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.05}s, opacity 0.4s ease ${NAV.length * 0.05}s`,
+            transition: `transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${(NAV.length + 1) * 0.06}s, opacity 0.4s ease ${(NAV.length + 1) * 0.06}s`,
           }}>
-            <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary" style={{ width: "auto", padding: "14px 40px", borderRadius: "100px" }}>{t("Обсудить проект", "Start a Project")}</a>
+            <div className="flex items-center justify-center gap-6 text-[13px] text-[var(--text-muted)]">
+              <a href="mailto:hello@qodev.com" className="hover:text-[var(--accent)] transition-colors">hello@qodev.com</a>
+              <span className="w-1 h-1 rounded-full bg-[var(--border)]" />
+              <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--accent)] transition-colors">Telegram</a>
+            </div>
           </div>
         </div>
       </div>
