@@ -969,18 +969,12 @@ export default function Home() {
       <Section id="projects">
         <SectionHeader label={t("Портфолио", "Portfolio")} title={t("Избранные", "Featured")} secondary={t("проекты", "Projects")} />
         <div className="grid min-[560px]:grid-cols-2" style={{ gap: "clamp(12px, 2vw, 28px)" }}>
-          {PROJECTS.map((p, i) => (
-            <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
-              <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""}`} style={{ padding: "clamp(14px, 3vw, 32px)" }}>
+          {PROJECTS.map((p, i) => {
+            const cardContent = (
+              <div className={`card card-glow group h-full ${p.accent ? "border-[var(--border-accent)]" : ""} ${p.link ? "cursor-pointer" : ""}`} style={{ padding: "clamp(14px, 3vw, 32px)" }}>
                 <div className="flex items-start justify-between" style={{ marginBottom: "clamp(12px, 3vw, 24px)" }}>
                   <span className="font-display font-bold text-[var(--text-faint)] group-hover:text-[var(--accent)] transition-colors duration-500" style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}>{p.num}</span>
-                  {p.link ? (
-                    <a href={p.link} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300">
-                      <ArrowUpRight size={20} />
-                    </a>
-                  ) : (
-                    <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-                  )}
+                  <ArrowUpRight size={20} className="text-[var(--text-muted)] group-hover:text-[var(--accent)] group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
                 </div>
                 <h3 className="text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2 sm:mb-3 group-hover:text-[var(--accent)] transition-colors duration-300">{p.title}</h3>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed" style={{ marginBottom: "clamp(12px, 3vw, 24px)" }}>{p.desc}</p>
@@ -988,8 +982,13 @@ export default function Home() {
                   {p.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}
                 </div>
               </div>
-            </TiltCard>
-          ))}
+            );
+            return (
+              <TiltCard key={p.num} className={`reveal stagger-${i + 1}`}>
+                {p.link ? <a href={p.link} className="block h-full no-underline">{cardContent}</a> : cardContent}
+              </TiltCard>
+            );
+          })}
         </div>
       </Section>
 
@@ -1015,11 +1014,11 @@ export default function Home() {
 
       {/* ═══ CTA BANNER ═══ */}
       <div className="relative z-10 max-w-[1400px] 2xl:max-w-[1600px] mx-auto" style={{ padding: "clamp(16px, 3vw, 64px) clamp(20px, 5vw, 64px)" }}>
-        <div className="card text-center border-[var(--border-accent)] overflow-hidden" style={{ padding: "clamp(24px, 5vw, 64px) clamp(16px, 4vw, 48px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
-          <h3 className="font-display font-bold" style={{ fontSize: "clamp(1.15rem, 4vw, 2.5rem)", marginBottom: "clamp(12px, 3vw, 20px)", lineHeight: 1.2 }}>
+        <div className="card text-center border-[var(--border-accent)] overflow-hidden" style={{ padding: "clamp(32px, 6vw, 72px) clamp(24px, 5vw, 64px)", background: "linear-gradient(135deg, var(--bg-card) 0%, #0f1a0f 100%)" }}>
+          <h3 className="font-display font-bold max-w-2xl mx-auto" style={{ fontSize: "clamp(1.25rem, 4vw, 2.5rem)", marginBottom: "clamp(16px, 3vw, 24px)", lineHeight: 1.2 }}>
             {t("Есть идея?", "Got an idea?")} <span className="gradient-text">{t("Давайте реализуем.", "Let's bring it to life.")}</span>
           </h3>
-          <p className="text-[var(--text-secondary)] max-w-xl mx-auto" style={{ fontSize: "clamp(0.8rem, 2vw, 1rem)", marginBottom: "clamp(20px, 4vw, 32px)", lineHeight: 1.6 }}>
+          <p className="text-[var(--text-secondary)] max-w-2xl mx-auto" style={{ fontSize: "clamp(0.85rem, 2vw, 1.05rem)", marginBottom: "clamp(24px, 4vw, 36px)", lineHeight: 1.7 }}>
             {t(
               "Расскажите о вашем проекте — проведём бесплатную консультацию, оценим сроки и предложим оптимальное технологическое решение.",
               "Tell us about your project — we'll provide a free consultation, estimate timelines, and propose the optimal technology solution."
