@@ -10,6 +10,7 @@ import { useI18n, LangSwitcher } from "./lib/i18n";
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
+  const { lang } = useI18n();
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) =>
@@ -21,7 +22,7 @@ function useScrollReveal() {
     const el = ref.current;
     if (el) el.querySelectorAll(".reveal").forEach((c) => observer.observe(c));
     return () => observer.disconnect();
-  }, []);
+  }, [lang]);
   return ref;
 }
 
@@ -999,7 +1000,7 @@ export default function Home() {
         <SectionHeader label={t("Услуги", "Services")} title={t("Полный спектр", "Full Range of")} secondary={t("digital-решений", "Digital Solutions")} />
         <div className="grid min-[480px]:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(10px, 2.5vw, 24px)" }}>
           {SERVICES.map((s, i) => (
-            <TiltCard key={s.title} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
+            <TiltCard key={i} className={`reveal stagger-${Math.min(i + 1, 5)}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(16px, 3vw, 28px)" }}>
                 <div className="text-[var(--accent)] mb-3 sm:mb-5">{s.icon}</div>
                 <h3 className="font-display text-base sm:text-lg font-semibold text-[var(--text-primary)] mb-2 sm:mb-3">{s.title}</h3>
@@ -1066,7 +1067,7 @@ export default function Home() {
         <SectionHeader label={t("Преимущества", "Advantages")} title={t("Почему выбирают", "Why Choose")} secondary="QoDev" />
         <div className="grid min-[560px]:grid-cols-2 lg:grid-cols-3" style={{ gap: "clamp(12px, 3vw, 24px)" }}>
           {WHY_US.map((item, i) => (
-            <TiltCard key={item.title} className={`reveal stagger-${i + 1}`}>
+            <TiltCard key={i} className={`reveal stagger-${i + 1}`}>
               <div className="card card-glow h-full" style={{ padding: "clamp(14px, 3vw, 32px)" }}>
                 <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center mb-3 sm:mb-5" style={{ background: "rgba(0,255,106,0.08)", border: "1px solid rgba(0,255,106,0.15)" }}>
                   <span className="text-[var(--accent)]">{item.icon}</span>
