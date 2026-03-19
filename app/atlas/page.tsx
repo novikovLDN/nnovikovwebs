@@ -105,7 +105,7 @@ function CodeBlock({ title, code, copyable = true }: { title?: string; code: str
           </div>
         )}
         <pre className="overflow-x-auto" style={{ padding: "clamp(8px, 3vw, 20px)", margin: 0, WebkitOverflowScrolling: "touch" }}>
-          <code className="text-[10px] sm:text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "'SF Mono','Fira Code','JetBrains Mono',monospace", wordBreak: "break-all", whiteSpace: "pre-wrap" }}>{code}</code>
+          <code className="text-[10px] sm:text-[13px] leading-relaxed" style={{ color: "var(--text-secondary)", fontFamily: "'SF Mono','Fira Code','JetBrains Mono',monospace", overflowWrap: "break-word", wordBreak: "break-word", whiteSpace: "pre-wrap" }}>{code}</code>
         </pre>
       </div>
     </div>
@@ -506,7 +506,7 @@ export default function AtlasPage() {
         <div style={{ marginTop: "clamp(24px, 4vw, 32px)" }}>
           <a href="https://t.me/atlassecure_bot" target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-2.5 w-full font-semibold transition-all duration-300 text-[var(--bg-deep)] hover:opacity-90"
-            style={{ padding: "clamp(13px, 3vw, 16px) clamp(20px, 3vw, 28px)", borderRadius: "14px", fontSize: "clamp(13px, 2.5vw, 15px)", background: "var(--accent)" }}>
+            style={{ padding: "clamp(14px, 3vw, 16px) clamp(20px, 3vw, 28px)", borderRadius: "14px", fontSize: "clamp(13px, 2.5vw, 15px)", background: "var(--accent)", minHeight: "48px" }}>
             <Send size={16} className="sm:w-[18px] sm:h-[18px]" /> {t("Подключить Atlas Secure", "Connect Atlas Secure")}
           </a>
         </div>
