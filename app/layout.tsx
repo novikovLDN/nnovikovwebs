@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "./lib/i18n";
+import CustomCursor from "./lib/custom-cursor";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -126,7 +127,10 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <I18nProvider>{children}</I18nProvider>
+        <I18nProvider>
+          <CustomCursor />
+          {children}
+        </I18nProvider>
       </body>
     </html>
   );

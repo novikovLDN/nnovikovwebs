@@ -211,7 +211,7 @@ export default function AtlasPage() {
       </header>
 
       {/* Content */}
-      <main className="max-w-[1200px] mx-auto" style={{ padding: "clamp(24px, 5vw, 48px) clamp(24px, 5vw, 64px) clamp(48px, 8vw, 80px)" }}>
+      <main style={{ padding: "clamp(24px, 5vw, 48px) clamp(24px, 5vw, 120px) clamp(48px, 8vw, 80px)" }}>
 
         {/* Title */}
         <div className="text-center" style={{ marginBottom: "clamp(24px, 4vw, 32px)" }}>
