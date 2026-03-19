@@ -723,7 +723,7 @@ function Nav() {
               opacity: mobileOpen ? 1 : 0,
               transition: `transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) ${NAV.length * 0.06}s, opacity 0.4s ease ${NAV.length * 0.06}s`,
             }}>
-              <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary flex items-center justify-center gap-2 w-full" style={{ padding: "16px 32px", borderRadius: "16px", fontSize: "clamp(0.9rem, 3vw, 1rem)" }}>
+              <a href="#contact" onClick={() => setMobileOpen(false)} className="btn-primary flex items-center justify-center gap-2 w-full" style={{ padding: "16px 32px", borderRadius: "16px", fontSize: "clamp(0.9rem, 3vw, 1rem)", minHeight: "48px" }}>
                 {t("Обсудить проект", "Start a Project")} <ArrowRight size={16} />
               </a>
             </div>
@@ -964,7 +964,7 @@ export default function Home() {
       <main>
 
       {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(80px, 10vw, 160px) clamp(20px, 5vw, 64px) clamp(80px, 10vw, 160px)" }}>
+      <section ref={heroRef} className="relative z-10 min-h-[100svh] flex items-center" style={{ padding: "clamp(60px, 10vw, 160px) clamp(20px, 5vw, 64px) clamp(60px, 10vw, 160px)" }}>
         <div className="max-w-[1400px] 2xl:max-w-[1600px] mx-auto w-full grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 xl:gap-24 items-center">
           <div>
             <div className="reveal inline-flex items-center gap-2.5 rounded-full" style={{ marginBottom: "clamp(24px, 4vw, 32px)", padding: "8px 18px 8px 12px", background: "rgba(0,255,106,0.06)", border: "1px solid rgba(0,255,106,0.15)" }}>
@@ -1106,9 +1106,9 @@ export default function Home() {
               "Tell us about your project — we'll provide a free consultation, estimate timelines, and propose the optimal technology solution."
             )}
           </p>
-          <div className="flex flex-col min-[400px]:flex-row justify-center gap-3 min-[400px]:gap-4">
-            <a href="#contact" className="btn-primary w-full min-[400px]:w-auto text-center">{t("Обсудить проект", "Start a Project")} <ArrowRight size={14} /></a>
-            <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="btn-secondary w-full min-[400px]:w-auto text-center">{t("Написать в Telegram", "Message on Telegram")}</a>
+          <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+            <a href="#contact" className="btn-primary w-full sm:w-auto text-center">{t("Обсудить проект", "Start a Project")} <ArrowRight size={14} /></a>
+            <a href="https://t.me/qodev_agency" target="_blank" rel="noopener noreferrer" className="btn-secondary w-full sm:w-auto text-center">{t("Написать в Telegram", "Message on Telegram")}</a>
           </div>
         </div>
       </div>

@@ -80,7 +80,7 @@ function BarChart({ data, maxValue }: { data: { label: string; value: number; su
               <span className="text-[11px] sm:text-[13px] text-[var(--text-secondary)] font-medium truncate min-w-0">{d.label}</span>
               <span className="text-[11px] sm:text-[13px] font-bold text-[var(--text-primary)] tabular-nums whitespace-nowrap shrink-0">{d.value.toLocaleString("ru-RU")} ₽</span>
             </div>
-            <div className="h-7 sm:h-8 md:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
+            <div className="h-8 sm:h-9 md:h-10 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border)" }}>
               <div
                 className="h-full rounded-lg flex items-center justify-end pr-2 sm:pr-3"
                 style={{
@@ -112,7 +112,7 @@ function DonutChart({ segments, totalLabel }: { segments: { label: string; value
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      setSize(w < 380 ? 140 : w < 480 ? 160 : w < 768 ? 175 : 190);
+      setSize(w < 320 ? 120 : w < 380 ? 140 : w < 480 ? 160 : w < 768 ? 175 : 190);
     };
     update();
     window.addEventListener("resize", update);
@@ -279,7 +279,7 @@ function MiniBar({ label, value, maxVal, color = "var(--accent)" }: { label: str
   const pct = (value / maxVal) * 100;
   return (
     <div ref={anim.ref} className="flex items-center gap-2 sm:gap-3">
-      <span className="text-[11px] sm:text-[12px] text-[var(--text-secondary)] w-16 sm:w-24 shrink-0 truncate">{label}</span>
+      <span className="text-[11px] sm:text-[12px] text-[var(--text-secondary)] w-14 min-[480px]:w-16 sm:w-24 shrink-0 truncate">{label}</span>
       <div className="flex-1 h-2 rounded-full" style={{ background: "rgba(255,255,255,0.04)" }}>
         <div className="h-full rounded-full" style={{
           width: anim.visible ? `${pct}%` : "0%",
@@ -358,10 +358,11 @@ function EmailSubscribe() {
           placeholder={t("your@email.com", "your@email.com")}
           className="flex-1 rounded-lg text-[13px] sm:text-sm outline-none transition-all duration-300 focus:border-[var(--accent)]"
           style={{
-            padding: "clamp(10px, 2vw, 12px) clamp(12px, 2.5vw, 16px)",
+            padding: "clamp(12px, 2vw, 14px) clamp(12px, 2.5vw, 16px)",
             background: "rgba(255,255,255,0.03)",
             border: "1px solid var(--border)",
             color: "var(--text-primary)",
+            minHeight: "44px",
           }}
           required
         />
@@ -369,7 +370,8 @@ function EmailSubscribe() {
           type="submit"
           className="flex items-center justify-center gap-2 font-semibold rounded-lg transition-all duration-300 shrink-0"
           style={{
-            padding: "clamp(10px, 2vw, 12px) clamp(16px, 3vw, 24px)",
+            padding: "clamp(12px, 2vw, 14px) clamp(16px, 3vw, 24px)",
+            minHeight: "44px",
             background: sent ? "rgba(0,255,106,0.15)" : "var(--accent)",
             color: sent ? "var(--accent)" : "var(--bg-deep)",
             border: sent ? "1px solid var(--border-accent)" : "none",
