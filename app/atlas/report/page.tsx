@@ -409,7 +409,7 @@ export default function AtlasReport() {
           <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
             <Shield size={16} className="text-[var(--accent)] shrink-0" />
             <span className="font-display font-bold text-[var(--text-primary)] text-[13px] sm:text-sm truncate">Atlas Secure</span>
-            <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0" style={{ background: "rgba(0,255,106,0.1)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.15)" }}>Q1 2025</span>
+            <span className="text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider shrink-0" style={{ background: "rgba(0,255,106,0.1)", color: "var(--accent)", border: "1px solid rgba(0,255,106,0.15)" }}>Q1 2026</span>
           </div>
           <LangSwitcher />
         </div>
@@ -427,7 +427,7 @@ export default function AtlasReport() {
             Atlas Secure VPN
           </h1>
           <p className="text-[var(--text-secondary)]" style={{ fontSize: "clamp(0.825rem, 2vw, 1rem)", marginTop: "clamp(8px, 1.5vw, 12px)" }}>
-            {t("Финансовый отчёт за I квартал 2025 · 1 января — 31 марта", "Financial Report Q1 2025 · January 1 — March 31")}
+            {t("Финансовый отчёт за I квартал 2026 · 1 января — 31 марта · Закрытие 01.04.2026", "Financial Report Q1 2026 · January 1 — March 31 · Closed 01.04.2026")}
           </p>
           <div className="flex items-center justify-center gap-1.5 sm:gap-2 mt-2 sm:mt-3">
             <Lock size={10} className="text-[var(--text-muted)] shrink-0 sm:w-3 sm:h-3" />
@@ -476,7 +476,7 @@ export default function AtlasReport() {
               <div className="font-display font-bold tabular-nums flex items-center gap-1.5" style={{ fontSize: "clamp(1rem, 3vw, 1.35rem)", color: "var(--accent)" }}>
                 <TrendingUp size={16} />+{growth.value}%
               </div>
-              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">{t("Март vs Январь", "March vs January")}</div>
+              <div className="text-[9px] min-[480px]:text-[10px] text-[var(--text-muted)] mt-1">{t("Март vs Январь 2026", "Mar vs Jan 2026")}</div>
             </div>
             <div className="h-[3px]" style={{ background: "linear-gradient(90deg, var(--accent), rgba(0,255,106,0.15))" }} />
           </div>
@@ -517,8 +517,8 @@ export default function AtlasReport() {
                 <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)] mb-3">{t("Ключевые результаты", "Key Results")}</h4>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed">
                   {t(
-                    <>За I квартал 2025 года Atlas Secure VPN продемонстрировал устойчивый рост пользовательской базы и выручки. Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">85,0%</strong>. Маркетинговые инвестиции <strong className="text-[var(--text-primary)]">210 000 ₽</strong> обеспечили рост органического трафика на 47%.</>,
-                    <>In Q1 2025, Atlas Secure VPN demonstrated steady growth in user base and revenue. Total revenue was <strong className="text-[var(--text-primary)]">3,891,829 ₽</strong> with an operating margin of <strong className="text-[var(--text-primary)]">85.0%</strong>. Marketing investments of <strong className="text-[var(--text-primary)]">210,000 ₽</strong> drove a 47% increase in organic traffic.</>
+                    <>За I квартал 2026 года Atlas Secure VPN продемонстрировал устойчивый рост пользовательской базы и выручки. Совокупная выручка составила <strong className="text-[var(--text-primary)]">3 891 829 ₽</strong> при операционной рентабельности <strong className="text-[var(--text-primary)]">85,0%</strong>. Маркетинговые инвестиции <strong className="text-[var(--text-primary)]">210 000 ₽</strong> обеспечили рост органического трафика на 47%.</>,
+                    <>In Q1 2026, Atlas Secure VPN demonstrated steady growth in user base and revenue. Total revenue was <strong className="text-[var(--text-primary)]">3,891,829 ₽</strong> with an operating margin of <strong className="text-[var(--text-primary)]">85.0%</strong>. Marketing investments of <strong className="text-[var(--text-primary)]">210,000 ₽</strong> drove a 47% increase in organic traffic.</>
                   )}
                 </p>
                 <p className="text-[13px] sm:text-sm text-[var(--text-secondary)] leading-relaxed mt-3">
@@ -552,9 +552,9 @@ export default function AtlasReport() {
             <BarChart
               maxValue={1400000}
               data={[
-                { label: t("Январь 2025", "January 2025"), value: 1224235, subLabel: "31.5%" },
-                { label: t("Февраль 2025", "February 2025"), value: 1279893, subLabel: "32.9%" },
-                { label: t("Март 2025", "March 2025"), value: 1387701, subLabel: "35.6%" },
+                { label: t("Январь 2026", "January 2026"), value: 1224235, subLabel: "31.5%" },
+                { label: t("Февраль 2026", "February 2026"), value: 1279893, subLabel: "32.9%" },
+                { label: t("Март 2026", "March 2026"), value: 1387701, subLabel: "35.6%" },
               ]}
             />
 
@@ -731,7 +731,7 @@ export default function AtlasReport() {
               <KpiCard label={t("Расход на маркетинг", "Marketing spend")} value="210 000 ₽" sub={t("70 000 ₽/мес", "70,000 ₽/mo")} icon={<Megaphone size={14} />} accent />
               <KpiCard label={t("CPA (привлечение)", "CPA (acquisition)")} value="38 ₽" sub={t("Маркет. расход / юзер", "Marketing cost / user")} icon={<Target size={14} />} />
               <KpiCard label="ROAS" value="18,5×" sub={t("Возврат на рекл. расходы", "Return on ad spend")} icon={<TrendingUp size={14} />} />
-              <KpiCard label={t("Органический рост", "Organic growth")} value="+47%" sub="Q1 vs Q4 2024" icon={<Share2 size={14} />} />
+              <KpiCard label={t("Органический рост", "Organic growth")} value="+47%" sub="Q1 vs Q4 2025" icon={<Share2 size={14} />} />
             </div>
 
             <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Распределение бюджета по каналам", "Budget Distribution by Channel")}</h4>
@@ -825,7 +825,7 @@ export default function AtlasReport() {
 
             <div className="h-[1px]" style={{ background: "var(--border)" }} />
 
-            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Прогноз на Q2 2025", "Q2 2025 Forecast")}</h4>
+            <h4 className="text-[12px] font-bold tracking-wider uppercase text-[var(--accent)]">{t("Прогноз на Q2 2026", "Q2 2026 Forecast")}</h4>
             <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: "clamp(6px, 2vw, 12px)" }}>
               <KpiCard label={t("Выручка Q2", "Q2 Revenue")} value={t("4,3–4,6 млн ₽", "4.3–4.6M ₽")} sub={t("+10–18% к Q1", "+10–18% vs Q1")} icon={<TrendingUp size={14} />} accent />
               <KpiCard label={t("База подписок", "Subscription base")} value="10 500+" sub={t("Целевая за квартал", "Quarter target")} icon={<Users size={14} />} />
